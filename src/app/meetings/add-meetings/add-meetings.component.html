@@ -1,11 +1,11 @@
 <div class="d-flex row bg-light py-5 px-3 justify-content-center">
-    <h2 class="text-center">Convocar reunión</h2>
-    <div class="card w-75">
+    <h2 class="text-center fw-bold">Convocar reunión</h2>
+    <div class="card w-75 p-0">
         <div class="card-body">
-            <form class="d-inline-flex">
+            <form class="d-inline-flex" [formGroup]="meetingForm" (ngSubmit)="onSubmit()">
 
                 <div class="col-sm-6 p-1 px-2 d-flex row gap-3">
-                    <h5>Datos</h5>
+                    <h6 class="fw-bold">Datos</h6>
                     <div class="d-inline-flex gap-2">
 
                         <div class="input-group">
@@ -44,7 +44,7 @@
                 <div class="vr"></div>
 
                 <div class="col-sm-6 p-1 px-2 d-flex row gap-3 justify-content-center">
-                    <h5>Orden de hoy</h5>
+                    <h6 class="fw-bold">Orden de hoy</h6>
                     <div class="input-group">
                         <span class="input-group-text"><i class="fas fa-comment-dots"></i></span>
                         <select type="text" class="form-control" id="text" required name="text"></select>
