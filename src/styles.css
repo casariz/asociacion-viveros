@@ -1,1 +1,13 @@
 /* You can add global styles to this file, and also import other style files */
+
+.add-button {
+    background-color: #198754;
+}
+
+.add-button:hover {
+    background-color: #126840;
+}
+
+.btn:first-child:active {
+    background-color: #0f5334;
+}
