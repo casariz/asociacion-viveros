@@ -1,0 +1,50 @@
+<div class="d-flex row bg-light py-5 px-3 justify-content-center">
+  <h2 class="text-center fw-bold">Agregar tarea</h2>
+  <div class="card w-50 p-0">
+    <div class="card-body">
+      <form class="d-inline-flex">
+        <div class="p-1 px-2 d-flex row gap-3">
+          <h6 class="fw-bold m-0">Datos</h6>
+          <div class="input-group">
+            <span class="input-group-text"><i class="fas fa-calendar-day"></i></span>
+            <input type="date" class="form-control" id="date" required name="day" value=""/>
+          </div>
+          <div class="input-group">
+            <span class="input-group-text"><i class="fas fa-stopwatch"></i></span>
+            <input type="number" class="form-control" id="number" required name="estimated_time" min="0" max="9999" value="0"/>
+            <select class="form-control" id="units" required name="units">
+              <option selected>Sin definir</option>
+                            <option>Minuto(s)</option>
+                            <option>Hora(s)</option>
+                            <option>Días(s)</option>
+                            <option>Semana(s)</option>
+                            <option>Mes(es)</option>
+            </select>
+          </div>
+          <div class="input-group">
+            <span class="input-group-text"><i class="fas fa-signature"></i></span>
+            <select class="form-select w-auto p-0 ps-2 pe-5" id="type_id" required name="type_id"></select>
+            <input type="text" class="form-control" id="task_description" required name="task_description" placeholder="Descripción..."/>
+          </div>
+          <div class="input-group">
+            <span class="input-group-text"><i class="fas fa-helmet-safety"></i></span>
+            <input type="text" class="form-control" id="worker_id" required name="worker_id" />
+          </div>
+          <div class="input-group">
+            <span class="input-group-text"><i class="fas fa-warehouse"></i></span>
+            <select type="text" class="form-select w-auto" id="department_id" required name="department_id"></select>
+          </div>
+          <div class="input-group">
+            <span class="input-group-text"><i class="fas fa-comment"></i></span>
+            <textarea name="observations" id="observations" class="form-control" cols="50" rows="5" placeholder="Observaciones..."></textarea>
+          </div>
+        </div>
+      </form>
+    </div>
+    <div class="card-footer d-flex justify-content-end">
+      <button class="btn btn-success">
+        <i class="fas fa-plus"></i> AGREGAR
+      </button>
+    </div>
+  </div>
+</div>

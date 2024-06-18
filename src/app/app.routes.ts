@@ -1,10 +1,12 @@
 import { Routes } from '@angular/router';
-import { LoginComponent } from './login/login.component';
-import { MeetingsComponent } from './meetings/meetings.component';
-import { TasksComponent } from './tasks/tasks.component';
-import { WalletComponent } from './wallet/wallet.component';
-import { AddMeetingsComponent } from './meetings/add-meetings/add-meetings.component';
-import { AddTasksComponent } from './tasks/add-tasks/add-tasks.component';
+import { LoginComponent } from './components/login/login.component';
+import { MeetingsComponent } from './components/meetings/meetings.component';
+import { TasksComponent } from './components/tasks/tasks.component';
+import { WalletComponent } from './components/wallet/wallet.component';
+import { AddMeetingsComponent } from './components/meetings/add-meetings/add-meetings.component';
+import { AssignTasksComponent } from './components/meetings/assign-tasks/assign-tasks.component';
+import { AddTasksComponent } from './components/tasks/add-tasks/add-tasks.component';
+import { AddWalletComponent } from './components/wallet/add-wallet/add-wallet.component';
 
 export const routes: Routes = [
   {
@@ -33,8 +35,18 @@ export const routes: Routes = [
     title: 'Añadir reunion'
   },
   {
+    path: 'meetings/assign-tasks',
+    component: AssignTasksComponent,
+    title: 'Asignar tarea'
+  },
+  {
     path: 'tasks/add-tasks',
     component: AddTasksComponent,
     title: 'Añadir tarea'
   },
+  {
+    path: 'wallet/add-wallet',
+    component: AddWalletComponent,
+    title: 'Añadir cartera'
+  }
 ];

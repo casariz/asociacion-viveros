@@ -8,32 +8,38 @@
           <div class="d-inline-flex gap-2 py-0">
             <div class="input-group">
               <span class="input-group-text"><i class="fas fa-calendar-day"></i></span>
-              <input type="date" class="form-control" id="date" required name="date" />
+              <input type="date" class="form-control" id="date" required name="meeting_date" />
             </div>
             <div class="input-group">
               <span class="input-group-text"><i class="fas fa-clock"></i></span>
-              <input type="time" class="form-control" id="time" required name="time" />
+              <input type="time" class="form-control" id="time" required name="start_hour" />
             </div>
           </div>
           <div class="input-group">
             <span class="input-group-text"><i class="fas fa-microphone"></i></span>
-            <input type="text" class="form-control" id="text" required name="text" />
+            <input type="text" class="form-control" id="caller_id" required name="caller_id"
+              placeholder="Seleccione vinculado..." />
           </div>
           <div class="input-group">
             <span class="input-group-text"><i class="fas fa-location-dot"></i></span>
-            <input type="text" class="form-control" id="text" required name="text" />
+            <input type="text" class="form-control" id="placement" required name="placement"
+              placeholder="Lugar de la reunión..." />
           </div>
           <div class="input-group">
             <span class="input-group-text"><i class="fas fa-warehouse"></i></span>
-            <select type="text" class="form-control" id="text" required name="text"></select>
+            <select type="text" class="form-select" id="department_id" required name="department_id">
+
+            </select>
           </div>
           <div class="input-group">
             <span class="input-group-text"><i class="fas fa-signature"></i></span>
-            <input type="text" class="form-control" id="text" required name="text" />
+            <input type="text" class="form-control" id="meeting_description" required name="meeting_description"
+              placeholder="Descripción de la reunión..." />
           </div>
           <div class="input-group">
             <span class="input-group-text"><i class="fas fa-users"></i></span>
-            <input type="text" class="form-control" id="text" required name="text" />
+            <input type="text" class="form-control" id="assistant_id" required name="assistant_id"
+              placeholder="Seleccione vinculado..." />
           </div>
         </div>
 
@@ -43,8 +49,13 @@
           <h6 class="fw-bold mb-2">Orden de hoy</h6>
           <div class="input-group">
             <span class="input-group-text"><i class="fas fa-comment-dots"></i></span>
-            <select class="form-control" id="text" required name="text"></select>
-            <input type="text" class="form-control" id="text" required name="text" />
+            <select class="form-select" id="text" required name="text">
+              <option>Orden del dia</option>
+              <option>Desarrollo</option>
+              <option>Pendiente</option>
+            </select>
+            <input type="text" class="form-control w-25 p-0 px-2" id="comment" required name="comment" placeholder="Anotaciones..." />
+            <button class="btn btn-sm btn-success" name="action" title="Enviar"><i class="fas fa-paper-plane"></i></button>
           </div>
           <div class="mt-4">
             <ul>
