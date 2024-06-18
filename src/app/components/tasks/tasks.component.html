@@ -32,13 +32,15 @@
                 </tr>
             </thead>
             <tbody>
+                @for (task of tasks; track $index) {
                 <tr>
                     <td class="align-middle">
                         <span class="badge">
                             <i class="fas fa-check-circle" style="color: #1b9123; background-color: #ffff"></i>
                         </span>
                     </td>
-                    <td class="align-middle">1</td>
+
+                    <td class="align-middle">{{task.task_id}}</td>
                     <td class="align-middle">John Doe</td>
                     <td class="align-middle">2023-06-01, Nursery HQ</td>
                     <td class="align-middle">Landscaping, Discuss new planting plans</td>
@@ -51,18 +53,19 @@
                     </td>
                     <td class="align-middle justify-content-center">
                         <div class="btn-group" role="group" aria-label="Basic example">
-                            <button type="button" class="btn btn-outline-secondary">
+                            <a type="button" class="btn btn-outline-secondary" [routerLink]="['/', 'meetings', task.task_id]">
                                 <i class="fas fa-edit"></i>
-                            </button>
-                            <button type="button" class="btn btn-outline-secondary">
+                            </a>
+                            <a type="button" class="btn btn-outline-secondary" [routerLink]="['/', 'meetings', task.task_id]">
                                 <i class="fas fa-eye"></i>
-                            </button>
-                            <button type="button" class="btn btn-outline-secondary">
+                            </a>
+                            <a type="button" class="btn btn-outline-secondary" [routerLink]="['/', 'meetings', task.task_id]">
                                 <i class="fas fa-trash"></i>
-                            </button>
+                            </a>
                         </div>
                     </td>
                 </tr>
+                }
             </tbody>
         </table>
         <nav aria-label="Page navigation example">
@@ -81,6 +84,7 @@
     </div>
 
     <div class="d-flex justify-content-end m-2 gap-2">
-        <a class="btn btn-lg rounded-circle btn-primary border-0 add-button" routerLink="add-tasks"><i class="fas fa-plus"></i></a>
+        <a class="btn btn-lg rounded-circle btn-primary border-0 add-button" routerLink="/meetings/assign-tasks"><i
+                class="fas fa-plus"></i></a>
     </div>
 </section>

@@ -7,9 +7,13 @@ import { Observable } from 'rxjs';
 })
 export class TaskService {
 
-  private apiUrl = 'https://api.example.com/tasks'; // Reemplaza con tu URL de API
+  private apiUrl = 'http://127.0.0.1:8000/api'; // Reemplaza con tu URL de API
 
   constructor(private http: HttpClient) { }
+
+  getTasks(): Observable<any> {
+    return this.http.get(`${this.apiUrl}/tasks`);
+  }
 
   getTaskById(id: number): Observable<any> {
     return this.http.get(`${this.apiUrl}/${id}`);

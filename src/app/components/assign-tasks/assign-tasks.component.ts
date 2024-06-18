@@ -1,7 +1,11 @@
 import { Component, OnInit } from '@angular/core';
 import { FormBuilder, FormGroup, Validators, ReactiveFormsModule } from '@angular/forms';
 import { ActivatedRoute, Router } from '@angular/router';
-import { TaskService } from '../../../services/task.service';
+
+//Componentes
+
+//Servicios
+import { TaskService } from '../../services/task.service';
 
 @Component({
   selector: 'app-assign-tasks',
