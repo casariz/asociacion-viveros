@@ -1,64 +1,66 @@
 <div class="d-flex row bg-light py-5 px-3 justify-content-center">
-    <h2 class="text-center fw-bold">Convocar reunión</h2>
-    <div class="card w-75 p-0">
-        <div class="card-body">
-            <form class="d-inline-flex" [formGroup]="meetingForm" (ngSubmit)="onSubmit()">
-
-                <div class="col-sm-6 p-1 px-2 d-flex row gap-3">
-                    <h6 class="fw-bold">Datos</h6>
-                    <div class="d-inline-flex gap-2">
-
-                        <div class="input-group">
-                            <span class="input-group-text"><i class="fas fa-calendar-day"></i></span>
-                            <input type="date" class="form-control" id="date" required name="date">
-
-                        </div>
-                        <div class="input-group">
-                            <span class="input-group-text"><i class="fas fa-clock"></i></span>
-                            <input type="time" class="form-control" id="time" required name="time">
-
-                        </div>
-                    </div>
-                    <div class="input-group">
-                        <span class="input-group-text"><i class="fas fa-microphone"></i></span>
-                        <input type="text" class="form-control" id="text" required name="text">
-                    </div>
-                    <div class="input-group">
-                        <span class="input-group-text"><i class="fas fa-location-dot"></i></span>
-                        <input type="text" class="form-control" id="text" required name="text">
-                    </div>
-                    <div class="input-group">
-                        <span class="input-group-text"><i class="fas fa-warehouse"></i></span>
-                        <select type="text" class="form-control" id="text" required name="text"></select>
-                    </div>
-                    <div class="input-group">
-                        <span class="input-group-text"><i class="fas fa-signature"></i></span>
-                        <input type="text" class="form-control" id="text" required name="text">
-                    </div>
-                    <div class="input-group">
-                        <span class="input-group-text"><i class="fas fa-users"></i></span>
-                        <input type="text" class="form-control" id="text" required name="text">
-                    </div>
-                </div>
-
-                <div class="vr"></div>
-
-                <div class="col-sm-6 p-1 px-2 d-flex row gap-3 justify-content-center">
-                    <h6 class="fw-bold">Orden de hoy</h6>
-                    <div class="input-group">
-                        <span class="input-group-text"><i class="fas fa-comment-dots"></i></span>
-                        <select type="text" class="form-control" id="text" required name="text"></select>
-                        <input type="text" class="form-control" id="text" required name="text">
-                    </div>
-
-                    <div>
-
-                    </div>
-                </div>
-            </form>
+  <h2 class="text-center fw-bold">Convocar reunión</h2>
+  <div class="card w-75 p-0">
+    <div class="card-body">
+      <form class="d-inline-flex" [formGroup]="meetingForm" (ngSubmit)="onSubmit()">
+        <div class="col-sm-6 p-1 px-2 d-flex row gap-3">
+          <h6 class="fw-bold m-0">Datos</h6>
+          <div class="d-inline-flex gap-2 py-0">
+            <div class="input-group">
+              <span class="input-group-text"><i class="fas fa-calendar-day"></i></span>
+              <input type="date" class="form-control" id="date" required name="date" />
+            </div>
+            <div class="input-group">
+              <span class="input-group-text"><i class="fas fa-clock"></i></span>
+              <input type="time" class="form-control" id="time" required name="time" />
+            </div>
+          </div>
+          <div class="input-group">
+            <span class="input-group-text"><i class="fas fa-microphone"></i></span>
+            <input type="text" class="form-control" id="text" required name="text" />
+          </div>
+          <div class="input-group">
+            <span class="input-group-text"><i class="fas fa-location-dot"></i></span>
+            <input type="text" class="form-control" id="text" required name="text" />
+          </div>
+          <div class="input-group">
+            <span class="input-group-text"><i class="fas fa-warehouse"></i></span>
+            <select type="text" class="form-control" id="text" required name="text"></select>
+          </div>
+          <div class="input-group">
+            <span class="input-group-text"><i class="fas fa-signature"></i></span>
+            <input type="text" class="form-control" id="text" required name="text" />
+          </div>
+          <div class="input-group">
+            <span class="input-group-text"><i class="fas fa-users"></i></span>
+            <input type="text" class="form-control" id="text" required name="text" />
+          </div>
         </div>
-        <div class="card-footer d-flex justify-content-end">
-            <button class="btn btn-success"><i class="fas fa-plus"></i> AGREGAR</button>
+
+        <div class="vr"></div>
+
+        <div class="col-sm-6 p-1 px-2 d-flex flex-column gap-2">
+          <h6 class="fw-bold mb-2">Orden de hoy</h6>
+          <div class="input-group">
+            <span class="input-group-text"><i class="fas fa-comment-dots"></i></span>
+            <select class="form-control" id="text" required name="text"></select>
+            <input type="text" class="form-control" id="text" required name="text" />
+          </div>
+          <div class="mt-4">
+            <ul>
+              <li>Lista de tareas por asignar</li>
+              <li>Lista de tareas por asignar</li>
+              <li>Lista de tareas por asignar</li>
+              <li>Lista de tareas por asignar</li>
+            </ul>
+          </div>
         </div>
+      </form>
     </div>
+    <div class="card-footer d-flex justify-content-end">
+      <button class="btn btn-success">
+        <i class="fas fa-plus"></i> AGREGAR
+      </button>
+    </div>
+  </div>
 </div>

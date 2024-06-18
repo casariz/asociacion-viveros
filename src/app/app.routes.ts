@@ -4,6 +4,7 @@ import { MeetingsComponent } from './meetings/meetings.component';
 import { TasksComponent } from './tasks/tasks.component';
 import { WalletComponent } from './wallet/wallet.component';
 import { AddMeetingsComponent } from './meetings/add-meetings/add-meetings.component';
+import { AddTasksComponent } from './tasks/add-tasks/add-tasks.component';
 
 export const routes: Routes = [
   {
@@ -27,7 +28,13 @@ export const routes: Routes = [
     title: 'Cartera',
   },
   {
-        path: 'meetings/add-meetings',
-        component: AddMeetingsComponent
-      }
+    path: 'meetings/add-meetings',
+    component: AddMeetingsComponent,
+    title: 'Añadir reunion'
+  },
+  {
+    path: 'tasks/add-tasks',
+    component: AddTasksComponent,
+    title: 'Añadir tarea'
+  },
 ];
