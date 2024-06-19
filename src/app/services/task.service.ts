@@ -7,7 +7,7 @@ import { Observable } from 'rxjs';
 })
 export class TaskService {
 
-  private apiUrl = 'http://127.0.0.1:8000/api'; // Reemplaza con tu URL de API
+  private apiUrl = 'http://127.0.0.1:8000/api';
 
   constructor(private http: HttpClient) { }
 
@@ -16,14 +16,14 @@ export class TaskService {
   }
 
   getTaskById(id: number): Observable<any> {
-    return this.http.get(`${this.apiUrl}/${id}`);
+    return this.http.get(`${this.apiUrl}/tasks/${id}`);
   }
 
   createTask(task: any): Observable<any> {
-    return this.http.post(this.apiUrl, task);
+    return this.http.post(`${this.apiUrl}/tasks`, task);
   }
 
   updateTask(id: number, task: any): Observable<any> {
-    return this.http.put(`${this.apiUrl}/${id}`, task);
+    return this.http.put(`${this.apiUrl}/tasks/${id}`, task);
   }
 }

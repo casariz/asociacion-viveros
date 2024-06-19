@@ -47,22 +47,34 @@
 
         <div class="col-sm-6 p-1 px-2 d-flex flex-column gap-2">
           <h6 class="fw-bold mb-2">Orden de hoy</h6>
-          <div class="input-group">
-            <span class="input-group-text"><i class="fas fa-comment-dots"></i></span>
-            <select class="form-select" id="text" required name="text">
-              <option>Orden del dia</option>
-              <option>Desarrollo</option>
-              <option>Pendiente</option>
-            </select>
-            <input type="text" class="form-control w-25 p-0 px-2" id="comment" required name="comment" placeholder="Anotaciones..." />
-            <button class="btn btn-sm btn-success" name="action" title="Enviar"><i class="fas fa-paper-plane"></i></button>
+          <div class="d-flex gap-1">
+            <div class="input-group">
+              <span class="input-group-text"><i class="fas fa-comment-dots"></i></span>
+              <select class="form-select" id="topyc_type" formControlName="topyc_type" required>
+                <option>Orden del dia</option>
+                <option>Desarrollo</option>
+                <option>Pendiente</option>
+              </select>
+              <input type="text" class="form-control w-25 p-0 px-2" id="comment" formControlName="comment" required placeholder="Anotaciones..." />
+            </div>
+            <div class="d-flex-wrap align-content-center">
+              <button type="button" class="btn btn-sm btn-success" name="action" title="Enviar" (click)="addTask()">
+                <i class="fas fa-paper-plane"></i>
+              </button>
+            </div>
           </div>
           <div class="mt-4">
-            <ul>
-              <li>Lista de tareas por asignar</li>
-              <li>Lista de tareas por asignar</li>
-              <li>Lista de tareas por asignar</li>
-              <li>Lista de tareas por asignar</li>
+            <ul class="d-flex gap-1 row">
+              @for (task of taskList; track $index) {
+                <li class="d-flex align-items-center border border-secondary rounded">
+                  <button type="button" class="btn btn-close btn-sm p-2" (click)="removeTask($index)"></button>
+                  <div class="px-2">
+                    {{ task.comment }}
+                  </div>
+                  
+                </li>
+              }
+              
             </ul>
           </div>
         </div>
