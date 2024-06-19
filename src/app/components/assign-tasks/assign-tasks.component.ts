@@ -18,6 +18,7 @@ export class AssignTasksComponent implements OnInit {
   taskForm: FormGroup;
   isEditMode: boolean = false;
   taskId: number | null = null;
+  taskData: any;
 
   constructor(
     private fb: FormBuilder,

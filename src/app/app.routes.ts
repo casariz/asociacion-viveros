@@ -49,5 +49,11 @@ export const routes: Routes = [
     component: AddWalletComponent,
     title: 'Añadir cartera',
     pathMatch: 'full'
-  }
+  },
+  {
+    path: 'meetings/assign-tasks/:id',
+    component: AssignTasksComponent,
+    title: 'Editar tarea', 
+    pathMatch: 'full'
+  },
 ];
