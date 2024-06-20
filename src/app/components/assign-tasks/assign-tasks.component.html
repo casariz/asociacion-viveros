@@ -9,19 +9,19 @@
                         <div class="d-inline-flex flex-row gap-2">
                             <div class="input-group">
                                 <span class="input-group-text"><i class="fas fa-circle-info"></i></span>
-                                <input class="form-control" type="text" size="50" value="" />
+                                <input class="form-control p-0 ps-2" type="text" size="50" value="" />
                             </div>
                         </div>
                     }
                     <div class="input-group">
                         <span class="input-group-text"><i class="fas fa-calendar-day"></i></span>
-                        <input type="date" formControlName="date" class="form-control" id="date" required />
+                        <input type="date" formControlName="date" class="form-control p-0 ps-2" id="date" required />
                     </div>
                     <div class="input-group">
                         <span class="input-group-text"><i class="fas fa-stopwatch"></i></span>
-                        <input type="number" formControlName="estimated_time" class="form-control" id="number" required
+                        <input type="number" formControlName="estimated_time" class="form-control p-0 ps-2" id="number" required
                             min="0" max="9999" />
-                        <select formControlName="units" class="form-select" id="units" required>
+                        <select formControlName="units" class="form-select p-0 ps-2" id="units" required>
                             <option selected>Sin definir</option>
                             <option>Minuto(s)</option>
                             <option>Hora(s)</option>
@@ -32,16 +32,16 @@
                     </div>
                     <div class="input-group">
                         <span class="input-group-text"><i class="fas fa-signature"></i></span>
-                        <input type="text" formControlName="task_description" class="form-control" id="task_description"
+                        <input type="text" formControlName="task_description" class="form-control p-0 ps-2" id="task_description"
                             required placeholder="Descripción..." />
                     </div>
                     <div class="input-group">
                         <span class="input-group-text"><i class="fas fa-helmet-safety"></i></span>
-                        <input type="text" formControlName="worker_id" class="form-control" id="worker_id" required />
+                        <input type="text" formControlName="worker_id" class="form-control p-0 ps-2" id="worker_id" required />
                     </div>
                     <div class="input-group">
                         <span class="input-group-text"><i class="fas fa-warehouse"></i></span>
-                        <select formControlName="department_id" class="form-select w-auto" id="department_id" required>
+                        <select formControlName="department_id" class="form-select p-0 ps-2" id="department_id" required>
                             <!-- Opciones de departamento aquí -->
                         </select>
                     </div>

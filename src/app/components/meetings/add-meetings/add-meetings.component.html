@@ -8,37 +8,37 @@
           <div class="d-inline-flex gap-2 py-0">
             <div class="input-group">
               <span class="input-group-text"><i class="fas fa-calendar-day"></i></span>
-              <input type="date" class="form-control" id="date" required name="meeting_date" />
+              <input type="date" class="form-control p-0 ps-2" id="date" required name="meeting_date" />
             </div>
             <div class="input-group">
               <span class="input-group-text"><i class="fas fa-clock"></i></span>
-              <input type="time" class="form-control" id="time" required name="start_hour" />
+              <input type="time" class="form-control p-0 ps-2" id="time" required name="start_hour" />
             </div>
           </div>
           <div class="input-group">
             <span class="input-group-text"><i class="fas fa-microphone"></i></span>
-            <input type="text" class="form-control" id="caller_id" required name="caller_id"
+            <input type="text" class="form-control p-0 ps-2" id="caller_id" required name="caller_id"
               placeholder="Seleccione vinculado..." />
           </div>
           <div class="input-group">
             <span class="input-group-text"><i class="fas fa-location-dot"></i></span>
-            <input type="text" class="form-control" id="placement" required name="placement"
+            <input type="text" class="form-control p-0 ps-2" id="placement" required name="placement"
               placeholder="Lugar de la reunión..." />
           </div>
           <div class="input-group">
             <span class="input-group-text"><i class="fas fa-warehouse"></i></span>
-            <select type="text" class="form-select" id="department_id" required name="department_id">
+            <select type="text" class="form-select p-0 ps-2" id="department_id" required name="department_id">
 
             </select>
           </div>
           <div class="input-group">
             <span class="input-group-text"><i class="fas fa-signature"></i></span>
-            <input type="text" class="form-control" id="meeting_description" required name="meeting_description"
+            <input type="text" class="form-control p-0 ps-2" id="meeting_description" required name="meeting_description"
               placeholder="Descripción de la reunión..." />
           </div>
           <div class="input-group">
             <span class="input-group-text"><i class="fas fa-users"></i></span>
-            <input type="text" class="form-control" id="assistant_id" required name="assistant_id"
+            <input type="text" class="form-control p-0 ps-2" id="assistant_id" required name="assistant_id"
               placeholder="Seleccione vinculado..." />
           </div>
         </div>
@@ -50,12 +50,12 @@
           <div class="d-flex gap-1">
             <div class="input-group">
               <span class="input-group-text"><i class="fas fa-comment-dots"></i></span>
-              <select class="form-select" id="topyc_type" formControlName="topyc_type" required>
+              <select class="form-select p-0 ps-2" id="topyc_type" formControlName="topyc_type" required>
                 <option>Orden del dia</option>
                 <option>Desarrollo</option>
                 <option>Pendiente</option>
               </select>
-              <input type="text" class="form-control w-25 p-0 px-2" id="comment" formControlName="comment" required placeholder="Anotaciones..." />
+              <input type="text" class="form-control w-25 p-0 ps-2" id="comment" formControlName="comment" required placeholder="Anotaciones..." />
             </div>
             <div class="d-flex-wrap align-content-center">
               <button type="button" class="btn btn-sm btn-success" name="action" title="Enviar" (click)="addTask()">
