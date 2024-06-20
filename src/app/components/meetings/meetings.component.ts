@@ -1,6 +1,6 @@
 import { CommonModule } from '@angular/common';
 import { Component, OnInit } from '@angular/core';
-import { FormBuilder, FormGroup, ReactiveFormsModule, Validators } from '@angular/forms';
+import { FormBuilder, FormGroup, ReactiveFormsModule } from '@angular/forms';
 import { RouterLink } from '@angular/router';
 
 @Component({
@@ -14,6 +14,10 @@ export class MeetingsComponent implements OnInit {
   filterForm: FormGroup;
   meetings: any[] = [];  // Aquí irán tus reuniones
   filteredMeetings: any[] = [];
+  concepts: any[] = [
+    "Concept 1",
+    "Concept 2"
+  ]
 
   constructor(private fb: FormBuilder) {
 
@@ -56,7 +60,6 @@ export class MeetingsComponent implements OnInit {
   }
 
   resetFilters(): void {
-    console.log("hols")
     this.filterForm.reset();
     this.filteredMeetings = this.meetings;
   }
