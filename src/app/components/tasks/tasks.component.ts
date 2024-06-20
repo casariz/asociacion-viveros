@@ -41,6 +41,18 @@ export class TasksComponent implements OnInit {
     });
   }
 
+  deleteTask(id: number, task: TasksInterface) {
+    console.log(task)
+    this.taskService.deleteTask(id, task).subscribe({
+      next:(value)=> {
+        console.log("Se borró exitosamente:", value);
+      },
+      error:(err)=> {
+        console.log("Nada nice")
+      },
+    })
+  }
+
   applyFilters() {
     const { startDate, endDate, employee, description } = this.filterForm.value;
     this.filteredTasks = this.tasks.filter((task) => {
