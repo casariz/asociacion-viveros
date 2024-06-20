@@ -8,52 +8,65 @@ import { AssignTasksComponent } from './components/assign-tasks/assign-tasks.com
 import { AddWalletComponent } from './components/wallet/add-wallet/add-wallet.component';
 
 export const routes: Routes = [
+  ///LOGUEO
   {
     path: 'login',
     component: LoginComponent,
     title: 'Login',
-    pathMatch: 'full'
+    pathMatch: 'full',
   },
+  /// REUNIONES
   {
     path: 'meetings',
     component: MeetingsComponent,
     title: 'Reuniones',
-    pathMatch: 'full'
-  },
-  {
-    path: 'tasks',
-    component: TasksComponent,
-    title: 'Tareas',
-    pathMatch: 'full'
-  },
-  {
-    path: 'wallet',
-    component: WalletComponent,
-    title: 'Cartera',
-    pathMatch: 'full'
+    pathMatch: 'full',
   },
   {
     path: 'meetings/add-meetings',
     component: AddMeetingsComponent,
     title: 'Añadir reunion',
-    pathMatch: 'full'
+    pathMatch: 'full',
+  },
+  /// TAREAS
+  {
+    path: 'tasks',
+    component: TasksComponent,
+    title: 'Tareas',
+    pathMatch: 'full',
   },
   {
-    path: 'meetings/assign-tasks',
+    path: 'tasks/new',
     component: AssignTasksComponent,
-    title: 'Asignar tarea', 
-    pathMatch: 'full'
+    title: 'Asignar tarea',
+    pathMatch: 'full',
+    data: { mode: 'create' }
+  },
+  {
+    path: 'tasks/:id/edit',
+    component: AssignTasksComponent,
+    title: 'Editar tarea',
+    pathMatch: 'full',
+    data: { mode: 'edit' }
+  },
+  {
+    path: 'tasks/:id/view',
+    component: AssignTasksComponent,
+    title: 'Editar tarea',
+    pathMatch: 'full',
+    data: { mode: 'view' }
+  },
+  /// CARTERA
+  {
+    path: 'wallet',
+    component: WalletComponent,
+    title: 'Cartera',
+    pathMatch: 'full',
   },
   {
     path: 'wallet/add-wallet',
     component: AddWalletComponent,
     title: 'Añadir cartera',
-    pathMatch: 'full'
-  },
-  {
-    path: 'meetings/assign-tasks/:id',
-    component: AssignTasksComponent,
-    title: 'Editar tarea', 
-    pathMatch: 'full'
+    pathMatch: 'full',
   },
 ];
