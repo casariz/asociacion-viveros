@@ -1,5 +1,11 @@
 <div class="d-flex row bg-light py-5 px-3 justify-content-center">
-    <h2 class="text-center fw-bold">{{ isEditMode ? 'Editar tarea' : 'Agregar tarea' }}</h2>
+    @if (isEditMode) {
+        <h2 class="text-center fw-bold">Editar tarea</h2>
+    } @else if (isReadOnly) {
+        <h2 class="text-center fw-bold">Ver tarea</h2>
+    } @else {
+        <h2 class="text-center fw-bold">Agregar tarea</h2>
+    }
     <div class="card w-50 p-0">
         <div class="card-body">
             <form [formGroup]="taskForm" (ngSubmit)="onSubmit()">
@@ -15,7 +21,7 @@
                     }
                     <div class="input-group">
                         <span class="input-group-text"><i class="fas fa-calendar-day"></i></span>
-                        <input type="date" formControlName="date" class="form-control p-0 ps-2" id="date" required />
+                        <input type="date" formControlName="date" class="form-control p-0 ps-2" id="date" required/>
                     </div>
                     <div class="input-group">
                         <span class="input-group-text"><i class="fas fa-stopwatch"></i></span>
@@ -55,11 +61,13 @@
             </form>
             
         </div>
+        @if (!isReadOnly) {
         <div class="card-footer d-flex justify-content-end">
             <button class="btn btn-success" type="submit">
                 
                 <i class="fas {{ isEditMode ? 'fa-rotate-right' : 'fa-plus' }}"></i> {{ isEditMode ? 'ACTUALIZAR' : 'AGREGAR' }}
             </button>
         </div>
+        }
     </div>
 </div>

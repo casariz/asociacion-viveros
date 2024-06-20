@@ -2,9 +2,9 @@ import { Component, OnInit } from '@angular/core';
 import { FormBuilder, FormGroup, Validators, ReactiveFormsModule } from '@angular/forms';
 import { ActivatedRoute, Router } from '@angular/router';
 
-//Componentes
+// Componentes
 
-//Servicios
+// Servicios
 import { TaskService } from '../../services/task.service';
 
 @Component({
@@ -12,13 +12,13 @@ import { TaskService } from '../../services/task.service';
   standalone: true,
   imports: [ReactiveFormsModule],
   templateUrl: './assign-tasks.component.html',
-  styleUrl: './assign-tasks.component.css'
+  styleUrls: ['./assign-tasks.component.css']
 })
 export class AssignTasksComponent implements OnInit {
   taskForm: FormGroup;
   isEditMode: boolean = false;
+  isReadOnly: boolean = false;
   taskId: number | null = null;
-  taskData: any;
 
   constructor(
     private fb: FormBuilder,
@@ -27,23 +27,30 @@ export class AssignTasksComponent implements OnInit {
     private router: Router
   ) {
     this.taskForm = this.fb.group({
-      date: ['', Validators.required],
-      estimated_time: [0, [Validators.required, Validators.min(0), Validators.max(9999)]],
-      units: ['', Validators.required],
-      task_description: ['', Validators.required],
-      worker_id: ['', Validators.required],
-      department_id: ['', Validators.required],
-      observations: ['']
+      id_task: [{ value: '', disabled: this.isReadOnly }, Validators.required],
+      date: [{ value: '', disabled: this.isReadOnly }, Validators.required],
+      estimated_time: [{ value: 0, disabled: this.isReadOnly }, [Validators.required, Validators.min(0), Validators.max(9999)]],
+      units: [{ value: '', disabled: this.isReadOnly }, Validators.required],
+      task_description: [{ value: '', disabled: this.isReadOnly }, Validators.required],
+      worker_id: [{ value: '', disabled: this.isReadOnly }, Validators.required],
+      department_id: [{ value: '', disabled: this.isReadOnly }, Validators.required],
+      observations: [{ value: '', disabled: this.isReadOnly }, Validators.required]
     });
   }
 
   ngOnInit(): void {
     this.route.paramMap.subscribe(params => {
       const id = params.get('id');
+      const mode = this.route.snapshot.data['mode'];
+
       if (id) {
-        this.isEditMode = true;
         this.taskId = +id;
+       this.isEditMode = mode === 'edit';
+        this.isReadOnly = mode === 'view';
         this.loadTask();
+        // let data = {};
+        // this.taskForm.patchValue(data);
+        // this.taskForm.get('observations')?.setValue('test');
       }
     });
   }
@@ -52,12 +59,15 @@ export class AssignTasksComponent implements OnInit {
     if (this.taskId) {
       this.taskService.getTaskById(this.taskId).subscribe(task => {
         this.taskForm.patchValue(task);
+        if (this.isReadOnly) {
+          this.taskForm.disable(); // Deshabilitar todo el formulario en modo solo lectura
+        }
       });
     }
   }
 
   onSubmit(): void {
-    if (this.taskForm.invalid) {
+    if (this.taskForm.invalid || this.isReadOnly) {
       return;
     }
 
