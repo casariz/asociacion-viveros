@@ -2,6 +2,8 @@ import { CommonModule } from '@angular/common';
 import { Component, OnInit } from '@angular/core';
 import { FormBuilder, FormGroup, ReactiveFormsModule } from '@angular/forms';
 import { RouterLink } from '@angular/router';
+import { MeetingsService } from '../../services/meetings.service';
+import { MeetingsInterface } from '../../interfaces/meetings.interface';
 
 @Component({
   selector: 'app-meetings',
@@ -12,14 +14,14 @@ import { RouterLink } from '@angular/router';
 })
 export class MeetingsComponent implements OnInit {
   filterForm: FormGroup;
-  meetings: any[] = [];  // Aquí irán tus reuniones
-  filteredMeetings: any[] = [];
+  meetings: MeetingsInterface[] = [];  // Aquí irán tus reuniones
+  filteredMeetings: MeetingsInterface[] = [];
   concepts: any[] = [
     "Concept 1",
     "Concept 2"
   ]
 
-  constructor(private fb: FormBuilder) {
+  constructor(private fb: FormBuilder, private meetingsService: MeetingsService) {
 
     this.filterForm = this.fb.group({
       startDate: [''],
@@ -37,11 +39,18 @@ export class MeetingsComponent implements OnInit {
 
   getMeetings(): void {
     // Aquí debes cargar las reuniones (puede ser una llamada a un servicio)
-    this.meetings = [
-      // Ejemplo de reuniones
-      { id: 1, reporter: 'John Doe', date: '2023-06-01', location: 'Nursery HQ', description: 'Discuss new planting plans', area: 'Landscaping', status: 'completed' },
-      // Agrega más reuniones según sea necesario
-    ];
+    this.meetingsService.getMeetings().subscribe({
+      next: (value) => {
+        console.log(value);
+        
+        this.meetings = value.data;
+        this.filteredMeetings = this.meetings
+      },
+      error: (err) => {
+        
+      },
+    })
+
     this.filteredMeetings = this.meetings;
   }
 
@@ -49,10 +58,10 @@ export class MeetingsComponent implements OnInit {
     const { startDate, endDate, employee, description, status } = this.filterForm.value;
 
     this.filteredMeetings = this.meetings.filter(meeting => {
-      const matchesStartDate = !startDate || new Date(meeting.date) >= new Date(startDate);
-      const matchesEndDate = !endDate || new Date(meeting.date) <= new Date(endDate);
-      const matchesEmployee = !employee || meeting.reporter.toLowerCase().includes(employee.toLowerCase());
-      const matchesDescription = !description || meeting.description.toLowerCase().includes(description.toLowerCase());
+      const matchesStartDate = !startDate || new Date(meeting.meeting_date) >= new Date(startDate);
+      const matchesEndDate = !endDate || new Date(meeting.meeting_date) <= new Date(endDate);
+      const matchesEmployee = !employee || meeting.called_by.toString().toLowerCase().includes(employee.toLowerCase());
+      const matchesDescription = !description || meeting.meeting_description.toLowerCase().includes(description.toLowerCase());
       const matchesStatus = !status || meeting.status === status;
 
       return matchesStartDate && matchesEndDate && matchesEmployee && matchesDescription && matchesStatus;

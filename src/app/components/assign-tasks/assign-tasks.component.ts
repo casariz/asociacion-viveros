@@ -19,6 +19,7 @@ export class AssignTasksComponent implements OnInit {
   isEditMode: boolean = false;
   isReadOnly: boolean = false;
   taskId: number | null = null;
+  meetingId: number | null = null;
 
   constructor(
     private fb: FormBuilder,
@@ -27,13 +28,13 @@ export class AssignTasksComponent implements OnInit {
     private router: Router
   ) {
     this.taskForm = this.fb.group({
-      id_task: [{ value: '', disabled: this.isReadOnly }, Validators.required],
-      date: [{ value: '', disabled: this.isReadOnly }, Validators.required],
+      task_id: [{ value: '', disabled: true }, Validators.required],
+      meeting_description: [{value: '', disabled: true}, Validators.required],
+      start_date: [{ value: '', disabled: this.isReadOnly }, Validators.required],
       estimated_time: [{ value: 0, disabled: this.isReadOnly }, [Validators.required, Validators.min(0), Validators.max(9999)]],
       units: [{ value: '', disabled: this.isReadOnly }, Validators.required],
       task_description: [{ value: '', disabled: this.isReadOnly }, Validators.required],
-      worker_id: [{ value: '', disabled: this.isReadOnly }, Validators.required],
-      department_id: [{ value: '', disabled: this.isReadOnly }, Validators.required],
+      assigned_to: [{ value: '', disabled: this.isReadOnly }, Validators.required],
       observations: [{ value: '', disabled: this.isReadOnly }, Validators.required]
     });
   }
@@ -48,9 +49,6 @@ export class AssignTasksComponent implements OnInit {
        this.isEditMode = mode === 'edit';
         this.isReadOnly = mode === 'view';
         this.loadTask();
-        // let data = {};
-        // this.taskForm.patchValue(data);
-        // this.taskForm.get('observations')?.setValue('test');
       }
     });
   }
@@ -58,9 +56,18 @@ export class AssignTasksComponent implements OnInit {
   loadTask(): void {
     if (this.taskId) {
       this.taskService.getTaskById(this.taskId).subscribe(task => {
-        this.taskForm.patchValue(task);
+        console.log(task);
+        
+        this.meetingId = task.task.meeting_id
+        this.taskForm.patchValue(task.task);
+        this.taskForm.patchValue({
+          meeting_description: task.task.meeting_id.meeting_description || '',
+          assigned_to: task.task.assigned_to.name
+        });
+        console.log(task);
+        
         if (this.isReadOnly) {
-          this.taskForm.disable(); // Deshabilitar todo el formulario en modo solo lectura
+          this.taskForm.disable();
         }
       });
     }
@@ -72,7 +79,8 @@ export class AssignTasksComponent implements OnInit {
     }
 
     const taskData = this.taskForm.value;
-
+    console.log(taskData);
+    
     if (this.isEditMode && this.taskId) {
       this.taskService.updateTask(this.taskId, taskData).subscribe(() => {
         this.router.navigate(['/tasks']); // Redirige a la lista de tareas

@@ -1,10 +1,10 @@
 <div class="d-flex row bg-light py-5 px-3 justify-content-center">
     @if (isEditMode) {
-        <h2 class="text-center fw-bold">Editar tarea</h2>
+    <h2 class="text-center fw-bold">Editar tarea</h2>
     } @else if (isReadOnly) {
-        <h2 class="text-center fw-bold">Ver tarea</h2>
+    <h2 class="text-center fw-bold">Ver tarea</h2>
     } @else {
-        <h2 class="text-center fw-bold">Agregar tarea</h2>
+    <h2 class="text-center fw-bold">Agregar tarea</h2>
     }
     <div class="card w-50 p-0">
         <div class="card-body">
@@ -12,24 +12,29 @@
                 <div class="p-1 px-2 d-flex row gap-3">
                     <h6 class="fw-bold m-0">Datos</h6>
                     @if (isEditMode) {
-                        <div class="d-inline-flex flex-row gap-2">
-                            <div class="input-group">
-                                <span class="input-group-text"><i class="fas fa-circle-info"></i></span>
-                                <input class="form-control p-0 ps-2" type="text" size="50" value="" />
+                        <input class="form-control p-0 ps-2" type="hidden" size="50" value="" formControlName="task_id"/>
+                        @if (meetingId != null) {
+                            <div class="d-inline-flex flex-row gap-2">
+                                <div class="input-group">
+                                    <span class="input-group-text"><i class="fas fa-circle-info"></i></span>
+                                    <input class="form-control p-0 ps-2" type="text" size="50" formControlName="meeting_description" />
+                                </div>
                             </div>
-                        </div>
+                        }
+                    
                     }
                     <div class="input-group">
                         <span class="input-group-text"><i class="fas fa-calendar-day"></i></span>
-                        <input type="date" formControlName="date" class="form-control p-0 ps-2" id="date" required/>
+                        <input type="date" formControlName="start_date" class="form-control p-0 ps-2" id="date" required />
                     </div>
                     <div class="input-group">
                         <span class="input-group-text"><i class="fas fa-stopwatch"></i></span>
-                        <input type="number" formControlName="estimated_time" class="form-control p-0 ps-2" id="number" required
-                            min="0" max="9999" />
+                        <input type="number" formControlName="estimated_time" class="form-control p-0 ps-2" id="number"
+                            required min="0" max="9999" />
                         <select formControlName="units" class="form-select p-0 ps-2" id="units" required>
                             <option selected>Sin definir</option>
                             <option>Minuto(s)</option>
+                            <option>Hora(s)</option>
                             <option>Hora(s)</option>
                             <option>Día(s)</option>
                             <option>Semana(s)</option>
@@ -38,18 +43,13 @@
                     </div>
                     <div class="input-group">
                         <span class="input-group-text"><i class="fas fa-signature"></i></span>
-                        <input type="text" formControlName="task_description" class="form-control p-0 ps-2" id="task_description"
-                            required placeholder="Descripción..." />
+                        <input type="text" formControlName="task_description" class="form-control p-0 ps-2"
+                            id="task_description" required placeholder="Descripción..." />
                     </div>
                     <div class="input-group">
                         <span class="input-group-text"><i class="fas fa-helmet-safety"></i></span>
-                        <input type="text" formControlName="worker_id" class="form-control p-0 ps-2" id="worker_id" required />
-                    </div>
-                    <div class="input-group">
-                        <span class="input-group-text"><i class="fas fa-warehouse"></i></span>
-                        <select formControlName="department_id" class="form-select p-0 ps-2" id="department_id" required>
-                            <!-- Opciones de departamento aquí -->
-                        </select>
+                        <input type="text" formControlName="assigned_to" class="form-control p-0 ps-2" id="worker_id"
+                            required />
                     </div>
                     <div class="input-group">
                         <span class="input-group-text"><i class="fas fa-comment"></i></span>
@@ -57,15 +57,16 @@
                             rows="5" placeholder="Observaciones..."></textarea>
                     </div>
                 </div>
-                
+
             </form>
-            
+
         </div>
         @if (!isReadOnly) {
         <div class="card-footer d-flex justify-content-end">
-            <button class="btn btn-success" type="submit">
-                
-                <i class="fas {{ isEditMode ? 'fa-rotate-right' : 'fa-plus' }}"></i> {{ isEditMode ? 'ACTUALIZAR' : 'AGREGAR' }}
+            <button class="btn btn-success" type="submit" (click)="onSubmit()">
+
+                <i class="fas {{ isEditMode ? 'fa-rotate-right' : 'fa-plus' }}"></i> {{ isEditMode ? 'ACTUALIZAR' :
+                'AGREGAR' }}
             </button>
         </div>
         }

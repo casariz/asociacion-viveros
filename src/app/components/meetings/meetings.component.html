@@ -47,7 +47,7 @@
                 </tr>
             </thead>
             <tbody>
-                @for (meeting of filteredMeetings; track meeting.id) {
+                @for (meeting of filteredMeetings; track meeting.meeting_id) {
                 <tr>
                     <td class="align-middle">
                         <span class="badge">
@@ -55,16 +55,12 @@
                                 [ngStyle]="{'color': meeting.status === 'completed' ? '#1b9123' : '#ff0000', 'background-color': '#ffff'}"></i>
                         </span>
                     </td>
-                    <td class="align-middle">{{ meeting.id }}</td>
-                    <td class="align-middle">{{ meeting.reporter }}</td>
-                    <td class="align-middle">{{ meeting.date }}, {{ meeting.location }}</td>
-                    <td class="align-middle">{{ meeting.area }}, {{ meeting.description }}</td>
+                    <td class="align-middle">{{ meeting.meeting_id }}</td>
+                    <td class="align-middle">{{ meeting.created_by }}</td>
+                    <td class="align-middle">{{ meeting.meeting_date }} - {{meeting.placement}}, <br> {{ meeting.called_by }}</td>
+                    <td class="align-middle">{{ meeting.meeting_description }}</td>
                     <td class="align-middle">
-                        <ul class="list-unstyled">
-                            @for (task of meeting.tasks; track task.id) {
-                            <li>{{ task }}</li>
-                            }
-                        </ul>
+
                     </td>
                     <td class="align-middle">
                         <div class="btn-group" role="group">

@@ -10,28 +10,6 @@
           <input class="form-control" type="text" formControlName="description" placeholder="Descripción...">
           <div class="d-flex gap-1">
             <div class="btn-group">
-              <button class="btn btn-outline-secondary dropdown-toggle" data-bs-toggle="dropdown">Concepto</button>
-              <ul class="dropdown-menu">
-                @for (concept of concepts; track $index) {
-                <li class="border-bottom p-2">
-                  <input type="checkbox" name="concept" value="">
-                  {{concept}}
-                </li>
-                }
-              </ul>
-            </div>
-            <div class="btn-group">
-              <button class="btn btn-outline-secondary dropdown-toggle" data-bs-toggle="dropdown">Área</button>
-              <ul class="dropdown-menu">
-                @for (concept of concepts; track $index) {
-                <li class="border-bottom p-2">
-                  <input type="checkbox" name="concept" value="">
-                  {{concept}}
-                </li>
-                }
-              </ul>
-            </div>
-            <div class="btn-group">
               <button class="btn btn-outline-secondary dropdown-toggle" data-bs-toggle="dropdown">Estado</button>
               <ul class="dropdown-menu">
                 @for (concept of concepts; track $index) {
@@ -39,7 +17,12 @@
                   <input type="checkbox" name="concept" value="">
                   {{concept}}
                 </li>
+
                 }
+                <div class="d-flex justify-content-center mt-1">
+                  <button class="btn btn-secondary "><i class="fas fa-search"></i> BUSCAR</button>
+                </div>
+
               </ul>
             </div>
           </div>
@@ -57,8 +40,8 @@
           <th></th>
           <th>ID</th>
           <th>REPORTÓ</th>
-          <th>FECHA - TIEMPO - ESTADO</th>
-          <th>RESPONSABLE - ÁREA</th>
+          <th>FECHA - TIEMPO EST.</th>
+          <th>RESPONSABLE</th>
           <th>DESCRIPCIÓN - OBSERVACIONES</th>
           <th>ACCIONES</th>
         </tr>
@@ -70,17 +53,14 @@
             <span class="badge"><i class="fas fa-check-circle"
                 style="color: #1b9123; background-color: #fff"></i></span>
           </td>
-          <td class="align-middle">{{task.task_id}}<br>[{{task.meeting_id}}]</td>
-          <td class="align-middle">John Doe</td>
-          <td class="align-middle">{{task.start_date}}, Nursery HQ</td>
-          <td class="align-middle">Landscaping, Discuss new planting plans</td>
+          <td class="align-middle">{{task.task_id}}<br> @if (task.meeting_id) {[{{task.meeting_id.meeting_id}}]}</td>
+          <td class="align-middle">{{task.created_by.name}}</td>
+          <td class="align-middle">{{task.start_date}}, <br>{{task.estimated_time}} {{task.units}}</td>
+          <td class="align-middle">{{task.assigned_to.name}}</td>
           <td class="align-middle">
-            <ul class="list-unstyled">
-              {{task.task_description}}
-              <li>Review current projects</li>
-              <li>Discuss new initiatives</li>
-              <li>Budget planning</li>
-            </ul>
+            {{task.task_description}}
+            <br>
+            {{task.observations}}
           </td>
           <td class="align-middle justify-content-center">
             <div class="btn-group" role="group" aria-label="Basic example">
@@ -88,7 +68,7 @@
                   class="fas fa-edit"></i></a>
               <a type="button" class="btn btn-outline-secondary" [routerLink]="['/', 'tasks', task.task_id, 'view']"><i
                   class="fas fa-eye"></i></a>
-              <a type="button" class="btn btn-outline-secondary" (click)="deleteTask(task.task_id, task)" ><i
+              <a type="button" class="btn btn-outline-secondary" (click)="deleteTask(task.task_id, task)"><i
                   class="fas fa-trash"></i></a>
             </div>
           </td>

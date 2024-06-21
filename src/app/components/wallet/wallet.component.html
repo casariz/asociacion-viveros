@@ -8,7 +8,7 @@
                     <div class="d-flex gap-1">
                         <div class="btn-group">
                             <button class="btn btn-outline-secondary dropdown-toggle"
-                                data-bs-toggle="dropdown">Concepto</button>
+                                data-bs-toggle="dropdown">Estado</button>
                             <ul class="dropdown-menu">
                                 @for (concept of concepts; track $index) {
                                 <li class="border-bottom p-2">
@@ -17,32 +17,6 @@
                                     {{ concept }}
                                 </li>
                                 }
-                            </ul>
-                        </div>
-                        <div class="btn-group">
-                            <button class="btn btn-outline-secondary dropdown-toggle"
-                                data-bs-toggle="dropdown">Área</button>
-                            <ul class="dropdown-menu">
-                                @for (concept of concepts; track $index) {
-                                    <li class="border-bottom p-2">
-    
-                                        <input type="checkbox" name="concept" value="{{ concept }}">
-                                        {{ concept }}
-                                    </li>
-                                    }
-                            </ul>
-                        </div>
-                        <div class="btn-group">
-                            <button class="btn btn-outline-secondary dropdown-toggle"
-                                data-bs-toggle="dropdown">Estado</button>
-                            <ul class="dropdown-menu">
-                                @for (concept of concepts; track $index) {
-                                    <li class="border-bottom p-2">
-    
-                                        <input type="checkbox" name="concept" value="{{ concept }}">
-                                        {{ concept }}
-                                    </li>
-                                    }
                             </ul>
                         </div>
                     </div>
@@ -68,42 +42,42 @@
             </thead>
             <tbody>
                 @for (wallet of filteredWallets; track $index) {
-                    <tr>
-                        <td class="align-middle">
-                            <span class="badge">
-                                <i class="fas fa-check-circle" style="color: #1b9123; background-color: #ffff"></i>
-                            </span>
-                        </td>
-                        <td class="align-middle">{{ wallet.id }}</td>
-                        <td class="align-middle">{{ wallet.reporter }}</td>
-                        <td class="align-middle">{{ wallet.date }}, {{ wallet.location }}</td>
-                        <td class="align-middle">{{ wallet.area }}, {{ wallet.description }}</td>
-                        <td class="align-middle">
-                            <ul class="list-unstyled">
-                                <li>Revisión de proyectos actuales</li>
-                                <li>Discusión de nuevas iniciativas</li>
-                                <li>Planificación del presupuesto</li>
-                            </ul>
-                        </td>
-                        <td class="align-middle justify-content-center">
-                            <div class="btn-group" role="group">
-                                <button type="button" class="btn btn-outline-secondary">
-                                    <i class="fas fa-edit"></i>
-                                </button>
-                                <button type="button" class="btn btn-outline-secondary">
-                                    <i class="fas fa-file-circle-check"></i>
-                                </button>
-                                <button type="button" class="btn btn-outline-secondary">
-                                    <i class="fas fa-eye"></i>
-                                </button>
-                                <button type="button" class="btn btn-outline-secondary">
-                                    <i class="fas fa-trash"></i>
-                                </button>
-                            </div>
-                        </td>
-                    </tr>
+                <tr>
+                    <td class="align-middle">
+                        <span class="badge">
+                            <i class="fas fa-check-circle" style="color: #1b9123; background-color: #ffff"></i>
+                        </span>
+                    </td>
+                    <td class="align-middle">{{ wallet.id }}</td>
+                    <td class="align-middle">{{ wallet.reporter }}</td>
+                    <td class="align-middle">{{ wallet.date }}, {{ wallet.location }}</td>
+                    <td class="align-middle">{{ wallet.area }}, {{ wallet.description }}</td>
+                    <td class="align-middle">
+                        <ul class="list-unstyled">
+                            <li>Revisión de proyectos actuales</li>
+                            <li>Discusión de nuevas iniciativas</li>
+                            <li>Planificación del presupuesto</li>
+                        </ul>
+                    </td>
+                    <td class="align-middle justify-content-center">
+                        <div class="btn-group" role="group">
+                            <button type="button" class="btn btn-outline-secondary">
+                                <i class="fas fa-edit"></i>
+                            </button>
+                            <button type="button" class="btn btn-outline-secondary">
+                                <i class="fas fa-file-circle-check"></i>
+                            </button>
+                            <button type="button" class="btn btn-outline-secondary">
+                                <i class="fas fa-eye"></i>
+                            </button>
+                            <button type="button" class="btn btn-outline-secondary">
+                                <i class="fas fa-trash"></i>
+                            </button>
+                        </div>
+                    </td>
+                </tr>
                 } @empty {
-                <tr >
+                <tr>
                     <td colspan="7" class="text-center">No se encontraron coincidencias en cartera.</td>
                 </tr>
                 }

@@ -14,9 +14,9 @@ import { FormBuilder, FormGroup, ReactiveFormsModule } from '@angular/forms';
 })
 export class TasksComponent implements OnInit {
   filterForm: FormGroup;
-  tasks: any[] = []; // Replace with your actual task type
-  filteredTasks: any[] = [];
-  concepts: any[] = ['Concept 1', 'Concept 2'];
+  tasks: TasksInterface[] = []; // Replace with your actual task type
+  filteredTasks: TasksInterface[] = [];
+  concepts: any[] = ['Pendiente', 'Asignada', 'Completada', 'Rechazada'];
 
   constructor(private fb: FormBuilder, private taskService: TaskService) {
     this.filterForm = this.fb.group({
@@ -34,23 +34,22 @@ export class TasksComponent implements OnInit {
   getTasks() {
     this.taskService.getTasks().subscribe({
       next: (value) => {
+        console.log(value.data);
+        
         this.tasks = value.data;
+        
         this.filteredTasks = this.tasks;
-        console.log(this.tasks);
       },
     });
   }
 
   deleteTask(id: number, task: TasksInterface) {
-    console.log(task)
     this.taskService.deleteTask(id, task).subscribe({
-      next:(value)=> {
-        console.log("Se borró exitosamente:", value);
+      next: (value) => {},
+      error: (err) => {
+        console.log('Algo ha fallado');
       },
-      error:(err)=> {
-        console.log("Nada nice")
-      },
-    })
+    });
   }
 
   applyFilters() {

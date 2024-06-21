@@ -15,19 +15,19 @@ export class MeetingsService {
     return this.http.get(`${this.apiUrl}/meetings`);
   }
 
-  createMeeting(task: any): Observable<any> {
-    return this.http.post(`${this.apiUrl}/meetings`, task);
+  createMeeting(meeting: any): Observable<any> {
+    return this.http.post(`${this.apiUrl}/meetings`, meeting);
   }
 
   getMeetingById(id: number): Observable<any> {
     return this.http.get(`${this.apiUrl}/meetings/${id}`);
   }
 
-  updateMeeting(id: number, task: any): Observable<any> {
-    return this.http.put(`${this.apiUrl}/meetings/${id}/update`, task);
+  updateMeeting(id: number, meeting: any): Observable<any> {
+    return this.http.put(`${this.apiUrl}/meetings/${id}/update`, meeting);
   }
 
-  deleteMeeting(id: number, task: any): Observable<any> {
-    return this.http.put(`${this.apiUrl}/meetings/${id}/delete`, task);
+  deleteMeeting(id: number, meeting: any): Observable<any> {
+    return this.http.put(`${this.apiUrl}/meetings/${id}/delete`, meeting);
   }
 }
