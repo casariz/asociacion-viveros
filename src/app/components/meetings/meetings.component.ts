@@ -3,7 +3,7 @@ import { Component, OnInit } from '@angular/core';
 import { FormBuilder, FormGroup, ReactiveFormsModule } from '@angular/forms';
 import { RouterLink } from '@angular/router';
 import { MeetingsService } from '../../services/meetings.service';
-import { MeetingsInterface } from '../../interfaces/meetings.interface';
+import { Meetings } from '../../interfaces/meetings';
 
 @Component({
   selector: 'app-meetings',
@@ -14,8 +14,8 @@ import { MeetingsInterface } from '../../interfaces/meetings.interface';
 })
 export class MeetingsComponent implements OnInit {
   filterForm: FormGroup;
-  meetings: MeetingsInterface[] = [];  // Aquí irán tus reuniones
-  filteredMeetings: MeetingsInterface[] = [];
+  meetings: Meetings[] = [];  // Aquí irán tus reuniones
+  filteredMeetings: Meetings[] = [];
   concepts: any[] = [
     "Concept 1",
     "Concept 2"
@@ -41,8 +41,6 @@ export class MeetingsComponent implements OnInit {
     // Aquí debes cargar las reuniones (puede ser una llamada a un servicio)
     this.meetingsService.getMeetings().subscribe({
       next: (value) => {
-        console.log(value);
-        
         this.meetings = value.data;
         this.filteredMeetings = this.meetings
       },

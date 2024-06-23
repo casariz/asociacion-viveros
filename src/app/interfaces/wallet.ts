@@ -1,0 +1,18 @@
+export interface Wallet {
+    obligation_id: number,
+    obligation_description: string,
+    type_id: number,
+    category_id: number,
+    server_name: string,
+    quantity: number,
+    period: string,
+    alert_time: number,
+    created_by: number,
+    last_payment: number,
+    expiration_day: string,
+    observations: string,
+    internal_reference: string,
+    reviewed_by: number,
+    reviewed_date: string,
+    status: number,
+}

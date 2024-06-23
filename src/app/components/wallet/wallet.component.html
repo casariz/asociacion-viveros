@@ -34,7 +34,7 @@
                     <th class="text-start align-middle"></th>
                     <th class="text-start align-middle">ID</th>
                     <th class="text-start align-middle">TIPO - MOTIVO - DESCRIPCIÓN</th>
-                    <th class="text-start align-middle">ÁREA - PERIODO</th>
+                    <th class="text-start align-middle">PERIODO</th>
                     <th class="text-start align-middle">VENCE - ÚLTIMO REPORTE</th>
                     <th class="text-start align-middle">OBSERVACIONES</th>
                     <th class="text-start align-middle">ACCIONES</th>
@@ -48,11 +48,12 @@
                             <i class="fas fa-check-circle" style="color: #1b9123; background-color: #ffff"></i>
                         </span>
                     </td>
-                    <td class="align-middle">{{ wallet.id }}</td>
-                    <td class="align-middle">{{ wallet.reporter }}</td>
-                    <td class="align-middle">{{ wallet.date }}, {{ wallet.location }}</td>
-                    <td class="align-middle">{{ wallet.area }}, {{ wallet.description }}</td>
+                    <td class="align-middle">{{ wallet.obligation_id }}</td>
+                    <td class="align-middle">{{ wallet.type_id }}, {{ wallet.internal_reference }}, {{wallet.obligation_description}}</td>
+                    <td class="align-middle">{{ wallet.period }}</td>
+                    <td class="align-middle">{{ wallet.expiration_day }}, {{ wallet.last_payment }}</td>
                     <td class="align-middle">
+                        {{ wallet.observations }}
                         <ul class="list-unstyled">
                             <li>Revisión de proyectos actuales</li>
                             <li>Discusión de nuevas iniciativas</li>

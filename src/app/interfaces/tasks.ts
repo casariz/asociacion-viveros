@@ -1,10 +1,10 @@
-import { MeetingsInterface } from "./meetings.interface";
+import { Meetings } from "./meetings";
 import { Person } from "./person";
 import { Status } from "./status";
 
-export interface TasksInterface {
+export interface Tasks {
     task_id: number,
-    meeting_id: MeetingsInterface,
+    meeting_id: Meetings,
     start_date: string,
     estimated_time: string,
     units: number,

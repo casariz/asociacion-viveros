@@ -1,7 +1,7 @@
 import { Component, OnInit } from '@angular/core';
 import { RouterLink } from '@angular/router';
 import { TaskService } from '../../services/task.service';
-import { TasksInterface } from '../../interfaces/tasks.interface';
+import { Tasks } from '../../interfaces/tasks';
 import { CommonModule } from '@angular/common';
 import { FormBuilder, FormGroup, ReactiveFormsModule } from '@angular/forms';
 
@@ -14,8 +14,8 @@ import { FormBuilder, FormGroup, ReactiveFormsModule } from '@angular/forms';
 })
 export class TasksComponent implements OnInit {
   filterForm: FormGroup;
-  tasks: TasksInterface[] = []; // Replace with your actual task type
-  filteredTasks: TasksInterface[] = [];
+  tasks: Tasks[] = []; // Replace with your actual task type
+  filteredTasks: Tasks[] = [];
   concepts: any[] = ['Pendiente', 'Asignada', 'Completada', 'Rechazada'];
 
   constructor(private fb: FormBuilder, private taskService: TaskService) {
@@ -34,20 +34,17 @@ export class TasksComponent implements OnInit {
   getTasks() {
     this.taskService.getTasks().subscribe({
       next: (value) => {
-        console.log(value.data);
-        
         this.tasks = value.data;
-        
         this.filteredTasks = this.tasks;
       },
     });
   }
 
-  deleteTask(id: number, task: TasksInterface) {
+  deleteTask(id: number, task: Tasks) {
     this.taskService.deleteTask(id, task).subscribe({
       next: (value) => {},
       error: (err) => {
-        console.log('Algo ha fallado');
+        console.log('Algo ha fallado:', err);
       },
     });
   }
