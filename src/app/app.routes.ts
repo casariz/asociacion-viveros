@@ -28,6 +28,13 @@ export const routes: Routes = [
     title: 'Añadir reunion',
     pathMatch: 'full',
   },
+  {
+    path: 'meetings/:id/edit',
+    component: AddMeetingsComponent,
+    title: 'Editar reunion',
+    pathMatch: 'full',
+    data: { mode: 'edit' }
+  },
   /// TAREAS
   {
     path: 'tasks',
