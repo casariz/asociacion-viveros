@@ -1,13 +1,15 @@
+import { Person } from "./person";
+import { Status } from "./status";
+
 export interface Meetings {
     meeting_id: number,
     meeting_date: string,
     start_hour: string,
-    department_id: number,
-    called_by: number,
+    called_by: Person,
     placement: string,
     meeting_description: string,
     topics: string,
-    created_by: string,
+    created_by: Person,
     creation_date: string,
-    status: string
+    status: Status
 }

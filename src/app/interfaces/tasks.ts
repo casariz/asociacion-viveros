@@ -4,7 +4,7 @@ import { Status } from "./status";
 
 export interface Tasks {
     task_id: number,
-    meeting_id: Meetings,
+    meeting: Meetings,
     start_date: string,
     estimated_time: string,
     units: number,
