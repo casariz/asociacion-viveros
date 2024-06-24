@@ -11,7 +11,7 @@
             <form [formGroup]="taskForm" (ngSubmit)="onSubmit()">
                 <div class="p-1 px-2 d-flex row gap-3">
                     <h6 class="fw-bold m-0">Datos</h6>
-                    @if (isEditMode) {
+                    @if (isEditMode || isReadOnly) {
                         
                         @if (meetingId != null) {
                             <div class="d-inline-flex flex-row gap-2">

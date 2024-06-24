@@ -34,7 +34,7 @@ export class AssignTasksComponent implements OnInit {
       units: [{ value: '', disabled: this.isReadOnly }, Validators.required],
       task_description: [{ value: '', disabled: this.isReadOnly }, Validators.required],
       assigned_to_name: [{ value: '', disabled: this.isReadOnly }, Validators.required],
-      assigned_to: [{ value: '', disabled: this.isReadOnly }, Validators.required],
+      assigned_to: [{ value: '1', disabled: this.isReadOnly }, Validators.required],
       observations: [{ value: '', disabled: this.isReadOnly }, Validators.required]
     });
   }
@@ -78,6 +78,7 @@ export class AssignTasksComponent implements OnInit {
   }
 
   onSubmit(): void {
+    console.log(this.taskForm.value);
     if (this.taskForm.invalid || this.isReadOnly) {
       return;
     }
@@ -90,6 +91,8 @@ export class AssignTasksComponent implements OnInit {
         this.router.navigate(['/tasks']); // Redirige a la lista de tareas
       });
     } else {
+      console.log("hola");
+      
       this.taskService.createTask(taskData).subscribe(() => {
         this.router.navigate(['/tasks']); // Redirige a la lista de tareas
       });

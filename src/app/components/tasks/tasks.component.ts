@@ -3,7 +3,7 @@ import { RouterLink } from '@angular/router';
 import { TaskService } from '../../services/task.service';
 import { Tasks } from '../../interfaces/tasks';
 import { CommonModule } from '@angular/common';
-import { FormBuilder, FormGroup, ReactiveFormsModule } from '@angular/forms';
+import { FormArray, FormBuilder, FormGroup, ReactiveFormsModule } from '@angular/forms';
 import { StatusService } from '../../services/status.service';
 
 @Component({
@@ -27,6 +27,7 @@ export class TasksComponent implements OnInit {
       endDate: [''],
       employee: [''],
       description: [''],
+      status: this.fb.array([])
     });
   }
 
@@ -40,6 +41,7 @@ export class TasksComponent implements OnInit {
       next: (value) => {
         this.tasks = value.data;
         this.filteredTasks = this.tasks;
+        this.applyFilters();
       },
     });
   }
@@ -47,12 +49,25 @@ export class TasksComponent implements OnInit {
   getStatusTasks(): void {
     this.statusService.getStatusTasks().subscribe({
       next:(value) => {
-        this.status = value.status
+        this.status = value.status;
+        this.setDefaultStatus();
+        this.applyFilters();
       },
       error:(err) => {
         console.log("Error al traer status: ", err);
       },
     })
+  }
+
+  setDefaultStatus(): void {
+    const statusFormArray = this.filterForm.get('status') as FormArray;
+    statusFormArray.clear();
+
+    this.status.forEach(state => {
+      if (state === 'Pendiente' || state === 'Asignada' || state === 'Completada') {
+        statusFormArray.push(this.fb.control(state));
+      }
+    });
   }
 
   deleteTask(id: number, task: Tasks) {
@@ -65,7 +80,7 @@ export class TasksComponent implements OnInit {
   }
 
   applyFilters() {
-    const { startDate, endDate, employee, description } = this.filterForm.value;
+    const { startDate, endDate, employee, description, status } = this.filterForm.value;
     this.filteredTasks = this.tasks.filter((task) => {
       const matchesStartDate =
         !startDate || new Date(task.start_date) >= new Date(startDate);
@@ -78,17 +93,34 @@ export class TasksComponent implements OnInit {
         task.task_description
           ?.toLowerCase()
           .includes(description.toLowerCase());
+        const matchesStatus = status.length === 0 || status.includes(task.status.description);
       return (
         matchesStartDate &&
         matchesEndDate &&
         matchesEmployee &&
-        matchesDescription
+        matchesDescription && matchesStatus
       );
     });
   }
 
   resetFilters(): void {
     this.filterForm.reset();
+    this.setDefaultStatus();
     this.filteredTasks = this.tasks;
+  }
+
+  get statusFormArray() {
+    return this.filterForm.get('status') as FormArray;
+  }
+
+  onStatusChange(event: any, state: string): void {
+    const statusFormArray = this.statusFormArray;
+    if (event.target.checked) {
+      statusFormArray.push(this.fb.control(state));
+    } else {
+      const index = statusFormArray.controls.findIndex(x => x.value === state);
+      statusFormArray.removeAt(index);
+    }
+    this.applyFilters();
   }
 }

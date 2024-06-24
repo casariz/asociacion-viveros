@@ -4,7 +4,6 @@
         <div class="d-flex justify-content-end">
             <form [formGroup]="filterForm" (ngSubmit)="applyFilters()">
                 <div class="d-flex gap-2">
-
                     <input class="form-control" type="date" formControlName="startDate" placeholder="Fecha inicio">
                     <input class="form-control" type="date" formControlName="endDate" placeholder="Fecha fin">
                     <input class="form-control" type="text" formControlName="employee" placeholder="Empleado...">
@@ -16,13 +15,11 @@
                             <ul class="dropdown-menu">
                                 @for (state of status; track $index) {
                                 <li class="border-bottom p-2">
-                                    <input type="checkbox" name="concept" value="">
-                                    {{state}}
+                                    <input type="checkbox" [checked]="statusFormArray.value.includes(state)"
+                                        (change)="onStatusChange($event, state)">
+                                    {{ state }}
                                 </li>
                                 }
-                                <div class="d-flex justify-content-center mt-1">
-                                    <button class="btn btn-secondary "><i class="fas fa-search"></i> BUSCAR</button>
-                                </div>
                             </ul>
                         </div>
                     </div>
@@ -32,13 +29,11 @@
                         <button class="btn btn-outline-secondary" (click)="resetFilters()"><i
                                 class="fas fa-delete-left text-danger"></i></button>
                     </div>
-
-
                 </div>
             </form>
         </div>
         <table class="table table-hover caption-bottom text-sm">
-            <thead class="">
+            <thead>
                 <tr>
                     <th class="text-start align-middle"></th>
                     <th class="text-start align-middle">ID</th>
@@ -51,20 +46,24 @@
             </thead>
             <tbody>
                 @for (meeting of filteredMeetings; track meeting.meeting_id) {
-                <tr>
+                <tr [class.table-success]="meeting.status.status === 4">
                     <td class="align-middle">
+                        @if (meeting.status.status == 4) {
                         <span class="badge">
-                            <i class="fas fa-check-circle" style="color: #1b9123; background-color: #fff"></i>
+                            <i class="fas fa-check-circle" style="color: #009900; font-size: 1em"></i>
                         </span>
+                        } @else if (meeting.status.status == 3) {
+                        <span class="badge">
+                            <i class="fas fa-check-circle" style="color: #ffffff; font-size: 1em"></i>
+                        </span>
+                        }
                     </td>
                     <td class="align-middle">{{ meeting.meeting_id }}</td>
                     <td class="align-middle">{{ meeting.created_by.name }}</td>
-                    <td class="align-middle">{{ meeting.meeting_date }} - {{meeting.placement}}, <br> {{
+                    <td class="align-middle">{{ meeting.meeting_date }} - {{ meeting.placement }}, <br> {{
                         meeting.called_by.name }}</td>
                     <td class="align-middle">{{ meeting.meeting_description }}</td>
-                    <td class="align-middle">
-
-                    </td>
+                    <td class="align-middle"></td>
                     <td class="align-middle">
                         <div class="btn-group" role="group">
                             <button type="button" class="btn btn-outline-secondary"><i
