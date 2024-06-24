@@ -9,15 +9,17 @@
                         <div class="btn-group">
                             <button class="btn btn-outline-secondary dropdown-toggle"
                                 data-bs-toggle="dropdown">Estado</button>
-                            <ul class="dropdown-menu">
-                                @for (concept of concepts; track $index) {
-                                <li class="border-bottom p-2">
-
-                                    <input type="checkbox" name="concept" value="{{ concept }}">
-                                    {{ concept }}
-                                </li>
-                                }
-                            </ul>
+                                <ul class="dropdown-menu">
+                                    @for (state of status; track $index) {
+                                    <li class="border-bottom p-2">
+                                      <input type="checkbox" name="concept" value="">
+                                      {{state}}
+                                    </li>
+                                    }
+                                    <div class="d-flex justify-content-center mt-1">
+                                      <button class="btn btn-secondary "><i class="fas fa-search"></i> BUSCAR</button>
+                                    </div>
+                                  </ul>
                         </div>
                     </div>
                     <div class="btn-group">
@@ -28,7 +30,7 @@
                 </div>
             </form>
         </div>
-        <table class="table caption-bottom text-sm">
+        <table class="table table-hover caption-bottom text-sm">
             <thead>
                 <tr>
                     <th class="text-start align-middle"></th>

@@ -4,6 +4,7 @@ import { FormBuilder, FormGroup, ReactiveFormsModule } from '@angular/forms';
 import { RouterLink } from '@angular/router';
 import { MeetingsService } from '../../services/meetings.service';
 import { Meetings } from '../../interfaces/meetings';
+import { StatusService } from '../../services/status.service';
 
 @Component({
   selector: 'app-meetings',
@@ -16,12 +17,11 @@ export class MeetingsComponent implements OnInit {
   filterForm: FormGroup;
   meetings: Meetings[] = [];  // Aquí irán tus reuniones
   filteredMeetings: Meetings[] = [];
-  concepts: any[] = [
-    "Concept 1",
-    "Concept 2"
-  ]
+  status: any[] = [ ]
 
-  constructor(private fb: FormBuilder, private meetingsService: MeetingsService) {
+  constructor(private fb: FormBuilder, 
+    private meetingsService: MeetingsService, 
+    private statusService: StatusService) {
 
     this.filterForm = this.fb.group({
       startDate: [''],
@@ -33,16 +33,16 @@ export class MeetingsComponent implements OnInit {
   }
 
   ngOnInit(): void {
+    this.getStatusMeetings()
     this.getMeetings();
     this.filteredMeetings = this.meetings;
   }
 
   getMeetings(): void {
-    // Aquí debes cargar las reuniones (puede ser una llamada a un servicio)
     this.meetingsService.getMeetings().subscribe({
       next: (value) => {
         this.meetings = value.data;
-        this.filteredMeetings = this.meetings
+        this.filteredMeetings = this.meetings 
       },
       error: (err) => {
         
@@ -50,6 +50,18 @@ export class MeetingsComponent implements OnInit {
     })
 
     this.filteredMeetings = this.meetings;
+  }
+
+  getStatusMeetings(): void {
+    this.statusService.getStatusMeetings().subscribe({
+      next:(value) => {
+        this.status = value.status
+      },
+      error:(err) => {
+        
+        console.log("Error al traer status: ", err);
+      },
+    })
   }
 
   applyFilters(): void {

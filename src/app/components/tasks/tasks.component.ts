@@ -4,6 +4,7 @@ import { TaskService } from '../../services/task.service';
 import { Tasks } from '../../interfaces/tasks';
 import { CommonModule } from '@angular/common';
 import { FormBuilder, FormGroup, ReactiveFormsModule } from '@angular/forms';
+import { StatusService } from '../../services/status.service';
 
 @Component({
   selector: 'app-tasks',
@@ -16,9 +17,11 @@ export class TasksComponent implements OnInit {
   filterForm: FormGroup;
   tasks: Tasks[] = []; // Replace with your actual task type
   filteredTasks: Tasks[] = [];
-  concepts: any[] = ['Pendiente', 'Asignada', 'Completada', 'Rechazada'];
+  status: any[] = [ ]
 
-  constructor(private fb: FormBuilder, private taskService: TaskService) {
+  constructor(private fb: FormBuilder, 
+    private taskService: TaskService, 
+    private statusService: StatusService) {
     this.filterForm = this.fb.group({
       startDate: [''],
       endDate: [''],
@@ -28,6 +31,7 @@ export class TasksComponent implements OnInit {
   }
 
   ngOnInit(): void {
+    this.getStatusTasks();
     this.getTasks();
   }
 
@@ -38,6 +42,17 @@ export class TasksComponent implements OnInit {
         this.filteredTasks = this.tasks;
       },
     });
+  }
+  
+  getStatusTasks(): void {
+    this.statusService.getStatusTasks().subscribe({
+      next:(value) => {
+        this.status = value.status
+      },
+      error:(err) => {
+        console.log("Error al traer status: ", err);
+      },
+    })
   }
 
   deleteTask(id: number, task: Tasks) {

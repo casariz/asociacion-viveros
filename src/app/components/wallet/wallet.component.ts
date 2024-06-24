@@ -3,6 +3,7 @@ import { FormBuilder, FormGroup, ReactiveFormsModule } from '@angular/forms';
 import { RouterLink } from '@angular/router';
 import { WalletService } from '../../services/wallet.service';
 import { Wallet } from '../../interfaces/wallet';
+import { StatusService } from '../../services/status.service';
 
 @Component({
   selector: 'app-wallet',
@@ -15,12 +16,11 @@ export class WalletComponent implements OnInit {
   filterForm: FormGroup;
   wallets: Wallet[] = [];  // Aquí irán tus reuniones
   filteredWallets: Wallet[] = [];
-  concepts: any[] = [
-    "Concept 1",
-    "Concept 2"
-  ];
+  status: any[] = [];
 
-  constructor(private fb: FormBuilder, private walletService: WalletService) {
+  constructor(private fb: FormBuilder, 
+    private walletService: WalletService, 
+    private statusService: StatusService) {
     this.filterForm = this.fb.group({
       description: [''],
       status: [''] // Agregamos un campo para el estado
@@ -28,6 +28,7 @@ export class WalletComponent implements OnInit {
   }
 
   ngOnInit(): void {
+    this.getStatusWallet();
     this.getWallets();
   }
 
@@ -42,12 +43,21 @@ export class WalletComponent implements OnInit {
         
       },
     })
-    
+  }
+
+  getStatusWallet(): void {
+    this.statusService.getStatusWallets().subscribe({
+      next:(value) => {
+        this.status = value.status
+      },
+      error:(err) => {
+        console.log("Error al traer status: ", err);
+      },
+    })
   }
 
   applyFilters(): void {
     const { description, status } = this.filterForm.value;
-
     this.filteredWallets = this.wallets.filter(wallet => {
       const matchesDescription = !description || wallet.obligation_description.toLowerCase().includes(description.toLowerCase());
       const matchesStatus = !status || wallet.status === status;
