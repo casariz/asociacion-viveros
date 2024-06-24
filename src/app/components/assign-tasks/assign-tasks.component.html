@@ -12,7 +12,7 @@
                 <div class="p-1 px-2 d-flex row gap-3">
                     <h6 class="fw-bold m-0">Datos</h6>
                     @if (isEditMode) {
-                        <input class="form-control p-0 ps-2" type="hidden" size="50" value="" formControlName="task_id"/>
+                        
                         @if (meetingId != null) {
                             <div class="d-inline-flex flex-row gap-2">
                                 <div class="input-group">
@@ -48,7 +48,7 @@
                     </div>
                     <div class="input-group">
                         <span class="input-group-text"><i class="fas fa-helmet-safety"></i></span>
-                        <input type="text" formControlName="assigned_to" class="form-control p-0 ps-2" id="worker_id"
+                        <input type="text" formControlName="assigned_to_name" class="form-control p-0 ps-2" id="worker_id"
                             required />
                     </div>
                     <div class="input-group">

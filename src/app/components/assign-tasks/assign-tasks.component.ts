@@ -28,12 +28,12 @@ export class AssignTasksComponent implements OnInit {
     private router: Router
   ) {
     this.taskForm = this.fb.group({
-      task_id: [{ value: '', disabled: true }, Validators.required],
       meeting_description: [{value: '', disabled: true}, Validators.required],
       start_date: [{ value: '', disabled: this.isReadOnly }, Validators.required],
       estimated_time: [{ value: 0, disabled: this.isReadOnly }, [Validators.required, Validators.min(0), Validators.max(9999)]],
       units: [{ value: '', disabled: this.isReadOnly }, Validators.required],
       task_description: [{ value: '', disabled: this.isReadOnly }, Validators.required],
+      assigned_to_name: [{ value: '', disabled: this.isReadOnly }, Validators.required],
       assigned_to: [{ value: '', disabled: this.isReadOnly }, Validators.required],
       observations: [{ value: '', disabled: this.isReadOnly }, Validators.required]
     });
@@ -56,16 +56,20 @@ export class AssignTasksComponent implements OnInit {
   loadTask(): void {
     if (this.taskId) {
       this.taskService.getTaskById(this.taskId).subscribe(task => {
-        console.log(task);
-        
-        this.meetingId = task.task.meeting_id
+        this.meetingId = task.task.meeting_id;
         this.taskForm.patchValue(task.task);
-        this.taskForm.patchValue({
-          meeting_description: task.task.meeting_id.meeting_description || '',
-          assigned_to: task.task.assigned_to.name
-        });
-        console.log(task);
-        
+        if (task.task.meeting) {
+          this.taskForm.patchValue({
+            meeting_description: task.task.meeting.meeting_description || '',
+            assigned_to_name: task.task.assigned_to.name,
+            assigned_to: task.task.assigned_to.person_id
+          });
+        } else {
+          this.taskForm.patchValue({
+            assigned_to_name: task.task.assigned_to.name,
+            assigned_to: task.task.assigned_to.person_id
+          });
+        }  
         if (this.isReadOnly) {
           this.taskForm.disable();
         }
