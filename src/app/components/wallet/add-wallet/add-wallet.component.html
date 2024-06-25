@@ -1,5 +1,5 @@
 <div class="d-flex row bg-light py-5 px-3 justify-content-center">
-    <h2 class="text-center fw-bold">Agregar tarea</h2>
+    <h2 class="text-center fw-bold">Agregar cartera</h2>
     <div class="card w-50 p-0">
       <div class="card-body">
         <form class="d-inline-flex">
@@ -17,7 +17,15 @@
             <div class="input-group">
               <span class="input-group-text"><i class="fas fa-stopwatch"></i></span>
               <input type="number" class="form-control p-0 ps-2" id="quantity" required name="quantity" min="1" max="365" value="1"/>
-              <select class="form-select p-0 ps-2" id="period" required name="period"></select>
+              <select class="form-select p-0 ps-2" id="period" required name="period">
+                  <option selected>Sin definir</option>
+                  <option>Minuto(s)</option>
+                  <option>Hora(s)</option>
+                  <option>Hora(s)</option>
+                  <option>Día(s)</option>
+                  <option>Semana(s)</option>
+                  <option>Mes(es)</option>
+              </select>
             </div>
             <div class="input-group">
               <span class="input-group-text"><i class="fas fa-bell"></i></span>

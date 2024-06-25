@@ -9,17 +9,15 @@
                         <div class="btn-group">
                             <button class="btn btn-outline-secondary dropdown-toggle"
                                 data-bs-toggle="dropdown">Estado</button>
-                                <ul class="dropdown-menu">
-                                    @for (state of status; track $index) {
-                                    <li class="border-bottom p-2">
-                                      <input type="checkbox" name="concept" value="">
-                                      {{state}}
-                                    </li>
-                                    }
-                                    <div class="d-flex justify-content-center mt-1">
-                                      <button class="btn btn-secondary "><i class="fas fa-search"></i> BUSCAR</button>
-                                    </div>
-                                  </ul>
+                            <ul class="dropdown-menu">
+                                @for (state of status; track $index) {
+                                <li class="border-bottom p-2">
+                                    <input type="checkbox" [checked]="statusFormArray.value.includes(state)"
+                                        (change)="onStatusChange($event, state)">
+                                    {{ state }}
+                                </li>
+                                }
+                            </ul>
                         </div>
                     </div>
                     <div class="btn-group">
@@ -51,7 +49,7 @@
                         </span>
                     </td>
                     <td class="align-middle">{{ wallet.obligation_id }}</td>
-                    <td class="align-middle">{{ wallet.type_id }}, {{ wallet.internal_reference }}, {{wallet.obligation_description}}</td>
+                    <td class="align-middle">{{ wallet.internal_reference }}, {{wallet.obligation_description}}</td>
                     <td class="align-middle">{{ wallet.period }}</td>
                     <td class="align-middle">{{ wallet.expiration_day }}, {{ wallet.last_payment }}</td>
                     <td class="align-middle">

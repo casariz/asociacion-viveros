@@ -17,7 +17,7 @@ export class TasksComponent implements OnInit {
   filterForm: FormGroup;
   tasks: Tasks[] = []; // Replace with your actual task type
   filteredTasks: Tasks[] = [];
-  status: any[] = [ ]
+  status: any[] = []
 
   constructor(private fb: FormBuilder, 
     private taskService: TaskService, 
