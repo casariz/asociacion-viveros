@@ -1,48 +1,48 @@
 <div class="d-flex row bg-light py-5 px-3 justify-content-center">
-    <h2 class="text-center fw-bold">Agregar cartera</h2>
-    <div class="card w-50 p-0">
-      <div class="card-body">
-        <form class="d-inline-flex">
-          <div class="p-1 px-2 d-flex row gap-3">
-            <h6 class="fw-bold m-0">Datos</h6>
-            <div class="input-group">
-              <span class="input-group-text"><i class="fas fa-signature"></i></span>
-              <input type="text" class="form-control p-0 ps-2" id="obligation_description" required name="obligation_description" placeholder="Descripción..."/>
-            </div>
-            <div class="input-group">
-                <span class="input-group-text"><i class="fas fa-folder-tree"></i></span>
-                <select class="form-select p-0 ps-2" id="type_id" required name="type_id"></select>
-                <select class="form-select p-0 ps-2" id="category_id" required name="category_id"></select>
-              </div>
-            <div class="input-group">
-              <span class="input-group-text"><i class="fas fa-stopwatch"></i></span>
-              <input type="number" class="form-control p-0 ps-2" id="quantity" required name="quantity" min="1" max="365" value="1"/>
-              <select class="form-select p-0 ps-2" id="period" required name="period">
-                  <option selected>Sin definir</option>
-                  <option>Minuto(s)</option>
-                  <option>Hora(s)</option>
-                  <option>Hora(s)</option>
-                  <option>Día(s)</option>
-                  <option>Semana(s)</option>
-                  <option>Mes(es)</option>
-              </select>
-            </div>
-            <div class="input-group">
-              <span class="input-group-text"><i class="fas fa-bell"></i></span>
-              <input type="number" class="form-control p-0 ps-2" id="alert_time" required name="alert_time" min="0" max="60" value="15"/>
-              <span class="input-group-text p-0 ps-2">días previos</span>
-            </div>
-            <div class="input-group">
-              <span class="input-group-text"><i class="fas fa-comment"></i></span>
-              <textarea name="observations" id="observations" class="form-control" cols="50" rows="5" placeholder="Observaciones..."></textarea>
-            </div>
+  <h2 class="text-center fw-bold">Agregar cartera</h2>
+  <div class="card w-50 p-0">
+    <div class="card-body">
+      <form class="d-inline-flex">
+        <div class="p-1 px-2 d-flex row gap-3">
+          <h6 class="fw-bold m-0">Datos</h6>
+          <div class="input-group">
+            <span class="input-group-text"><i class="fas fa-signature"></i></span>
+            <input type="text" class="form-control p-0 ps-2" id="obligation_description" required
+              name="obligation_description" placeholder="Descripción..." />
           </div>
-        </form>
-      </div>
-      <div class="card-footer d-flex justify-content-end">
-        <button class="btn btn-success">
-          <i class="fas fa-plus"></i> AGREGAR
-        </button>
-      </div>
+
+          <div class="input-group">
+            <span class="input-group-text"><i class="fas fa-stopwatch"></i></span>
+            <input type="number" class="form-control p-0 ps-2" id="quantity" required name="quantity" min="1" max="365"
+              value="1" />
+            <select class="form-select p-0 ps-2" id="period" required name="period">
+              <option selected>Sin definir</option>
+              <option>Minuto(s)</option>
+              <option>Hora(s)</option>
+              <option>Hora(s)</option>
+              <option>Día(s)</option>
+              <option>Semana(s)</option>
+              <option>Mes(es)</option>
+            </select>
+          </div>
+          <div class="input-group">
+            <span class="input-group-text"><i class="fas fa-bell"></i></span>
+            <input type="number" class="form-control p-0 ps-2" id="alert_time" required name="alert_time" min="0"
+              max="60" value="15" />
+            <span class="input-group-text p-0 ps-2">días previos</span>
+          </div>
+          <div class="input-group">
+            <span class="input-group-text"><i class="fas fa-comment"></i></span>
+            <textarea name="observations" id="observations" class="form-control" cols="50" rows="5"
+              placeholder="Observaciones..."></textarea>
+          </div>
+        </div>
+      </form>
+    </div>
+    <div class="card-footer d-flex justify-content-end">
+      <button class="btn btn-success">
+        <i class="fas fa-plus"></i> AGREGAR
+      </button>
     </div>
   </div>
+</div>
