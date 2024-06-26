@@ -78,21 +78,17 @@ export class AssignTasksComponent implements OnInit {
   }
 
   onSubmit(): void {
-    console.log(this.taskForm.value);
     if (this.taskForm.invalid || this.isReadOnly) {
       return;
     }
 
     const taskData = this.taskForm.value;
-    console.log(taskData);
     
     if (this.isEditMode && this.taskId) {
       this.taskService.updateTask(this.taskId, taskData).subscribe(() => {
         this.router.navigate(['/tasks']); // Redirige a la lista de tareas
       });
-    } else {
-      console.log("hola");
-      
+    } else {      
       this.taskService.createTask(taskData).subscribe(() => {
         this.router.navigate(['/tasks']); // Redirige a la lista de tareas
       });
