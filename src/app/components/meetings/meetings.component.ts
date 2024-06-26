@@ -1,10 +1,11 @@
 import { CommonModule } from '@angular/common';
-import { Component, OnInit } from '@angular/core';
+import { Component, OnInit, ViewChild } from '@angular/core';
 import { FormBuilder, FormGroup, FormArray, ReactiveFormsModule } from '@angular/forms';
-import { RouterLink } from '@angular/router';
+import { RouterLink, Router } from '@angular/router';
 import { MeetingsService } from '../../services/meetings.service';
 import { Meetings } from '../../interfaces/meetings';
 import { StatusService } from '../../services/status.service';
+import { AssignTasksComponent } from '../assign-tasks/assign-tasks.component';
 
 @Component({
   selector: 'app-meetings',
@@ -15,26 +16,38 @@ import { StatusService } from '../../services/status.service';
 })
 export class MeetingsComponent implements OnInit {
   filterForm: FormGroup;
-  meetings: Meetings[] = [];  // Aquí irán tus reuniones
+  meetings: Meetings[] = [];
   filteredMeetings: Meetings[] = [];
   status: any[] = [];
+  @ViewChild(AssignTasksComponent) meeting?: AssignTasksComponent;
+  
 
   constructor(private fb: FormBuilder, 
               private meetingsService: MeetingsService, 
-              private statusService: StatusService) {
+              private statusService: StatusService,
+              private router: Router) {
 
     this.filterForm = this.fb.group({
       startDate: [''],
       endDate: [''],
       employee: [''],
       description: [''],
-      status: this.fb.array([]) // Usar FormArray para los estados
+      status: this.fb.array([])
     });
   }
 
   ngOnInit(): void {
     this.getStatusMeetings();
     this.getMeetings();
+  }
+
+  addTaskInMeeting(id: number){
+    if (this.meeting) {
+      this.meeting.meeting_id = id;
+      this.router.navigate(['/tasks/new']);
+    } else {
+      console.error('AssignTasksComponent is not initialized.');
+    }
   }
 
   getMeetings(): void {

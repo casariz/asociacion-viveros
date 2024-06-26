@@ -1,4 +1,4 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, Input, OnInit } from '@angular/core';
 import { FormBuilder, FormGroup, Validators, ReactiveFormsModule } from '@angular/forms';
 import { ActivatedRoute, Router } from '@angular/router';
 
@@ -20,6 +20,7 @@ export class AssignTasksComponent implements OnInit {
   isReadOnly: boolean = false;
   taskId: number | null = null;
   meetingId: number | null = null;
+  @Input() meeting_id?: number;
 
   constructor(
     private fb: FormBuilder,
@@ -28,6 +29,7 @@ export class AssignTasksComponent implements OnInit {
     private router: Router
   ) {
     this.taskForm = this.fb.group({
+      meeting_id: [{value:'', disabled: true}, Validators.required],
       meeting_description: [{value: '', disabled: true}, Validators.required],
       start_date: [{ value: '', disabled: this.isReadOnly }, Validators.required],
       estimated_time: [{ value: 0, disabled: this.isReadOnly }, [Validators.required, Validators.min(0), Validators.max(9999)]],
@@ -55,7 +57,7 @@ export class AssignTasksComponent implements OnInit {
 
   loadTask(): void {
     if (this.taskId) {
-      this.taskService.getTaskById(this.taskId).subscribe(task => {
+      this.taskService.getTaskById(this.taskId).subscribe(task => {        
         this.meetingId = task.task.meeting_id;
         this.taskForm.patchValue(task.task);
         if (task.task.meeting) {

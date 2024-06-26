@@ -15,7 +15,7 @@ export class AddMeetingsComponent implements OnInit {
   meetingForm: FormGroup;
   isEditMode: boolean = false;
   meetingId: number | null = null;
-  taskList: { type: string, comment: string }[] = [];
+  topicsList: { type: string, topics: string }[] = [];
 
   constructor(private fb: FormBuilder, 
     private meetingsService: MeetingsService,
@@ -29,7 +29,7 @@ export class AddMeetingsComponent implements OnInit {
       placement: ['', Validators.required],
       meeting_description: ['', Validators.required],
       assistant_id: ['', Validators.required],
-      topyc_type: ['Orden del dia', Validators.required],
+      topyc_type: ['Orden del día', Validators.required],
       topics: ['', Validators.required]
     });
   }
@@ -50,12 +50,17 @@ export class AddMeetingsComponent implements OnInit {
   loadMeeting(): void {
     if (this.meetingId) {
       this.meetingsService.getMeetingById(this.meetingId).subscribe(meeting => {
-        console.log(meeting.meeting);
-        
+
+        const type = meeting.meeting.topics.type;
+        const topics = meeting.meeting.topics.topic;
+        this.topicsList.push({type, topics})
+
         this.meetingId = meeting.meeting.meeting_id;
         this.meetingForm.patchValue(meeting.meeting);
+
         if (meeting.meeting) {
           this.meetingForm.patchValue({
+            topics: '',
             called_by: meeting.meeting.called_by.person_id,
             called_by_name: meeting.meeting.called_by.name
           });
@@ -82,14 +87,15 @@ export class AddMeetingsComponent implements OnInit {
 
   addTask(): void {
     const type = this.meetingForm.get('topyc_type')?.value;
-    const comment = this.meetingForm.get('comment')?.value;
-    if (type && comment) {
-      this.taskList.push({ type, comment });
-      this.meetingForm.get('comment')?.reset();
+    const topics = this.meetingForm.get('topics')?.value;
+    console.log(type, topics)
+    if (type && topics) {
+      this.topicsList.push({ type, topics });
+      this.meetingForm.get('topics')?.reset();
     }
   }
 
   removeTask(index: number): void {
-    this.taskList.splice(index, 1);
+    this.topicsList.splice(index, 1);
   }
 }
