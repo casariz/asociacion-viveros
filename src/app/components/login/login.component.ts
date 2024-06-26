@@ -1,37 +1,42 @@
 import { Component } from '@angular/core';
 import { Router } from '@angular/router';
 import { AuthService } from '../../services/auth.service';
-import { HttpClient } from '@angular/common/http';
 import { CommonModule } from '@angular/common';
-import { FormsModule } from '@angular/forms';
+import { FormBuilder, FormGroup, FormsModule, ReactiveFormsModule, Validators } from '@angular/forms';
 
 @Component({
   selector: 'app-login',
   standalone: true,
-  imports: [CommonModule,FormsModule],
+  imports: [CommonModule, FormsModule, ReactiveFormsModule],
   templateUrl: './login.component.html',
-  styleUrl: './login.component.css',
+  styleUrls: ['./login.component.css'],
 })
 export class LoginComponent {
-  name: string = "";
-  password: string = "";
-  constructor(private login: AuthService, private router: Router, private http:HttpClient) { }
-  api_url = 'http://localhost:8000/api'
+  loginForm: FormGroup;
+
+  constructor(private authService: AuthService, private router: Router, private fb: FormBuilder) {
+    this.loginForm = this.fb.group({
+      name: ['', Validators.required],
+      password: ['', Validators.required]
+    })
+  }
 
   onSubmit() {
-    const formData = new FormData();
-    formData.append('name', this.name);
-    formData.append('password', this.password);
-
-    this.http.post(`${this.api_url}/login`, formData)
-      .subscribe(
-        response => console.log(response),
-
-        error => console.log(error)
-      );
-      
-    // If login successful, navigate to dashboard page
-    // this.router.navigate(['/meetings']);
-
+    if (this.loginForm.invalid) {
+      return;
+    }
+    const loginData = this.loginForm.value;
+    
+    this.authService.login(loginData).subscribe({
+      next: (response) => {
+        // Asumiendo que la respuesta tiene el token en 'response.token'
+        this.authService.saveToken(response.token);
+        console.log('Login successful');
+        this.router.navigate(['/meetings']);
+      },
+      error: (error) => {
+        console.error('Login failed', error);
+      }
+    });
   }
 }

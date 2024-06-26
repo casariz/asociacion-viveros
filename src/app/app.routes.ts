@@ -6,6 +6,7 @@ import { WalletComponent } from './components/wallet/wallet.component';
 import { AddMeetingsComponent } from './components/meetings/add-meetings/add-meetings.component';
 import { AssignTasksComponent } from './components/assign-tasks/assign-tasks.component';
 import { AddWalletComponent } from './components/wallet/add-wallet/add-wallet.component';
+import { authGuard } from './services/auth.guard';
 
 export const routes: Routes = [
   ///LOGUEO
@@ -14,6 +15,7 @@ export const routes: Routes = [
     component: LoginComponent,
     title: 'Login',
     pathMatch: 'full',
+    
   },
   /// REUNIONES
   {
@@ -21,19 +23,22 @@ export const routes: Routes = [
     component: MeetingsComponent,
     title: 'Reuniones',
     pathMatch: 'full',
+    canActivate: [authGuard]
   },
   {
     path: 'meetings/add-meetings',
     component: AddMeetingsComponent,
     title: 'Añadir reunion',
     pathMatch: 'full',
+    canActivate: [authGuard]
   },
   {
     path: 'meetings/:id/edit',
     component: AddMeetingsComponent,
     title: 'Editar reunion',
     pathMatch: 'full',
-    data: { mode: 'edit' }
+    data: { mode: 'edit' },
+    canActivate: [authGuard]
   },
   /// TAREAS
   {
@@ -41,27 +46,31 @@ export const routes: Routes = [
     component: TasksComponent,
     title: 'Tareas',
     pathMatch: 'full',
+    canActivate: [authGuard]
   },
   {
     path: 'tasks/new',
     component: AssignTasksComponent,
     title: 'Asignar tarea',
     pathMatch: 'full',
-    data: { mode: 'create' }
+    data: { mode: 'create' },
+    canActivate: [authGuard]
   },
   {
     path: 'tasks/:id/edit',
     component: AssignTasksComponent,
     title: 'Editar tarea',
     pathMatch: 'full',
-    data: { mode: 'edit' }
+    data: { mode: 'edit' },
+    canActivate: [authGuard]
   },
   {
     path: 'tasks/:id/view',
     component: AssignTasksComponent,
     title: 'Editar tarea',
     pathMatch: 'full',
-    data: { mode: 'view' }
+    data: { mode: 'view' },
+    canActivate: [authGuard]
   },
   /// CARTERA
   {
@@ -69,11 +78,13 @@ export const routes: Routes = [
     component: WalletComponent,
     title: 'Cartera',
     pathMatch: 'full',
+    canActivate: [authGuard]
   },
   {
     path: 'wallet/add-wallet',
     component: AddWalletComponent,
     title: 'Añadir cartera',
     pathMatch: 'full',
+    canActivate: [authGuard]
   },
 ];
