@@ -1,11 +1,11 @@
 import { CommonModule } from '@angular/common';
-import { Component, OnInit, ViewChild } from '@angular/core';
+import { Component, OnInit } from '@angular/core';
 import { FormBuilder, FormGroup, FormArray, ReactiveFormsModule } from '@angular/forms';
 import { RouterLink, Router } from '@angular/router';
 import { MeetingsService } from '../../services/meetings.service';
 import { Meetings } from '../../interfaces/meetings';
 import { StatusService } from '../../services/status.service';
-import { AssignTasksComponent } from '../assign-tasks/assign-tasks.component';
+import { TopicsService } from '../../services/topics.service';
 
 @Component({
   selector: 'app-meetings',
@@ -18,15 +18,15 @@ export class MeetingsComponent implements OnInit {
   filterForm: FormGroup;
   meetings: Meetings[] = [];
   filteredMeetings: Meetings[] = [];
+  topics: any[] = [];
   status: any[] = [];
-  @ViewChild(AssignTasksComponent) meeting?: AssignTasksComponent;
-  
 
-  constructor(private fb: FormBuilder, 
+  constructor(private fb: FormBuilder,
+              private router: Router,
               private meetingsService: MeetingsService, 
               private statusService: StatusService,
-              private router: Router) {
-
+              private topicsService: TopicsService
+              ) {
     this.filterForm = this.fb.group({
       startDate: [''],
       endDate: [''],
@@ -39,20 +39,24 @@ export class MeetingsComponent implements OnInit {
   ngOnInit(): void {
     this.getStatusMeetings();
     this.getMeetings();
+    this.getTopics();
   }
 
-  addTaskInMeeting(id: number){
-    if (this.meeting) {
-      this.meeting.meeting_id = id;
-      this.router.navigate(['/tasks/new']);
-    } else {
-      console.error('AssignTasksComponent is not initialized.');
-    }
+  addTaskInMeeting(id: number): void {
+    this.meetingsService.setMeetingId(id);
+    this.router.navigate(['/tasks/new']);
+  }
+
+  createTaskWithoutMeeting(): void {
+    this.meetingsService.clearMeetingId();
+    this.router.navigate(['/tasks/new']);
   }
 
   getMeetings(): void {
     this.meetingsService.getMeetings().subscribe({
       next: (value) => {
+        console.log(value);
+        
         this.meetings = value.data;
         this.filteredMeetings = this.meetings;
         this.applyFilters();
@@ -74,6 +78,17 @@ export class MeetingsComponent implements OnInit {
         console.log("Error al traer status: ", err);
       },
     });
+  }
+
+  getTopics(): void {
+    this.topicsService.getTopics().subscribe({
+      next:(value) => {
+        this.topics = value
+      },
+      error:(err)=> {
+        console.error('Error fetching topics: ', err);
+      },
+    })
   }
 
   setDefaultStatus(): void {
@@ -104,7 +119,7 @@ export class MeetingsComponent implements OnInit {
 
   resetFilters(): void {
     this.filterForm.reset();
-    this.setDefaultStatus(); // Restablecer los estados por defecto
+    this.setDefaultStatus();
     this.filteredMeetings = this.meetings;
   }
 

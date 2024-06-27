@@ -63,7 +63,26 @@
                     <td class="align-middle">{{ meeting.meeting_date }} - {{ meeting.placement }}, <br> {{
                         meeting.called_by.name }}</td>
                     <td class="align-middle">{{ meeting.meeting_description }}</td>
-                    <td class="align-middle"></td>
+                    <td class="align-middle">
+                        <div class="dropdown">
+                            @if (meeting.topics) {
+                                <button class="btn btn-outline-secondary dropdown-toggle" type="button"
+                                data-bs-toggle="dropdown" aria-expanded="false">
+                                    Ver temas
+                                </button>
+                            <ul class="dropdown-menu">
+                                @for (topic of topics; track $index) {
+                                    @if (topic.meeting_id == meeting.meeting_id) {
+                                        <li class="list-group-item  border-bottom">
+                                            {{topic.topic}}
+                                        </li>
+                                    }
+                                }
+                            </ul>
+                            }
+
+                        </div>
+                    </td>
                     <td class="align-middle">
                         <div class="btn-group" role="group">
                             <button type="button" class="btn btn-outline-secondary"><i
@@ -98,7 +117,7 @@
     <div class="d-flex justify-content-end m-2 gap-2">
         <a routerLink="add-meetings" class="btn btn-lg rounded-circle btn-primary border-0 add-button"><i
                 class="fas fa-plus"></i></a>
-        <a routerLink="/tasks/new" class="btn btn-lg rounded-circle btn-primary border-0"><i
-                class="fas fa-clipboard-list"></i></a>
+        <button (click)="createTaskWithoutMeeting()" class="btn btn-lg rounded-circle btn-primary border-0"><i
+                class="fas fa-clipboard-list"></i></button>
     </div>
 </section>
