@@ -7,6 +7,7 @@ import { AddMeetingsComponent } from './components/meetings/add-meetings/add-mee
 import { AssignTasksComponent } from './components/assign-tasks/assign-tasks.component';
 import { AddWalletComponent } from './components/wallet/add-wallet/add-wallet.component';
 import { authGuard } from './services/auth.guard';
+import { RegisterComponent } from './components/register/register.component';
 
 export const routes: Routes = [
   ///LOGUEO
@@ -15,7 +16,12 @@ export const routes: Routes = [
     component: LoginComponent,
     title: 'Login',
     pathMatch: 'full',
-    
+  },
+  {
+    path: 'register',
+    component: RegisterComponent,
+    title: 'Registrarse',
+    pathMatch: 'full'
   },
   /// REUNIONES
   {
