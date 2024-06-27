@@ -13,7 +13,7 @@
       <path d="m8 16 1.88-1.88"></path>
       <path d="M14.12 14.12 16 16"></path>
     </svg>
-    <h1 class="h5 fw-bold m-0">Asociacion Viveros</h1>
+    <h1 class="h5 fw-bold m-0">ASOVALVI</h1>
   </div>
   <nav class="d-flex align-items-center gap-3">
     @if (isLoggedIn) {
@@ -42,7 +42,10 @@
     </button>
     } @else {
     <div>
-      <a class="btn btn-success" routerLink="/login">Login</a>
+      <a class="btn btn-outline-success" routerLink="/login" routerLinkActive="bg-success active">Iniciar sesión</a>
+    </div>
+    <div>
+      <a class="btn btn-outline-success" routerLink="/register" routerLinkActive="bg-success active">Registrarse</a>
     </div>
     }
   </nav>
