@@ -8,6 +8,7 @@ import { Observable } from 'rxjs';
 export class MeetingsService {
 
   private apiUrl = 'http://127.0.0.1:8000/api';
+  private meetingId: number | null = null;
 
   constructor(private http: HttpClient) { }
 
@@ -29,5 +30,18 @@ export class MeetingsService {
 
   deleteMeeting(id: number, meeting: any): Observable<any> {
     return this.http.put(`${this.apiUrl}/meetings/${id}/delete`, meeting);
+  }
+
+
+  setMeetingId(id: number): void {
+    this.meetingId = id;
+  }
+
+  clearMeetingId(): void {
+    this.meetingId = null;
+  }
+
+  getMeetingId(): number | null {
+    return this.meetingId;
   }
 }
