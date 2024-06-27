@@ -1,10 +1,11 @@
 import { Component, OnInit } from '@angular/core';
-import { RouterLink } from '@angular/router';
+import { Router, RouterLink } from '@angular/router';
 import { TaskService } from '../../services/task.service';
 import { Tasks } from '../../interfaces/tasks';
 import { CommonModule } from '@angular/common';
 import { FormArray, FormBuilder, FormGroup, ReactiveFormsModule } from '@angular/forms';
 import { StatusService } from '../../services/status.service';
+import { MeetingsService } from '../../services/meetings.service';
 
 @Component({
   selector: 'app-tasks',
@@ -19,9 +20,11 @@ export class TasksComponent implements OnInit {
   filteredTasks: Tasks[] = [];
   status: any[] = []
 
-  constructor(private fb: FormBuilder, 
-    private taskService: TaskService, 
-    private statusService: StatusService) {
+  constructor(private fb: FormBuilder,
+    private taskService: TaskService,
+    private statusService: StatusService,
+    private meetingsService: MeetingsService,
+    private router: Router) {
     this.filterForm = this.fb.group({
       startDate: [''],
       endDate: [''],
@@ -34,6 +37,21 @@ export class TasksComponent implements OnInit {
   ngOnInit(): void {
     this.getStatusTasks();
     this.getTasks();
+  }
+
+  createTaskWithoutMeeting(): void {
+    this.meetingsService.clearMeetingId();
+    this.router.navigate(['/tasks/new']);
+  }
+
+  editTaskWithoutMeeting(id: any): void {
+    this.meetingsService.clearMeetingId();
+    this.router.navigate(['/', 'tasks', id, 'edit']);
+  }
+
+  viewTaskWithoutMeeting(id: any): void {
+    this.meetingsService.clearMeetingId();
+    this.router.navigate(['/', 'tasks', id, 'view']);
   }
 
   getTasks() {
