@@ -64,14 +64,17 @@
           </div>
           <div class="mt-4" style="height:11em; overflow-y:scroll;">
             <ul class="d-flex gap-1 row">
-              @for (task of topicsList; track $index) {
-                <li class="d-flex align-items-center border border-secondary rounded w-75">
-                  <button type="button" class="btn btn-close btn-sm p-2" (click)="removeTask($index)"></button>
-                  <div class="px-2">
-                    {{ task.topics }}
-                  </div>
-                  
-                </li>
+              @for (topic of topicList; track $index) {
+                @if (topic.meeting_id == meetingId) {
+                  <li class="d-flex align-items-center border border-secondary rounded w-75">
+                    <button type="button" class="btn btn-close btn-sm p-2" (click)="removeTask($index)"></button>
+                    <div class="px-2">
+                      {{ topic.topic }}
+                    </div>
+                    
+                  </li>
+                }
+                
               }
               
             </ul>

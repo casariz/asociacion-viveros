@@ -3,6 +3,7 @@ import { FormsModule } from '@angular/forms';
 import { FormBuilder, FormGroup, Validators, ReactiveFormsModule } from '@angular/forms';
 import { MeetingsService } from '../../../services/meetings.service';
 import { ActivatedRoute, Router } from '@angular/router';
+import { TopicsService } from '../../../services/topics.service';
 
 @Component({
   selector: 'app-add-meetings',
@@ -16,11 +17,13 @@ export class AddMeetingsComponent implements OnInit {
   isEditMode: boolean = false;
   meetingId: number | null = null;
   topicsList: { type: string, topics: string }[] = [];
+  topicList: any[] = [];
 
-  constructor(private fb: FormBuilder, 
-    private meetingsService: MeetingsService,
+  constructor(private fb: FormBuilder,
     private route: ActivatedRoute,
-    private router: Router) {
+    private router: Router,
+    private meetingsService: MeetingsService,
+    private topicsService: TopicsService) {
     this.meetingForm = this.fb.group({
       meeting_date: ['', Validators.required],
       start_hour: ['', Validators.required],
@@ -45,16 +48,14 @@ export class AddMeetingsComponent implements OnInit {
         this.loadMeeting();
       }
     });
+    this.getTopics()
   }
 
   loadMeeting(): void {
     if (this.meetingId) {
       this.meetingsService.getMeetingById(this.meetingId).subscribe(meeting => {
-
-        const type = meeting.meeting.topics.type;
-        const topics = meeting.meeting.topics.topic;
-        this.topicsList.push({type, topics})
-
+        
+        
         this.meetingId = meeting.meeting.meeting_id;
         this.meetingForm.patchValue(meeting.meeting);
 
@@ -67,6 +68,17 @@ export class AddMeetingsComponent implements OnInit {
         }
       });
     }
+  }
+
+  getTopics():void {
+    this.topicsService.getTopics().subscribe({
+      next:(value)=> {
+        this.topicList = value
+      },
+      error:(err)=> {
+
+      }
+    })
   }
 
   onSubmit(): void {
@@ -88,7 +100,6 @@ export class AddMeetingsComponent implements OnInit {
   addTask(): void {
     const type = this.meetingForm.get('topyc_type')?.value;
     const topics = this.meetingForm.get('topics')?.value;
-    console.log(type, topics)
     if (type && topics) {
       this.topicsList.push({ type, topics });
       this.meetingForm.get('topics')?.reset();
