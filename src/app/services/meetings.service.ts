@@ -12,8 +12,8 @@ export class MeetingsService {
 
   constructor(private http: HttpClient) { }
 
-  getMeetings(): Observable<any> {
-    return this.http.get(`${this.apiUrl}/meetings`);
+  getMeetings(page: number): Observable<any> {
+    return this.http.get(`${this.apiUrl}/meetings?page=${page}`);
   }
 
   createMeeting(meeting: any): Observable<any> {
