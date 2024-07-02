@@ -17,6 +17,8 @@ import { TopicsService } from '../../services/topics.service';
 export class MeetingsComponent implements OnInit {
   filterForm: FormGroup;
   meetings: Meetings[] = [];
+  currentPage: number = 1;
+  totalPages: number = 1;
   filteredMeetings: Meetings[] = [];
   topics: any[] = [];
   status: any[] = [];
@@ -38,7 +40,7 @@ export class MeetingsComponent implements OnInit {
 
   ngOnInit(): void {
     this.getStatusMeetings();
-    this.getMeetings();
+    this.getMeetings(this.currentPage);
     this.getTopics();
   }
 
@@ -52,12 +54,12 @@ export class MeetingsComponent implements OnInit {
     this.router.navigate(['/tasks/new']);
   }
 
-  getMeetings(): void {
-    this.meetingsService.getMeetings().subscribe({
-      next: (value) => {
-        console.log(value);
-        
+  getMeetings(page: number): void {
+    this.meetingsService.getMeetings(page).subscribe({
+      next: (value) => {        
         this.meetings = value.data;
+        this.currentPage = value.current_page;
+        this.totalPages = value.last_pages;
         this.filteredMeetings = this.meetings;
         this.applyFilters();
       },
@@ -67,12 +69,22 @@ export class MeetingsComponent implements OnInit {
     });
   }
 
+  changePage(page: number): void {
+    if (page > 0 && page <= this.totalPages) {
+      this.getMeetings(page);
+    }
+  }
+
+  getPageRange(): number[] {
+    return Array.from({ length: this.totalPages }, (_, i) => i + 1);
+  }
+
   getStatusMeetings(): void {
     this.statusService.getStatusMeetings().subscribe({
       next:(value) => {
         this.status = value.status;
         this.setDefaultStatus();
-        this.applyFilters() // Establecer los estados por defecto
+        this.applyFilters();
       },
       error:(err) => {
         console.log("Error al traer status: ", err);

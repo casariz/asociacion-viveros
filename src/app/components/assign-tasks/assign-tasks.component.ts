@@ -52,16 +52,18 @@ export class AssignTasksComponent implements OnInit {
       ],
       assigned_to_name: [
         { value: '', disabled: this.isReadOnly },
-        Validators.required,
       ],
       assigned_to: [
-        { value: '1', disabled: this.isReadOnly },
-        Validators.required,
+        { value: '', disabled: this.isReadOnly },
       ],
       observations: [
         { value: '', disabled: this.isReadOnly },
         Validators.required,
       ],
+      created_by: [
+        { value: '1', disabled: true},
+        Validators.required
+      ]
     });
   }
 
@@ -122,7 +124,7 @@ export class AssignTasksComponent implements OnInit {
     }
 
     const taskData = this.taskForm.value;
-    console.log(taskData)
+    
 
     if (this.isEditMode && this.taskId) {
       this.taskService.updateTask(this.taskId, taskData).subscribe(() => {

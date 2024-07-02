@@ -1,10 +1,10 @@
 <div class="d-flex row bg-light py-5 px-3 justify-content-center">
   @if (isEditMode) {
-    <h2 class="text-center fw-bold">Editar reunión</h2>
+  <h2 class="text-center fw-bold">Editar reunión</h2>
   } @else {
-    <h2 class="text-center fw-bold">Convocar reunión</h2>
+  <h2 class="text-center fw-bold">Convocar reunión</h2>
   }
-  
+
   <div class="card w-75 p-0">
     <div class="card-body">
       <form class="d-inline-flex" [formGroup]="meetingForm" (ngSubmit)="onSubmit()">
@@ -32,8 +32,8 @@
           </div>
           <div class="input-group">
             <span class="input-group-text"><i class="fas fa-signature"></i></span>
-            <input type="text" class="form-control p-0 ps-2" id="meeting_description" required formControlName="meeting_description"
-              placeholder="Descripción de la reunión..." />
+            <input type="text" class="form-control p-0 ps-2" id="meeting_description" required
+              formControlName="meeting_description" placeholder="Descripción de la reunión..." />
           </div>
           <div class="input-group">
             <span class="input-group-text"><i class="fas fa-users"></i></span>
@@ -49,15 +49,16 @@
           <div class="d-flex gap-1">
             <div class="input-group">
               <span class="input-group-text"><i class="fas fa-comment-dots"></i></span>
-              <select class="form-select p-0 ps-2" id="topyc_type" formControlName="topyc_type" required>
+              <select class="form-select p-0 ps-2" id="type" formControlName="type" required>
                 <option>Orden del día</option>
                 <option>Desarrollo</option>
                 <option>Pendiente</option>
               </select>
-              <input type="text" class="form-control w-25 p-0 ps-2" id="comment" formControlName="topics" required placeholder="Anotaciones..." />
+              <input type="text" class="form-control w-25 p-0 ps-2" id="topic" formControlName="topic" required
+                placeholder="Anotaciones..." />
             </div>
             <div class="d-flex-wrap align-content-center">
-              <button type="button" class="btn btn-sm btn-success" name="action" title="Enviar" (click)="addTask()">
+              <button type="button" class="btn btn-sm btn-success" name="action" title="Enviar" (click)="addTopic()">
                 <i class="fas fa-paper-plane"></i>
               </button>
             </div>
@@ -65,18 +66,13 @@
           <div class="mt-4" style="height:11em; overflow-y:scroll;">
             <ul class="d-flex gap-1 row">
               @for (topic of topicList; track $index) {
-                @if (topic.meeting_id == meetingId) {
-                  <li class="d-flex align-items-center border border-secondary rounded w-75">
-                    <button type="button" class="btn btn-close btn-sm p-2" (click)="removeTask($index)"></button>
+                <li class="d-flex align-items-center border border-secondary rounded w-75">
+                  <button type="button" class="btn btn-close btn-sm p-2" (click)="removeTopic($index)"></button>
                     <div class="px-2">
                       {{ topic.topic }}
                     </div>
-                    
-                  </li>
-                }
-                
+                </li>
               }
-              
             </ul>
           </div>
         </div>

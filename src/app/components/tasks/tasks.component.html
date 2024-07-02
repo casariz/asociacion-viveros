@@ -44,16 +44,31 @@
       </thead>
       <tbody>
         @for (task of filteredTasks; track task.task_id) {
-        <tr>
+        <tr [class.table-danger]="task.status.status === 5 || task.status.status === 8" [class.table-warning]="task.status.status === 6" [class.table-success]="task.status.status === 7">
           <td class="align-middle">
-            <span class="badge"><i class="fas fa-check-circle"
-                style="color: #1b9123"></i></span>
+            @if (task.status.status == 5) {
+              <span class="badge">
+                  <i class="fas fa-exclamation-triangle" style="color: #AA0000; font-size: 1em"></i>
+              </span>
+              } @else if (task.status.status == 6) {
+              <span class="badge">
+                  <i class="fas fa-exclamation-triangle" style="color: #FF9966; font-size: 1em"></i>
+              </span>
+              } @else if (task.status.status == 7) {
+                <span class="badge">
+                  <i class="fas fa-check-circle" style="color: #009900; font-size: 1em"></i>
+                </span>
+              } @else {
+                <span class="badge">
+                  <i class="fas fa-trash" style="color: #AA0000; font-size: 1em"></i>
+                </span>
+              }
           </td>
           <td class="align-middle">{{task.task_id}}<br> @if (task.meeting) {[{{task.meeting.meeting_id}}]}</td>
           <td class="align-middle">{{task.created_by.name}}</td>
           <td class="align-middle">{{task.start_date}}@if (task.estimated_time) {, <br>{{task.estimated_time}}
             {{task.units}}}</td>
-          <td class="align-middle">{{task.assigned_to.name}}</td>
+          <td class="align-middle">@if (task.assigned_to) { {{ task.assigned_to.name }} }</td>
           <td class="align-middle">
             {{task.task_description}}
             <br>
