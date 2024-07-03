@@ -16,14 +16,14 @@ export class TopicsService {
   }
 
   createTopic(topic: any): Observable<any> {
-    return this.http.post(`${this.apiUrl}/topics`, topic);
+    return this.http.post(`${this.apiUrl}/topics/store`, topic);
   }
 
   getTopicsByMeetingId(id: number):Observable<any> {
     return this.http.get(`${this.apiUrl}/topics/${id}`);
   }
 
-  deleteTopic(id:number, topic: any): Observable<any> {
-    return this.http.post(`${this.apiUrl}/topics/${id}/delete`, topic);
+  deleteTopic(id:number): Observable<any> {
+    return this.http.post(`${this.apiUrl}/topics/${id}/delete`, []);
   } 
 }

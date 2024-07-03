@@ -9,11 +9,12 @@ import {
 import { MeetingsService } from '../../../services/meetings.service';
 import { ActivatedRoute, Router } from '@angular/router';
 import { TopicsService } from '../../../services/topics.service';
+import { CommonModule } from '@angular/common';
 
 @Component({
   selector: 'app-add-meetings',
   standalone: true,
-  imports: [FormsModule, ReactiveFormsModule],
+  imports: [FormsModule, ReactiveFormsModule, CommonModule],
   templateUrl: './add-meetings.component.html',
   styleUrl: './add-meetings.component.css',
 })
@@ -48,7 +49,7 @@ export class AddMeetingsComponent implements OnInit {
     this.route.paramMap.subscribe((params) => {
       const id = params.get('id');
       const mode = this.route.snapshot.data['mode'];
-  
+
       if (id) {
         this.meetingId = +id;
         this.isEditMode = mode === 'edit';
@@ -62,7 +63,6 @@ export class AddMeetingsComponent implements OnInit {
     }
   }
 
-
   loadMeeting(): void {
     if (this.meetingId) {
       this.meetingsService
@@ -70,7 +70,7 @@ export class AddMeetingsComponent implements OnInit {
         .subscribe((meeting) => {
           this.meetingId = meeting.meeting.meeting_id;
           this.meetingForm.patchValue(meeting.meeting);
-  
+
           if (meeting.meeting) {
             this.meetingForm.patchValue({
               topic: '',
@@ -92,26 +92,42 @@ export class AddMeetingsComponent implements OnInit {
       });
     }
   }
-  
+
   addTopic(): void {
-    if (this.isCreateMode) {
-      const type = this.meetingForm.get('type')?.value;
-      const topic = this.meetingForm.get('topic')?.value;
-      if (type && topic) {
-        this.topicList.push({ type, topic });
-        this.meetingForm.get('topic')?.reset();
+    const type = this.meetingForm.get('type')?.value;
+    const topic = this.meetingForm.get('topic')?.value;
+    if (type && topic) {
+      this.topicList.push({ type, topic, status: 2 });
+      if (this.isEditMode) {
+        this.addTopicService(type, topic, this.meetingId);
       }
-      console.log(this.topicList);
     }
   }
 
-  removeTopic(index: number): void {
-    this.topicList.splice(index, 1);
+  addTopicService(type: string, topic: string, id: any): void {
+    this.topicsService
+      .createTopic({
+        meeting_id: id,
+        type: type,
+        topic: topic,
+        created_by: 1,
+      })
+      .subscribe({
+        next: (value) => {},
+        error: (err) => {},
+      });
+  }
+
+  removeTopic(id: number): void {
+    this.topicsService.deleteTopic(id).subscribe({
+      next: (value) => {
+        location.reload();
+      },
+    });
   }
 
   onSubmit(): void {
     const meetingData = this.meetingForm.value;
-    console.log(meetingData);
 
     if (this.isEditMode && this.meetingId) {
       this.meetingsService
@@ -120,9 +136,19 @@ export class AddMeetingsComponent implements OnInit {
           this.router.navigate(['/meetings']); // Redirige a la lista de tareas
         });
     } else {
-      this.meetingsService.createMeeting(meetingData).subscribe(() => {
+      this.meetingsService.createMeeting(meetingData).subscribe((value) => {
+        this.meetingId = value.meeting.meeting_id;
+        this.addTopicsToMeeting();
         this.router.navigate(['/meetings']); // Redirige a la lista de tareas
       });
+    }
+  }
+
+  addTopicsToMeeting(): void {
+    if (this.meetingId) {
+      for (let topic of this.topicList) {
+        this.addTopicService(topic.type, topic.topic, this.meetingId);
+      }
     }
   }
 }

@@ -54,7 +54,7 @@
                 <option>Desarrollo</option>
                 <option>Pendiente</option>
               </select>
-              <input type="text" class="form-control w-25 p-0 ps-2" id="topic" formControlName="topic" required
+              <input type="text" class="form-control w-25 p-0 ps-2" id="topic" formControlName="topic"
                 placeholder="Anotaciones..." />
             </div>
             <div class="d-flex-wrap align-content-center">
@@ -65,14 +65,12 @@
           </div>
           <div class="mt-4" style="height:11em; overflow-y:scroll;">
             <ul class="d-flex gap-1 row">
-              @for (topic of topicList; track $index) {
-                <li class="d-flex align-items-center border border-secondary rounded w-75">
-                  <button type="button" class="btn btn-close btn-sm p-2" (click)="removeTopic($index)"></button>
-                    <div class="px-2">
-                      {{ topic.topic }}
-                    </div>
-                </li>
-              }
+              <li class="d-flex align-items-center border border-secondary rounded w-75" *ngFor="let topic of topicList; let i = index">
+                <button type="button" class="btn btn-close btn-sm p-2" (click)="removeTopic(topic.topic_id)" *ngIf="topic.status==2"></button>
+                <div class="px-2 {{topic.status==1 ? 'text-decoration-line-through' : ''}}">
+                  {{ topic.topic }}
+                </div>
+              </li>
             </ul>
           </div>
         </div>
