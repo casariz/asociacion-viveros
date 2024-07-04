@@ -66,10 +66,10 @@
             }
           </td>
           <td class="align-middle">{{task.task_id}}<br> @if (task.meeting) {[{{task.meeting.meeting_id}}]}</td>
-          <td class="align-middle">{{task.created_by.name}}</td>
+          <td class="align-middle">{{task.created_by.first_name}}</td>
           <td class="align-middle">{{task.start_date}}@if (task.estimated_time) {, <br>{{task.estimated_time}}
             {{task.units}}}</td>
-          <td class="align-middle">@if (task.assigned_to) { {{ task.assigned_to.name }} }</td>
+          <td class="align-middle">@if (task.assigned_to) { {{ task.assigned_to.first_name }} }</td>
           <td class="align-middle">
             {{task.task_description}}
             <br>

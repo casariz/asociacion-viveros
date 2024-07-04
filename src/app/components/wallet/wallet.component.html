@@ -33,7 +33,7 @@
                 <tr>
                     <th class="text-start align-middle"></th>
                     <th class="text-start align-middle">ID</th>
-                    <th class="text-start align-middle">TIPO - MOTIVO - DESCRIPCIÓN</th>
+                    <th class="text-start align-middle">DESCRIPCIÓN</th>
                     <th class="text-start align-middle">PERIODO</th>
                     <th class="text-start align-middle">VENCE - ÚLTIMO REPORTE</th>
                     <th class="text-start align-middle">OBSERVACIONES</th>
@@ -49,9 +49,9 @@
                         </span>
                     </td>
                     <td class="align-middle">{{ wallet.obligation_id }}</td>
-                    <td class="align-middle">{{ wallet.internal_reference }}, {{wallet.obligation_description}}</td>
+                    <td class="align-middle">{{wallet.obligation_description}}</td>
                     <td class="align-middle">{{ wallet.period }}</td>
-                    <td class="align-middle">{{ wallet.expiration_day }}, {{ wallet.last_payment }}</td>
+                    <td class="align-middle">{{ wallet.expiration_date }}, {{ wallet.last_payment }}</td>
                     <td class="align-middle">
                         {{ wallet.observations }}
                     </td>

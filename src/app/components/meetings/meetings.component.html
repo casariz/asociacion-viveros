@@ -41,7 +41,7 @@
                     <th class="text-start align-middle">FECHA - LUGAR - CONVOCÓ</th>
                     <th class="text-start align-middle">DESCRIPCIÓN</th>
                     <th class="text-start align-middle">ORDEN DEL DÍA</th>
-                    <th class="text-start align-middle">ACCIONES</th>
+                    <th class="text-end align-middle">ACCIONES</th>
                 </tr>
             </thead>
             <tbody>
@@ -59,40 +59,48 @@
                         }
                     </td>
                     <td class="align-middle">{{ meeting.meeting_id }}</td>
-                    <td class="align-middle">{{ meeting.created_by.name }}</td>
+                    <td class="align-middle">{{ meeting.created_by.first_name }}</td>
                     <td class="align-middle">{{ meeting.meeting_date }} - {{ meeting.placement }}, <br> {{
-                        meeting.called_by.name }}</td>
+                        meeting.called_by.first_name }}</td>
                     <td class="align-middle">{{ meeting.meeting_description }}</td>
                     <td class="align-middle">
                         <div class="dropdown">
                             @if (meeting.topics) {
-                                <button class="btn btn-outline-secondary dropdown-toggle" type="button"
+                            <button class="btn btn-outline-secondary dropdown-toggle" type="button"
                                 data-bs-toggle="dropdown" aria-expanded="false">
-                                    Ver temas
-                                </button>
+                                Ver temas
+                            </button>
                             <ul class="dropdown-menu">
                                 @for (topic of topics; track $index) {
-                                    @if (topic.meeting_id == meeting.meeting_id) {
-                                        <li class="list-group-item  border-bottom">
-                                            {{topic.topic}}
-                                        </li>
-                                    }
+                                @if (topic.meeting_id == meeting.meeting_id) {
+                                <li class="list-group-item  border-bottom">
+                                    {{topic.topic}}
+                                </li>
+                                }
                                 }
                             </ul>
                             }
 
                         </div>
                     </td>
-                    <td class="align-middle">
+                    <td class="align-middle d-flex p-3 justify-content-end">
                         <div class="btn-group" role="group">
+                            @if (meeting.status.status == 3) {
                             <button type="button" class="btn btn-outline-secondary"><i
                                     class="fas fa-check"></i></button>
+                            }
+                             @if (meeting.status.status == 3) {
                             <a type="button" class="btn btn-outline-secondary"
                                 [routerLink]="['/', 'meetings', meeting.meeting_id, 'edit']"><i
-                                    class="fas fa-edit"></i></a>
+                                    class="fas fa-edit"></i></a> } @else {
+                                        <a type="button" class="btn btn-outline-secondary"
+                                [routerLink]="['/', 'meetings', meeting.meeting_id, 'edit']"><i
+                                    class="fas fa-pen-fancy"></i></a>
+                                    }
                             <a type="button" class="btn btn-outline-secondary"><i class="fas fa-print"></i></a>
+                            @if (meeting.status.status == 3) {
                             <button (click)="addTaskInMeeting(meeting.meeting_id)" class="btn btn-outline-secondary"><i
-                                    class="fas fa-th-list"></i></button>
+                                    class="fas fa-th-list"></i></button> }
                             <a type="button" class="btn btn-outline-secondary"><i class="fas fa-eye"></i></a>
                         </div>
                     </td>
@@ -106,17 +114,19 @@
         </table>
         <nav aria-label="Page navigation example">
             <ul class="pagination justify-content-center">
-              <li class="page-item" [class.disabled]="currentPage === 1">
-                <a class="page-link" (click)="changePage(currentPage - 1)" [attr.aria-disabled]="currentPage === 1">Anterior</a>
-              </li>
-              <li *ngFor="let page of getPageRange()" class="page-item" [class.active]="page === currentPage">
-                <a class="page-link" (click)="changePage(page)">{{ page }}</a>
-              </li>
-              <li class="page-item" [class.disabled]="currentPage === totalPages">
-                <a class="page-link" (click)="changePage(currentPage + 1)" [attr.aria-disabled]="currentPage === totalPages">Después</a>
-              </li>
+                <li class="page-item" [class.disabled]="currentPage === 1">
+                    <a class="page-link" (click)="changePage(currentPage - 1)"
+                        [attr.aria-disabled]="currentPage === 1">Anterior</a>
+                </li>
+                <li *ngFor="let page of getPageRange()" class="page-item" [class.active]="page === currentPage">
+                    <a class="page-link" (click)="changePage(page)">{{ page }}</a>
+                </li>
+                <li class="page-item" [class.disabled]="currentPage === totalPages">
+                    <a class="page-link" (click)="changePage(currentPage + 1)"
+                        [attr.aria-disabled]="currentPage === totalPages">Después</a>
+                </li>
             </ul>
-          </nav>
+        </nav>
     </div>
     <div class="d-flex justify-content-end m-2 gap-2">
         <a routerLink="add-meetings" class="btn btn-lg rounded-circle btn-primary border-0 add-button"><i
