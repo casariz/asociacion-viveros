@@ -22,8 +22,12 @@
           </div>
           <div class="input-group">
             <span class="input-group-text"><i class="fas fa-microphone"></i></span>
-            <input type="text" class="form-control p-0 ps-2" id="called_name" required formControlName="called_by"
-              placeholder="Seleccione vinculado..." />
+            <select class="form-select p-0 ps-2" name="called_by" id="called_by" formControlName="called_by">
+              <option value="" disabled selected>Seleccione vinculado...</option>
+              @for (user of users; track $index) {
+                <option value="{{user.id}}">[{{user.document_number}}] {{user.first_name}} {{user.last_name}}</option>
+              }
+            </select>
           </div>
           <div class="input-group">
             <span class="input-group-text"><i class="fas fa-location-dot"></i></span>
@@ -78,8 +82,9 @@
     </div>
     <div class="card-footer d-flex justify-content-end">
       <button class="btn btn-success" type="submit" (click)="onSubmit()">
-        <i class="fas fa-plus"></i> AGREGAR
-      </button>
+        <i class="fas {{ isEditMode ? 'fa-rotate-right' : 'fa-plus' }}"></i> {{ isEditMode ? 'ACTUALIZAR' :
+        'AGREGAR' }}
+    </button>
     </div>
   </div>
 </div>

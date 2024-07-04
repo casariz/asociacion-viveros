@@ -10,6 +10,7 @@ import { MeetingsService } from '../../../services/meetings.service';
 import { ActivatedRoute, Router } from '@angular/router';
 import { TopicsService } from '../../../services/topics.service';
 import { CommonModule } from '@angular/common';
+import { UsersService } from '../../../services/users.service';
 
 @Component({
   selector: 'app-add-meetings',
@@ -24,19 +25,20 @@ export class AddMeetingsComponent implements OnInit {
   isCreateMode: boolean = false;
   meetingId: number | null = null;
   topicList: any[] = [];
+  users: any[] = [];
 
   constructor(
     private fb: FormBuilder,
     private route: ActivatedRoute,
     private router: Router,
     private meetingsService: MeetingsService,
-    private topicsService: TopicsService
+    private topicsService: TopicsService,
+    private userService: UsersService
   ) {
     this.meetingForm = this.fb.group({
       meeting_date: ['', Validators.required],
       start_hour: ['', Validators.required],
       called_by: ['', Validators.required],
-      called_by_name: ['', Validators.required],
       placement: ['', Validators.required],
       meeting_description: ['', Validators.required],
       assistant_id: ['', Validators.required],
@@ -61,6 +63,7 @@ export class AddMeetingsComponent implements OnInit {
     if (this.isEditMode) {
       this.getTopics();
     }
+    this.getUsers();
   }
 
   loadMeeting(): void {
@@ -74,12 +77,22 @@ export class AddMeetingsComponent implements OnInit {
           if (meeting.meeting) {
             this.meetingForm.patchValue({
               topic: '',
-              called_by: meeting.meeting.called_by.person_id,
-              called_by_name: meeting.meeting.called_by.name,
+              called_by: meeting.meeting.called_by.id,
             });
           }
         });
     }
+  }
+
+  getUsers():void {
+    this.userService.getUsers().subscribe({
+      next:(value)=> {
+        this.users = value
+      },
+      error:(err)=> {
+        
+      },
+    })
   }
 
   getTopics(): void {
@@ -128,7 +141,7 @@ export class AddMeetingsComponent implements OnInit {
 
   onSubmit(): void {
     const meetingData = this.meetingForm.value;
-
+    
     if (this.isEditMode && this.meetingId) {
       this.meetingsService
         .updateMeeting(this.meetingId, meetingData)

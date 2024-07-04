@@ -1,4 +1,4 @@
-import { Component, Input, OnInit } from '@angular/core';
+import { AfterViewInit, Component, Input, OnInit } from '@angular/core';
 import {
   FormBuilder,
   FormGroup,
@@ -12,11 +12,13 @@ import { ActivatedRoute, Router } from '@angular/router';
 // Servicios
 import { TaskService } from '../../services/task.service';
 import { MeetingsService } from '../../services/meetings.service';
+import { UsersService } from '../../services/users.service';
+import { CommonModule } from '@angular/common';
 
 @Component({
   selector: 'app-assign-tasks',
   standalone: true,
-  imports: [ReactiveFormsModule],
+  imports: [ReactiveFormsModule, CommonModule],
   templateUrl: './assign-tasks.component.html',
   styleUrls: ['./assign-tasks.component.css'],
 })
@@ -26,13 +28,15 @@ export class AssignTasksComponent implements OnInit {
   isReadOnly: boolean = false;
   taskId: number | null = null;
   meetingId: number | null = null;
+  users: any[] = [];
 
   constructor(
     private fb: FormBuilder,
+    private route: ActivatedRoute,
+    private router: Router,
     private taskService: TaskService,
     private meetingsService: MeetingsService,
-    private route: ActivatedRoute,
-    private router: Router
+    private userService: UsersService
   ) {
     this.taskForm = this.fb.group({
       meeting_id: [{ value: '', disabled: true }, Validators.required],
@@ -50,9 +54,6 @@ export class AssignTasksComponent implements OnInit {
         { value: '', disabled: this.isReadOnly },
         Validators.required,
       ],
-      assigned_to_name: [
-        { value: '', disabled: this.isReadOnly },
-      ],
       assigned_to: [
         { value: '', disabled: this.isReadOnly },
       ],
@@ -68,6 +69,7 @@ export class AssignTasksComponent implements OnInit {
   }
 
   ngOnInit(): void {
+    this.getUsers();
     this.meetingId = this.meetingsService.getMeetingId();
     if (this.meetingId !== null) {
       this.taskForm.patchValue({
@@ -96,13 +98,11 @@ export class AssignTasksComponent implements OnInit {
         if (task.task.meeting) {
           this.taskForm.patchValue({
             meeting_description: task.task.meeting.meeting_description || '',
-            assigned_to_name: task.task.assigned_to.name,
-            assigned_to: task.task.assigned_to.person_id,
+            assigned_to: task.task.assigned_to.id,
           });
         } else {
           this.taskForm.patchValue({
-            assigned_to_name: task.task.assigned_to.name,
-            assigned_to: task.task.assigned_to.person_id,
+            assigned_to: task.task.assigned_to.id,
           });
         }
         if (this.isReadOnly) {
@@ -110,6 +110,17 @@ export class AssignTasksComponent implements OnInit {
         }
       });
     }
+  }
+
+  getUsers():void {
+    this.userService.getUsers().subscribe({
+      next:(value)=> {
+        this.users = value
+      },
+      error:(err)=> {
+        
+      },
+    })
   }
 
   onSubmit(): void {

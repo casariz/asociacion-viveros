@@ -48,9 +48,10 @@
                     </div>
                     <div class="input-group">
                         <span class="input-group-text"><i class="fas fa-helmet-safety"></i></span>
-                        <input type="text" formControlName="assigned_to_name" class="form-control p-0 ps-2" id="worker_id"
-                            />
-                    </div>
+                        <select class="selectpicker form-control p-0 ps-2" formControlName="assigned_to" data-live-search="true">
+                          <option *ngFor="let user of users" [value]="user.id">{{ user.first_name }} {{ user.last_name }}</option>
+                        </select>
+                      </div>
                     <div class="input-group">
                         <span class="input-group-text"><i class="fas fa-comment"></i></span>
                         <textarea formControlName="observations" id="observations" class="form-control" cols="50"
