@@ -1,5 +1,5 @@
 import { Meetings } from "./meetings";
-import { Person } from "./person";
+import { User } from "./user";
 import { Status } from "./status";
 
 export interface Tasks {
@@ -10,9 +10,9 @@ export interface Tasks {
     units: number,
     type_id: number,
     task_description: string,
-    assigned_to: Person,
+    assigned_to: User,
     observations: string,
-    created_by: Person,
+    created_by: User,
     creation_date: string,
     reviewed_by: number,
     review_date: string,

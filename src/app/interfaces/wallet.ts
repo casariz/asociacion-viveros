@@ -1,4 +1,4 @@
-import { Person } from "./person";
+import { User } from "./user";
 import { Status } from "./status";
 
 export interface Wallet {
@@ -9,12 +9,12 @@ export interface Wallet {
     quantity: number,
     period: string,
     alert_time: number,
-    created_by: Person,
+    created_by: User,
     last_payment: number,
-    expiration_day: string,
+    expiration_date: string,
     observations: string,
     internal_reference: string,
-    reviewed_by: Person,
+    reviewed_by: User,
     reviewed_date: string,
     status: Status,
 }
