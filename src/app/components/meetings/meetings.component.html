@@ -59,9 +59,8 @@
                         }
                     </td>
                     <td class="align-middle">{{ meeting.meeting_id }}</td>
-                    <td class="align-middle">{{ meeting.created_by.first_name }}</td>
-                    <td class="align-middle">{{ meeting.meeting_date }} - {{ meeting.placement }}, <br> {{
-                        meeting.called_by.first_name }}</td>
+                    <td class="align-middle">{{ meeting.created_by.first_name }} </td>
+                    <td class="align-middle">{{ meeting.meeting_date }} - {{ meeting.placement }}, <br> {{ meeting.called_by.first_name }} {{ meeting.called_by.last_name }}</td>
                     <td class="align-middle">{{ meeting.meeting_description }}</td>
                     <td class="align-middle">
                         <div class="dropdown">
