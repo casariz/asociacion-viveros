@@ -88,9 +88,22 @@ export class TasksComponent implements OnInit {
     });
   }
 
-  deleteTask(id: number, task: Tasks) {
-    this.taskService.deleteTask(id, task).subscribe({
-      next: (value) => {},
+  rejectTask(id: number) {
+    this.taskService.rejectTask(id).subscribe({
+      next: (value) => {
+        location.reload();
+      },
+      error: (err) => {
+        console.log('Algo ha fallado:', err);
+      },
+    });
+  }
+
+  completeTask(id: number) {
+    this.taskService.completeTask(id).subscribe({
+      next: (value) => {
+        location.reload();
+      },
       error: (err) => {
         console.log('Algo ha fallado:', err);
       },

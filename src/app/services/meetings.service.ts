@@ -28,10 +28,9 @@ export class MeetingsService {
     return this.http.put(`${this.apiUrl}/meetings/${id}/update`, meeting);
   }
 
-  deleteMeeting(id: number, meeting: any): Observable<any> {
-    return this.http.put(`${this.apiUrl}/meetings/${id}/delete`, meeting);
+  completeMeeting(id: number): Observable<any> {
+    return this.http.put(`${this.apiUrl}/meetings/${id}/complete`, []);
   }
-
 
   setMeetingId(id: number): void {
     this.meetingId = id;

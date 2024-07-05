@@ -69,6 +69,17 @@ export class MeetingsComponent implements OnInit {
     });
   }
 
+  completeMeeting(id: number) {
+    this.meetingsService.completeMeeting(id).subscribe({
+      next: (value) => {
+        location.reload();
+      },
+      error: (err) => {
+        console.log('Algo ha fallado:', err);
+      },
+    });
+  }
+
   changePage(page: number): void {
     if (page > 0 && page <= this.totalPages) {
       this.getMeetings(page);

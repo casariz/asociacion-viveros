@@ -86,7 +86,7 @@
                     <td class="align-middle d-flex p-3 justify-content-end">
                         <div class="btn-group" role="group">
                             @if (meeting.status.status == 3) {
-                            <button type="button" class="btn btn-outline-secondary"><i
+                            <button type="button" class="btn btn-outline-secondary" (click)="completeMeeting(meeting.meeting_id)"><i
                                     class="fas fa-check"></i></button>
                             }
                              @if (meeting.status.status == 3) {
