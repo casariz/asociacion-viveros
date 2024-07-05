@@ -23,8 +23,11 @@
           <div class="input-group position-relative">
             <span class="input-group-text"><i class="fas fa-microphone"></i></span>
             <input type="hidden" id="called_by" formControlName="called_by" />
-            <input class="form-control p-0 ps-2" id="called_by_visible" formControlName="called_by_name" type="text" size="50" placeholder="Seleccione vinculado..." autocomplete="off" required (input)="onSearch()" (focus)="showDropdown = true" />
-            <ul class="dropdown-menu w-75" [class.show]="showDropdown" *ngIf="filteredUsers.length" style="margin-top: 32px; margin-left: 35px">
+            <input class="form-control p-0 ps-2" id="called_by_visible" formControlName="called_by_name" type="text"
+              size="50" placeholder="Seleccione vinculado..." autocomplete="off" required (input)="onSearch()"
+              (focus)="showDropdown = true" />
+            <ul class="dropdown-menu w-75" [class.show]="showDropdown" *ngIf="filteredUsers.length"
+              style="margin-top: 32px; margin-left: 35px">
               <li *ngFor="let user of filteredUsers" class="dropdown-item" (click)="selectUser(user)">
                 {{user.first_name}} {{user.last_name}}
               </li>
@@ -40,11 +43,30 @@
             <input type="text" class="form-control p-0 ps-2" id="meeting_description" required
               formControlName="meeting_description" placeholder="Descripción de la reunión..." />
           </div>
-          <div class="input-group">
+
+          <div class="input-group my-2">
             <span class="input-group-text"><i class="fas fa-users"></i></span>
-            <input type="text" class="form-control p-0 ps-2" id="assistant_id" required formControlName="assistant_id"
-              placeholder="Seleccione vinculado..." />
+            <div class="form-control position-relative">
+              <input type="hidden" formControlName="assistant_id" />
+              <input class="form-control p-0 ps-2" id="assistant_id_visible" formControlName="assistant_name"
+                type="text" size="50" placeholder="Seleccione vinculado..." autocomplete="off"
+                (input)="onSearchAssistant()" (focus)="showDropdownAssistant = true" />
+              <ul class="dropdown-menu w-100" [class.show]="showDropdownAssistant" *ngIf="filteredUsers.length"
+                style="margin-top: 0px;">
+                <li *ngFor="let user of filteredUsers" class="dropdown-item" (click)="selectAssistant(user)">
+                  {{user.first_name}} {{user.last_name}}
+                </li>
+              </ul>
+              <div *ngIf="selectedAssistants.length" class="d-flex flex-row flex-wrap mt-2 gap-1">
+                <span *ngFor="let assistant of selectedAssistants"
+                  class="badge text-bg-light border border-secondary d-inline-flex align-items-center justify-content-between m-0 p-1 gap-1">
+                  <span class="align-middle m-0 p-0">{{assistant.first_name}} {{assistant.last_name}}</span>
+                  <button type="button" class="btn-close btn-sm m-0 p-0" (click)="removeAssistant(assistant)"></button>
+                </span>
+              </div>
+            </div>
           </div>
+
         </div>
 
         <div class="vr"></div>
@@ -70,8 +92,10 @@
           </div>
           <div class="mt-4" style="height:11em; overflow-y:scroll;">
             <ul class="d-flex gap-1 row">
-              <li class="d-flex align-items-center border border-secondary rounded w-75" *ngFor="let topic of topicList; let i = index">
-                <button type="button" class="btn btn-close btn-sm p-2" (click)="removeTopic(topic.topic_id)" *ngIf="topic.status==2"></button>
+              <li class="d-flex align-items-center border border-secondary rounded w-75"
+                *ngFor="let topic of topicList; let i = index">
+                <button type="button" class="btn btn-close btn-sm p-2" (click)="removeTopic(topic.topic_id)"
+                  *ngIf="topic.status==2"></button>
                 <div class="px-2 {{topic.status==1 ? 'text-decoration-line-through' : ''}}">
                   {{ topic.topic }}
                 </div>
@@ -85,7 +109,7 @@
       <button class="btn btn-success" type="submit" (click)="onSubmit()">
         <i class="fas {{ isEditMode ? 'fa-rotate-right' : 'fa-plus' }}"></i> {{ isEditMode ? 'ACTUALIZAR' :
         'AGREGAR' }}
-    </button>
+      </button>
     </div>
   </div>
 </div>

@@ -28,7 +28,9 @@ export class AddMeetingsComponent implements OnInit {
   searchTerm: string = '';
   users: any[] = [/* Tu lista de usuarios */];
   filteredUsers: any[] = [];
+  selectedAssistants: any[] = [];
   showDropdown = false;
+  showDropdownAssistant = false;
 
   constructor(
     private fb: FormBuilder,
@@ -46,6 +48,7 @@ export class AddMeetingsComponent implements OnInit {
       placement: ['', Validators.required],
       meeting_description: ['', Validators.required],
       assistant_id: ['', Validators.required],
+      assistant_name: ['', Validators.required],
       type: ['Orden del día', Validators.required],
       topic: ['', Validators.required],
     });
@@ -107,6 +110,31 @@ export class AddMeetingsComponent implements OnInit {
       called_by_name: `${user.first_name} ${user.last_name}`
     });
     this.showDropdown = false;
+  }
+
+  onSearchAssistant(): void {
+    const searchTerm = this.meetingForm.get('assistant_name')?.value.toLowerCase();
+    if (searchTerm) {
+      this.filteredUsers = this.users.filter(user =>
+        user.first_name.toLowerCase().includes(searchTerm) ||
+        user.last_name.toLowerCase().includes(searchTerm)
+      );
+    } else {
+      this.filteredUsers = [];
+    }
+  }
+
+  selectAssistant(user: any): void {
+    this.meetingForm.patchValue({
+      assistant_id: user.id,
+      assistant_name: `${user.first_name} ${user.last_name}`
+    });
+    this.selectedAssistants.push(user);
+    this.showDropdownAssistant = false;
+  }
+
+  removeAssistant(assistant: any): void {
+    this.selectedAssistants = this.selectedAssistants.filter(a => a.id !== assistant.id);
   }
 
   getUsers():void {
