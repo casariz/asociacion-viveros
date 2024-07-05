@@ -25,7 +25,10 @@ export class AddMeetingsComponent implements OnInit {
   isCreateMode: boolean = false;
   meetingId: number | null = null;
   topicList: any[] = [];
-  users: any[] = [];
+  searchTerm: string = '';
+  users: any[] = [/* Tu lista de usuarios */];
+  filteredUsers: any[] = [];
+  showDropdown = false;
 
   constructor(
     private fb: FormBuilder,
@@ -39,6 +42,7 @@ export class AddMeetingsComponent implements OnInit {
       meeting_date: ['', Validators.required],
       start_hour: ['', Validators.required],
       called_by: ['', Validators.required],
+      called_by_name: ['', Validators.required],
       placement: ['', Validators.required],
       meeting_description: ['', Validators.required],
       assistant_id: ['', Validators.required],
@@ -78,10 +82,31 @@ export class AddMeetingsComponent implements OnInit {
             this.meetingForm.patchValue({
               topic: '',
               called_by: meeting.meeting.called_by.id,
+              called_by_name: meeting.meeting.called_by.first_name+" "+meeting.meeting.called_by.last_name,
             });
           }
         });
     }
+  }
+
+  onSearch(): void {
+    const searchTerm = this.meetingForm.get('called_by_name')?.value.toLowerCase();
+    if (searchTerm) {
+      this.filteredUsers = this.users.filter(user =>
+        user.first_name.toLowerCase().includes(searchTerm) ||
+        user.last_name.toLowerCase().includes(searchTerm)
+      );
+    } else {
+      this.filteredUsers = [];
+    }
+  }
+
+  selectUser(user: any) {
+    this.meetingForm.patchValue({ 
+      called_by: user.id,
+      called_by_name: `${user.first_name} ${user.last_name}`
+    });
+    this.showDropdown = false;
   }
 
   getUsers():void {

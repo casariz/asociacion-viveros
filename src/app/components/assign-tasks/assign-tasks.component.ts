@@ -28,7 +28,10 @@ export class AssignTasksComponent implements OnInit {
   isReadOnly: boolean = false;
   taskId: number | null = null;
   meetingId: number | null = null;
-  users: any[] = [];
+  searchTerm: string = '';
+  users: any[] = [/* Tu lista de usuarios */];
+  filteredUsers: any[] = [];
+  showDropdown = false;
 
   constructor(
     private fb: FormBuilder,
@@ -55,6 +58,9 @@ export class AssignTasksComponent implements OnInit {
         Validators.required,
       ],
       assigned_to: [
+        { value: '', disabled: this.isReadOnly },
+      ],
+      assigned_to_name: [
         { value: '', disabled: this.isReadOnly },
       ],
       observations: [
@@ -99,10 +105,12 @@ export class AssignTasksComponent implements OnInit {
           this.taskForm.patchValue({
             meeting_description: task.task.meeting.meeting_description || '',
             assigned_to: task.task.assigned_to.id,
+            assigned_to_name: task.task.assigned_to.first_name+" "+task.task.assigned_to.last_name,
           });
-        } else {
+        } else if (task.task.assigned_to) {
           this.taskForm.patchValue({
             assigned_to: task.task.assigned_to.id,
+            assigned_to_name: task.task.assigned_to.first_name+" "+task.task.assigned_to.last_name,
           });
         }
         if (this.isReadOnly) {
@@ -112,15 +120,35 @@ export class AssignTasksComponent implements OnInit {
     }
   }
 
-  getUsers():void {
+  onSearch(): void {
+    const searchTerm = this.taskForm.get('assigned_to_name')?.value.toLowerCase();
+    if (searchTerm) {
+      this.filteredUsers = this.users.filter(user =>
+        user.first_name.toLowerCase().includes(searchTerm) ||
+        user.last_name.toLowerCase().includes(searchTerm)
+      );
+    } else {
+      this.filteredUsers = [];
+    }
+  }
+
+  selectUser(user: any) {
+    this.taskForm.patchValue({ 
+      assigned_to: user.id,
+      assigned_to_name: `${user.first_name} ${user.last_name}`
+    });
+    this.showDropdown = false;
+  }
+
+  getUsers(): void {
     this.userService.getUsers().subscribe({
-      next:(value)=> {
-        this.users = value
+      next: (value) => {
+        this.users = value;
       },
-      error:(err)=> {
-        
+      error: (err) => {
+        // Manejar el error
       },
-    })
+    });
   }
 
   onSubmit(): void {
@@ -135,8 +163,12 @@ export class AssignTasksComponent implements OnInit {
     }
 
     const taskData = this.taskForm.value;
-    
 
+    // Verifica si assigned_to está vacío y establece null
+    if (!taskData.assigned_to_name) {
+      taskData.assigned_to = '';
+    }
+    
     if (this.isEditMode && this.taskId) {
       this.taskService.updateTask(this.taskId, taskData).subscribe(() => {
         this.router.navigate(['/tasks']); // Redirige a la lista de tareas

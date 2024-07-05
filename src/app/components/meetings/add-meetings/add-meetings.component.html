@@ -20,14 +20,15 @@
               <input type="time" class="form-control p-0 ps-2" id="time" required formControlName="start_hour" />
             </div>
           </div>
-          <div class="input-group">
+          <div class="input-group position-relative">
             <span class="input-group-text"><i class="fas fa-microphone"></i></span>
-            <select class="form-select p-0 ps-2" name="called_by" id="called_by" formControlName="called_by">
-              <option value="" disabled selected>Seleccione vinculado...</option>
-              @for (user of users; track $index) {
-                <option value="{{user.id}}">[{{user.document_number}}] {{user.first_name}} {{user.last_name}}</option>
-              }
-            </select>
+            <input type="hidden" id="called_by" formControlName="called_by" />
+            <input class="form-control p-0 ps-2" id="called_by_visible" formControlName="called_by_name" type="text" size="50" placeholder="Seleccione vinculado..." autocomplete="off" required (input)="onSearch()" (focus)="showDropdown = true" />
+            <ul class="dropdown-menu w-75" [class.show]="showDropdown" *ngIf="filteredUsers.length" style="margin-top: 32px; margin-left: 35px">
+              <li *ngFor="let user of filteredUsers" class="dropdown-item" (click)="selectUser(user)">
+                {{user.first_name}} {{user.last_name}}
+              </li>
+            </ul>
           </div>
           <div class="input-group">
             <span class="input-group-text"><i class="fas fa-location-dot"></i></span>
