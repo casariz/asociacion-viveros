@@ -56,10 +56,10 @@ export class MeetingsComponent implements OnInit {
 
   getMeetings(page: number): void {
     this.meetingsService.getMeetings(page).subscribe({
-      next: (value) => {        
+      next: (value) => {
         this.meetings = value.data;
         this.currentPage = value.current_page;
-        this.totalPages = value.last_pages;
+        this.totalPages = value.last_page;
         this.filteredMeetings = this.meetings;
         this.applyFilters();
       },

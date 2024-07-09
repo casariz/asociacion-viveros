@@ -18,6 +18,8 @@ export class TasksComponent implements OnInit {
   filterForm: FormGroup;
   tasks: Tasks[] = []; // Replace with your actual task type
   filteredTasks: Tasks[] = [];
+  currentPage: number = 1;
+  totalPages: number = 1;
   status: any[] = []
 
   constructor(private fb: FormBuilder,
@@ -36,7 +38,7 @@ export class TasksComponent implements OnInit {
 
   ngOnInit(): void {
     this.getStatusTasks();
-    this.getTasks();
+    this.getTasks(this.currentPage);
   }
 
   createTaskWithoutMeeting(): void {
@@ -54,10 +56,12 @@ export class TasksComponent implements OnInit {
     this.router.navigate(['/', 'tasks', id, 'view']);
   }
 
-  getTasks() {
-    this.taskService.getTasks().subscribe({
+  getTasks(page: number) {
+    this.taskService.getTasks(page).subscribe({
       next: (value) => {
         this.tasks = value.data;
+        this.currentPage = value.current_page;
+        this.totalPages = value.last_page;
         this.filteredTasks = this.tasks;
         this.applyFilters();
       },
@@ -75,6 +79,16 @@ export class TasksComponent implements OnInit {
         console.log("Error al traer status: ", err);
       },
     })
+  }
+
+  changePage(page: number): void {
+    if (page > 0 && page <= this.totalPages) {
+      this.getTasks(page);
+    }
+  }
+
+  getPageRange(): number[] {
+    return Array.from({ length: this.totalPages }, (_, i) => i + 1);
   }
 
   setDefaultStatus(): void {

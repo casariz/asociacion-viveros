@@ -12,8 +12,8 @@ export class TaskService {
 
   constructor(private http: HttpClient) { }
 
-  getTasks(): Observable<any> {
-    return this.http.get<any>(`${this.apiUrl}/tasks`);
+  getTasks(page: number): Observable<any> {
+    return this.http.get<any>(`${this.apiUrl}/tasks?page=${page}`);
   }
 
   createTask(task: any): Observable<any> {

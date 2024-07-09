@@ -103,13 +103,19 @@
     </table>
     <nav aria-label="Page navigation example">
       <ul class="pagination justify-content-center">
-        <li class="page-item disabled"><a class="page-link">Previous</a></li>
-        <li class="page-item"><a class="page-link" href="#">1</a></li>
-        <li class="page-item"><a class="page-link" href="#">2</a></li>
-        <li class="page-item"><a class="page-link" href="#">3</a></li>
-        <li class="page-item"><a class="page-link" href="#">Next</a></li>
+          <li class="page-item" [class.disabled]="currentPage === 1">
+              <a class="page-link" (click)="changePage(currentPage - 1)"
+                  [attr.aria-disabled]="currentPage === 1">Anterior</a>
+          </li>
+          <li *ngFor="let page of getPageRange()" class="page-item" [class.active]="page === currentPage">
+              <a class="page-link" (click)="changePage(page)">{{ page }}</a>
+          </li>
+          <li class="page-item" [class.disabled]="currentPage === totalPages">
+              <a class="page-link" (click)="changePage(currentPage + 1)"
+                  [attr.aria-disabled]="currentPage === totalPages">Después</a>
+          </li>
       </ul>
-    </nav>
+  </nav>
   </div>
   <div class="d-flex justify-content-end m-2 gap-2">
     <button class="btn btn-lg rounded-circle btn-primary border-0 add-button" (click)="createTaskWithoutMeeting()"><i
