@@ -93,4 +93,12 @@ export const routes: Routes = [
     pathMatch: 'full',
     canActivate: [authGuard]
   },
+  {
+    path: 'wallet/:id/edit',
+    component: AddWalletComponent,
+    title: 'Editar cartera',
+    pathMatch: 'full',
+    data: { mode: 'edit' },
+    canActivate: [authGuard]
+  },
 ];

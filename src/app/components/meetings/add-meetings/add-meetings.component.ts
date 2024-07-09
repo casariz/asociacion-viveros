@@ -28,9 +28,7 @@ export class AddMeetingsComponent implements OnInit {
   meetingId: number | null = null;
   topicList: any[] = [];
   searchTerm: string = '';
-  users: User[] = [
-    /* Tu lista de usuarios */
-  ];
+  users: User[] = [];
   filteredUsers: User[] = [];
   selectedAssistants: any[] = [];
   newAssistants: any[] = [];
