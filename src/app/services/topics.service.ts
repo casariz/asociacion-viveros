@@ -16,7 +16,7 @@ export class TopicsService {
   }
 
   createTopic(topic: any): Observable<any> {
-    return this.http.post(`${this.apiUrl}/topics/store`, topic);
+    return this.http.post(`${this.apiUrl}/topics`, topic);
   }
 
   getTopicsByMeetingId(id: number):Observable<any> {
@@ -24,6 +24,6 @@ export class TopicsService {
   }
 
   deleteTopic(id:number): Observable<any> {
-    return this.http.post(`${this.apiUrl}/topics/${id}/delete`, []);
+    return this.http.put(`${this.apiUrl}/topics/${id}/delete`, []);
   } 
 }

@@ -43,7 +43,7 @@
         </tr>
       </thead>
       <tbody>
-        @for (task of filteredTasks; track task.task_id) {
+        @for (task of filteredTasks; track $index) {
         <tr [class.table-danger]="task.status.status === 5 || task.status.status === 8"
           [class.table-warning]="task.status.status === 6" [class.table-success]="task.status.status === 7">
           <td class="align-middle">

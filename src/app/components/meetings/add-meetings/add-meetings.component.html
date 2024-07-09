@@ -60,13 +60,16 @@
               <div *ngIf="selectedAssistants.length" class="d-flex flex-row flex-wrap mt-2 gap-1">
                 <span *ngFor="let assistant of selectedAssistants"
                   class="badge text-bg-light border border-secondary d-inline-flex align-items-center justify-content-between m-0 p-1 gap-1">
+                  @if (assistant.user_id && assistant.status == 2) {
+                    <span class="align-middle m-0 p-0">{{assistant.user_id.first_name}} {{assistant.user_id.last_name}}</span>
+                  }
                   <span class="align-middle m-0 p-0">{{assistant.first_name}} {{assistant.last_name}}</span>
+                  
                   <button type="button" class="btn-close btn-sm m-0 p-0" (click)="removeAssistant(assistant)"></button>
                 </span>
               </div>
             </div>
           </div>
-
         </div>
 
         <div class="vr"></div>

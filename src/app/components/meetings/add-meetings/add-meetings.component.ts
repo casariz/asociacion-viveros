@@ -11,6 +11,8 @@ import { ActivatedRoute, Router } from '@angular/router';
 import { TopicsService } from '../../../services/topics.service';
 import { CommonModule } from '@angular/common';
 import { UsersService } from '../../../services/users.service';
+import { AssistantMeetingsService } from '../../../services/assistant-meetings.service';
+import { User } from '../../../interfaces/user';
 
 @Component({
   selector: 'app-add-meetings',
@@ -26,9 +28,12 @@ export class AddMeetingsComponent implements OnInit {
   meetingId: number | null = null;
   topicList: any[] = [];
   searchTerm: string = '';
-  users: any[] = [/* Tu lista de usuarios */];
-  filteredUsers: any[] = [];
+  users: User[] = [
+    /* Tu lista de usuarios */
+  ];
+  filteredUsers: User[] = [];
   selectedAssistants: any[] = [];
+  newAssistants: any[] = [];
   showDropdown = false;
   showDropdownAssistant = false;
 
@@ -38,7 +43,8 @@ export class AddMeetingsComponent implements OnInit {
     private router: Router,
     private meetingsService: MeetingsService,
     private topicsService: TopicsService,
-    private userService: UsersService
+    private userService: UsersService,
+    private assistantService: AssistantMeetingsService
   ) {
     this.meetingForm = this.fb.group({
       meeting_date: ['', Validators.required],
@@ -85,39 +91,70 @@ export class AddMeetingsComponent implements OnInit {
             this.meetingForm.patchValue({
               topic: '',
               called_by: meeting.meeting.called_by.id,
-              called_by_name: meeting.meeting.called_by.first_name+" "+meeting.meeting.called_by.last_name,
+              called_by_name:
+                meeting.meeting.called_by.first_name +
+                ' ' +
+                meeting.meeting.called_by.last_name,
             });
           }
         });
+      this.getAssistants();
     }
   }
 
+  getUsers(): void {
+    this.userService.getUsers().subscribe({
+      next: (value) => {
+        this.users = value;
+      },
+      error: (err) => {},
+    });
+  }
+
   onSearch(): void {
-    const searchTerm = this.meetingForm.get('called_by_name')?.value.toLowerCase();
+    const searchTerm = this.meetingForm
+      .get('called_by_name')
+      ?.value.toLowerCase();
     if (searchTerm) {
-      this.filteredUsers = this.users.filter(user =>
-        user.first_name.toLowerCase().includes(searchTerm) ||
-        user.last_name.toLowerCase().includes(searchTerm)
+      this.filteredUsers = this.users.filter(
+        (user) =>
+          user.first_name.toLowerCase().includes(searchTerm) ||
+          user.last_name.toLowerCase().includes(searchTerm)
       );
     } else {
       this.filteredUsers = [];
     }
   }
 
-  selectUser(user: any) {
-    this.meetingForm.patchValue({ 
+  selectUser(user: any): void {
+    this.meetingForm.patchValue({
       called_by: user.id,
-      called_by_name: `${user.first_name} ${user.last_name}`
+      called_by_name: `${user.first_name} ${user.last_name}`,
     });
     this.showDropdown = false;
   }
 
+  // METODOS PARA LOS ASISTENTES DE REUNIONES
+  getAssistants(): void {
+    if (this.meetingId) {
+      this.assistantService.getAssistantByMeeting(this.meetingId).subscribe({
+        next: (value) => {
+          this.selectedAssistants = value.assistants;
+        },
+        error: (err) => {},
+      });
+    }
+  }
+
   onSearchAssistant(): void {
-    const searchTerm = this.meetingForm.get('assistant_name')?.value.toLowerCase();
+    const searchTerm = this.meetingForm
+      .get('assistant_name')
+      ?.value.toLowerCase();
     if (searchTerm) {
-      this.filteredUsers = this.users.filter(user =>
-        user.first_name.toLowerCase().includes(searchTerm) ||
-        user.last_name.toLowerCase().includes(searchTerm)
+      this.filteredUsers = this.users.filter(
+        (user) =>
+          user.first_name.toLowerCase().includes(searchTerm) ||
+          user.last_name.toLowerCase().includes(searchTerm)
       );
     } else {
       this.filteredUsers = [];
@@ -125,29 +162,65 @@ export class AddMeetingsComponent implements OnInit {
   }
 
   selectAssistant(user: any): void {
-    this.meetingForm.patchValue({
-      assistant_id: user.id,
-      assistant_name: `${user.first_name} ${user.last_name}`
-    });
     this.selectedAssistants.push(user);
+    this.meetingForm.patchValue({ assistant_name: '' });
     this.showDropdownAssistant = false;
+    if(this.meetingId){
+      this.addAssistantsToMeeting();
+    }
   }
 
   removeAssistant(assistant: any): void {
-    this.selectedAssistants = this.selectedAssistants.filter(a => a.id !== assistant.id);
+    if (this.meetingId) {
+      
+      this.assistantService.deleteAssistant(this.meetingId, assistant.user_id.id).subscribe({
+        next: (response) => {
+          location.reload()
+          // Elimina el asistente de la lista local después de una eliminación exitosa
+          this.selectedAssistants = this.selectedAssistants.filter(
+            (a) => a.user_id.id !== assistant.user_id.id || a.status !== 1
+          );
+        },
+        error: (err) => {
+          return
+        },
+      });
+    } else {
+      // Elimina el asistente de la lista local si no hay un meetingId
+      this.selectedAssistants = this.selectedAssistants.filter(
+        (a) => a.id !== assistant.id
+      );
+    }
   }
 
-  getUsers():void {
-    this.userService.getUsers().subscribe({
-      next:(value)=> {
-        this.users = value
-      },
-      error:(err)=> {
-        
-      },
-    })
+  addAssistantsToMeeting(): void {
+    if (this.meetingId) {
+      // Filtrar los asistentes que tienen un id no nulo y luego mapear para obtener solo los ids
+      const assistantIds = this.selectedAssistants
+        .filter(a => a.id !== null && a.id !== undefined)
+        .map(a => a.id);
+  
+      this.assistantService
+        .addAssistantsMeeting({
+          meeting_id: this.meetingId,
+          user_ids: assistantIds,
+        })
+        .subscribe({
+          next: (value) => {
+            // Manejar la respuesta exitosa
+            location.reload()
+          },
+          error: (err) => {
+            // Manejar el error
+          },
+        });
+    }
+    else {
+
+    }
   }
 
+  // METODOS PARA TOPICS
   getTopics(): void {
     if (this.meetingId) {
       this.topicsService.getTopicsByMeetingId(this.meetingId).subscribe({
@@ -192,29 +265,31 @@ export class AddMeetingsComponent implements OnInit {
     });
   }
 
-  onSubmit(): void {
-    const meetingData = this.meetingForm.value;
-    
-    if (this.isEditMode && this.meetingId) {
-      this.meetingsService
-        .updateMeeting(this.meetingId, meetingData)
-        .subscribe(() => {
-          this.router.navigate(['/meetings']); // Redirige a la lista de tareas
-        });
-    } else {
-      this.meetingsService.createMeeting(meetingData).subscribe((value) => {
-        this.meetingId = value.meeting.meeting_id;
-        this.addTopicsToMeeting();
-        this.router.navigate(['/meetings']); // Redirige a la lista de tareas
-      });
-    }
-  }
-
   addTopicsToMeeting(): void {
     if (this.meetingId) {
       for (let topic of this.topicList) {
         this.addTopicService(topic.type, topic.topic, this.meetingId);
       }
+    }
+  }
+
+  // METODO PARA ENVIAR FORMULARIO
+  onSubmit(): void {
+    const meetingData = this.meetingForm.value;
+
+    if (this.isEditMode && this.meetingId) {
+      this.meetingsService
+        .updateMeeting(this.meetingId, meetingData)
+        .subscribe(() => { // Agrega los asistentes después de actualizar la reunión
+          this.router.navigate(['/meetings']); // Redirige a la lista de reuniones
+        });
+    } else {
+      this.meetingsService.createMeeting(meetingData).subscribe((value) => {
+        this.meetingId = value.meeting.meeting_id;
+        this.addTopicsToMeeting();
+        this.addAssistantsToMeeting(); // Agrega los asistentes después de crear la reunión
+        this.router.navigate(['/meetings']); // Redirige a la lista de reuniones
+      });
     }
   }
 }
