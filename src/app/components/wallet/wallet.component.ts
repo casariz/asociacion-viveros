@@ -118,4 +118,15 @@ export class WalletComponent implements OnInit {
     }
     this.applyFilters();
   }
+
+  deleteWallet(id: number):void {
+    this.walletService.deleteWallet(id).subscribe({
+      next: (value) => {
+        location.reload();
+      },
+      error: (err) => {
+        console.log('Algo ha fallado:', err);
+      },
+    })
+  }
 }

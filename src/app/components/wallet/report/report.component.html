@@ -1,0 +1,39 @@
+<div class="d-flex row bg-light py-5 px-3 justify-content-center">
+      <h2 class="text-center fw-bold">Agregar pago</h2>
+    <div class="card w-50 p-0">
+      <div class="card-body">
+        <form class="d-inline-flex" [formGroup]="reportForm" (ngSubmit)="onSubmit()">
+          <div class="p-1 px-2 d-flex row gap-3">
+            <h6 class="fw-bold m-0">Datos</h6>
+            <div class="input-group">
+                <span class="input-group-text"><i class="fas fa-signature"></i></span>
+                <span class="input-group-text p-0 px-2"></span>
+                <input type="text" class="form-control p-0 ps-2" id="obligation_description" required
+              formControlName="obligation_description"/>
+            </div>
+
+            <div class="input-group">
+                <span class="input-group-text"><i class="fas fa-calendar-week"></i></span>
+                <input type="date" class="form-control p-0 ps-2">
+                <input type="date" class="form-control p-0 ps-2">
+            </div>
+            <div class="input-group">
+              <span class="input-group-text"><i class="fas fa-dollar-sign"></i></span>
+              <input type="number" class="form-control p-0 ps-2" id="alert_time" required formControlName="alert_time" min="0"
+                max="60" value="15" />
+            </div>
+            <div class="input-group">
+              <span class="input-group-text"><i class="fas fa-comment"></i></span>
+              <textarea formControlName="observations" id="observations" class="form-control" cols="50" rows="5"
+                placeholder="Observaciones..."></textarea>
+            </div>
+          </div>
+        </form>
+      </div>
+      <div class="card-footer d-flex justify-content-end">
+        <button class="btn btn-success" type="submit" (click)="onSubmit()">
+          <i class="fas fa-save"></i> GUARDAR
+        </button>
+      </div>
+    </div>
+  </div>

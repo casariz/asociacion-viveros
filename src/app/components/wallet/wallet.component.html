@@ -34,7 +34,7 @@
                     <th class="text-start align-middle"></th>
                     <th class="text-start align-middle">ID</th>
                     <th class="text-start align-middle">DESCRIPCIÓN</th>
-                    <th class="text-start align-middle">PERIODO</th>
+                    <th class="text-start align-middle">PERIODO [ALERTA]</th>
                     <th class="text-start align-middle">VENCE - ÚLTIMO REPORTE</th>
                     <th class="text-start align-middle">OBSERVACIONES</th>
                     <th class="text-start align-middle">ACCIONES</th>
@@ -50,8 +50,9 @@
                     </td>
                     <td class="align-middle">{{ wallet.obligation_id }}</td>
                     <td class="align-middle">{{wallet.obligation_description}}</td>
-                    <td class="align-middle">{{ wallet.period }}</td>
-                    <td class="align-middle">{{ wallet.expiration_date }}, {{ wallet.last_payment }}</td>
+                    <td class="align-middle">Cada {{ wallet.quantity }} {{wallet.period}} [{{ wallet.alert_time }} días previos]</td>
+                    <td class="align-middle"> @if (!wallet.expiration_date) {N/A} @else {
+                        }</td>
                     <td class="align-middle">
                         {{ wallet.observations }}
                     </td>
@@ -60,13 +61,13 @@
                             <a type="button" class="btn btn-outline-secondary" [routerLink]="['/', 'wallet', wallet.obligation_id, 'edit']">
                                 <i class="fas fa-edit"></i>
                             </a>
-                            <button type="button" class="btn btn-outline-secondary">
+                            <a type="button" class="btn btn-outline-secondary" [routerLink]="['/', 'wallet', 'report', wallet.obligation_id]">
                                 <i class="fas fa-file-circle-check"></i>
-                            </button>
-                            <button type="button" class="btn btn-outline-secondary">
+                            </a>
+                            <a type="button" class="btn btn-outline-secondary" [routerLink]="['/', 'wallet', wallet.obligation_id, 'view']">
                                 <i class="fas fa-eye"></i>
-                            </button>
-                            <button type="button" class="btn btn-outline-secondary">
+                            </a>
+                            <button type="button" class="btn btn-outline-secondary" (click)="deleteWallet(wallet.obligation_id)">
                                 <i class="fas fa-trash"></i>
                             </button>
                         </div>

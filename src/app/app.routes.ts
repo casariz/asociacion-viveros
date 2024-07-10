@@ -8,6 +8,7 @@ import { AssignTasksComponent } from './components/assign-tasks/assign-tasks.com
 import { AddWalletComponent } from './components/wallet/add-wallet/add-wallet.component';
 import { authGuard } from './services/auth.guard';
 import { RegisterComponent } from './components/register/register.component';
+import { ReportComponent } from './components/wallet/report/report.component';
 
 export const routes: Routes = [
   ///LOGUEO
@@ -73,7 +74,7 @@ export const routes: Routes = [
   {
     path: 'tasks/:id/view',
     component: AssignTasksComponent,
-    title: 'Editar tarea',
+    title: 'Ver tarea',
     pathMatch: 'full',
     data: { mode: 'view' },
     canActivate: [authGuard]
@@ -101,4 +102,19 @@ export const routes: Routes = [
     data: { mode: 'edit' },
     canActivate: [authGuard]
   },
+  {
+    path: 'wallet/:id/view',
+    component: AddWalletComponent,
+    title: 'Ver cartera',
+    pathMatch: 'full',
+    data: { mode: 'view' },
+    canActivate: [authGuard]
+  },
+  {
+    path: 'wallet/report/:id',
+    component: ReportComponent,
+    title: 'Añadir pago',
+    pathMatch: 'full',
+    canActivate: [authGuard]
+  }
 ];

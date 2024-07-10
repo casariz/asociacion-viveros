@@ -7,7 +7,7 @@ import {
   ReactiveFormsModule,
 } from '@angular/forms';
 import { CommonModule } from '@angular/common';
-import { ActivatedRoute } from '@angular/router';
+import { ActivatedRoute, Router } from '@angular/router';
 import { WalletService } from '../../../services/wallet.service';
 
 @Component({
@@ -15,7 +15,7 @@ import { WalletService } from '../../../services/wallet.service';
   standalone: true,
   imports: [FormsModule, ReactiveFormsModule, CommonModule],
   templateUrl: './add-wallet.component.html',
-  styleUrl: './add-wallet.component.css'
+  styleUrl: './add-wallet.component.css',
 })
 export class AddWalletComponent implements OnInit {
   walletForm: FormGroup;
@@ -24,18 +24,29 @@ export class AddWalletComponent implements OnInit {
   isCreateMode: boolean = false;
   isReadOnly: boolean = false;
 
-  constructor(private fb: FormBuilder,
+  constructor(
+    private fb: FormBuilder,
     private route: ActivatedRoute,
+    private router: Router,
     private walletService: WalletService
-  ){
+  ) {
     this.walletForm = this.fb.group({
-      obligation_description: [{ value: '', disabled: this.isReadOnly }, Validators.required],
-      quantity: [{ value: '', disabled: this.isReadOnly }, Validators.required],
-      period: [{ value: '', disabled: this.isReadOnly }, Validators.required],
-      alert_time: [{ value: '', disabled: this.isReadOnly }, Validators.required],
-      created_by: [{ value: '', disabled: this.isReadOnly }, Validators.required],
-      observations: [{ value: '', disabled: this.isReadOnly }, Validators.required]
-    })
+      obligation_description: [
+        { value: '', disabled: this.isReadOnly },
+        Validators.required,
+      ],
+      obligation_id: [{ value: '', disabled: true }, Validators.required],
+      quantity: [{ value: '1', disabled: this.isReadOnly }, Validators.required],
+      period: [{ value: 'Sin definir', disabled: this.isReadOnly }, Validators.required],
+      alert_time: [
+        { value: '15', disabled: this.isReadOnly },
+        Validators.required,
+      ],
+      observations: [
+        { value: '', disabled: this.isReadOnly },
+        Validators.required,
+      ],
+    });
   }
 
   ngOnInit(): void {
@@ -46,6 +57,7 @@ export class AddWalletComponent implements OnInit {
       if (id) {
         this.walletId = +id;
         this.isEditMode = mode === 'edit';
+        this.isReadOnly = mode === 'view';
         this.loadWallet();
       } else {
         this.isCreateMode = true;
@@ -53,17 +65,45 @@ export class AddWalletComponent implements OnInit {
     });
   }
 
-  loadWallet():void {
-    if(this.walletId){
+  loadWallet(): void {
+    if (this.walletId) {
       this.walletService.getWalletById(this.walletId).subscribe((wallet) => {
-        console.log(wallet.obligation)
         this.walletId = wallet.obligation.obligation_id;
-        this.walletForm.patchValue(wallet.obligation)
-      })
+        this.walletForm.patchValue(wallet.obligation);
+      });
+    }
+    if (this.isReadOnly) {
+      this.walletForm.disable();
     }
   }
 
-  onSubmit():void{
+  onSubmit(): void {
+    if (this.walletForm.invalid || this.isReadOnly) {
+      console.log(this.walletForm.value);
+      
+      return;
+    }
+    if (this.walletId !== null) {
+      this.walletForm.get('obligation_id')?.enable();
+      this.walletForm.patchValue({
+        obligation_id: this.walletId,
+      });
+    }
 
+    const walletData = this.walletForm.value;
+    console.log(walletData);
+    
+
+    if (this.isEditMode && this.walletId) {
+      this.walletService
+        .updateWallet(this.walletId, walletData)
+        .subscribe(() => {
+          this.router.navigate(['/wallet']); // Redirige a la lista de cartera
+        });
+    } else {
+      this.walletService.createWallet(walletData).subscribe(() => {
+        this.router.navigate(['/wallet']); // Redirige a la lista de cartera
+      });
+    }
   }
 }

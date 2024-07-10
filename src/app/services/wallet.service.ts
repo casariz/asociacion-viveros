@@ -26,7 +26,7 @@ export class WalletService {
     return this.http.put(`${this.apiUrl}/obligations/${id}/update`, obligation);
   }
 
-  deleteWallet(id: number, obligation: any): Observable<any> {
-    return this.http.put(`${this.apiUrl}/obligations/${id}/delete`, obligation);
+  deleteWallet(id: number): Observable<any> {
+    return this.http.put(`${this.apiUrl}/obligations/${id}/delete`, []);
   }
 }
