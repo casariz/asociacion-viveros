@@ -36,8 +36,14 @@ export class AddWalletComponent implements OnInit {
         Validators.required,
       ],
       obligation_id: [{ value: '', disabled: true }, Validators.required],
-      quantity: [{ value: '1', disabled: this.isReadOnly }, Validators.required],
-      period: [{ value: 'Sin definir', disabled: this.isReadOnly }, Validators.required],
+      quantity: [
+        { value: '1', disabled: this.isReadOnly },
+        Validators.required,
+      ],
+      period: [
+        { value: 'Sin definir', disabled: this.isReadOnly },
+        Validators.required,
+      ],
       alert_time: [
         { value: '15', disabled: this.isReadOnly },
         Validators.required,
@@ -80,7 +86,7 @@ export class AddWalletComponent implements OnInit {
   onSubmit(): void {
     if (this.walletForm.invalid || this.isReadOnly) {
       console.log(this.walletForm.value);
-      
+
       return;
     }
     if (this.walletId !== null) {
@@ -92,7 +98,6 @@ export class AddWalletComponent implements OnInit {
 
     const walletData = this.walletForm.value;
     console.log(walletData);
-    
 
     if (this.isEditMode && this.walletId) {
       this.walletService
