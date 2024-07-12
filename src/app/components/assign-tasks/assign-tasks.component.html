@@ -25,12 +25,20 @@
                     }
                     <div class="input-group">
                         <span class="input-group-text"><i class="fas fa-calendar-day"></i></span>
-                        <input type="date" formControlName="start_date" class="form-control p-0 ps-2" id="date" required />
+                        <input type="date" formControlName="start_date" class="form-control p-0 ps-2" id="date" required [ngClass]="{ 'is-invalid': submitted && f['start_date'].errors }"/>
+                        @if (submitted && f['start_date'].errors) {
+                            <div class="invalid-feedback">
+                              @if (f['start_date'].errors['required']) {
+                              <div>Fecha iniciales requerido</div>
+                              }
+                            </div>
+                            }
                     </div>
                     <div class="input-group">
                         <span class="input-group-text"><i class="fas fa-stopwatch"></i></span>
                         <input type="number" formControlName="estimated_time" class="form-control p-0 ps-2" id="number"
-                            required min="0" max="9999" />
+                            required min="0" max="9999" placeholder="Tiempo..." [ngClass]="{ 'is-invalid': submitted && f['estimated_time'].errors }"/>
+                            
                         <select formControlName="units" class="form-select p-0 ps-2" id="units" required>
                             <option selected>Sin definir</option>
                             <option>Minuto(s)</option>
@@ -40,11 +48,25 @@
                             <option>Semana(s)</option>
                             <option>Mes(es)</option>
                         </select>
+                        @if (submitted && f['estimated_time'].errors) {
+                            <div class="invalid-feedback">
+                              @if (f['estimated_time'].errors['required']) {
+                              <div>Fecha iniciales requerido</div>
+                              }
+                            </div>
+                            }
                     </div>
                     <div class="input-group">
                         <span class="input-group-text"><i class="fas fa-signature"></i></span>
                         <input type="text" formControlName="task_description" class="form-control p-0 ps-2"
-                            id="task_description" required placeholder="Descripción..." />
+                            id="task_description" required placeholder="Descripción..." [ngClass]="{ 'is-invalid': submitted && f['task_description'].errors }"/>
+                            @if (submitted && f['task_description'].errors) {
+                                <div class="invalid-feedback">
+                                  @if (f['task_description'].errors['required']) {
+                                  <div>Descripción de la tarea requerido</div>
+                                  }
+                                </div>
+                                }
                     </div>
 
                     <div class="input-group position-relative">

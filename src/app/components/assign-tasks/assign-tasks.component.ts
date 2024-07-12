@@ -1,9 +1,11 @@
-import { AfterViewInit, Component, Input, OnInit } from '@angular/core';
+import { Component, OnInit } from '@angular/core';
 import {
   FormBuilder,
   FormGroup,
   Validators,
+  FormControl,
   ReactiveFormsModule,
+  AbstractControl,
 } from '@angular/forms';
 import { ActivatedRoute, Router } from '@angular/router';
 
@@ -20,7 +22,7 @@ import { CommonModule } from '@angular/common';
   standalone: true,
   imports: [ReactiveFormsModule, CommonModule],
   templateUrl: './assign-tasks.component.html',
-  styleUrls: ['./assign-tasks.component.css'],
+  styleUrls: ['./assign-tasks.component.css']
 })
 export class AssignTasksComponent implements OnInit {
   taskForm: FormGroup;
@@ -32,6 +34,7 @@ export class AssignTasksComponent implements OnInit {
   users: any[] = [];
   filteredUsers: any[] = [];
   showDropdown = false;
+  submitted = false;
 
   constructor(
     private fb: FormBuilder,
@@ -41,36 +44,20 @@ export class AssignTasksComponent implements OnInit {
     private meetingsService: MeetingsService,
     private userService: UsersService
   ) {
-    this.taskForm = this.fb.group({
-      meeting_id: [{ value: '', disabled: true }, Validators.required],
-      meeting_description: [{ value: '', disabled: true }, Validators.required],
-      start_date: [
+    this.taskForm = new FormGroup({
+      meeting_id: new FormControl({ value: '', disabled: true }, Validators.required),
+      meeting_description: new FormControl({ value: '', disabled: true }, Validators.required),
+      start_date: new FormControl({ value: '', disabled: this.isReadOnly }, Validators.required),
+      estimated_time: new FormControl(
         { value: '', disabled: this.isReadOnly },
-        Validators.required,
-      ],
-      estimated_time: [
-        { value: 0, disabled: this.isReadOnly },
-        [Validators.required, Validators.min(0), Validators.max(9999)],
-      ],
-      units: [{ value: 'Sin definir', disabled: this.isReadOnly }, Validators.required],
-      task_description: [
-        { value: '', disabled: this.isReadOnly },
-        Validators.required,
-      ],
-      assigned_to: [
-        { value: '', disabled: this.isReadOnly },
-      ],
-      assigned_to_name: [
-        { value: '', disabled: this.isReadOnly },
-      ],
-      observations: [
-        { value: '', disabled: this.isReadOnly },
-        Validators.required,
-      ],
-      created_by: [
-        { value: '1', disabled: true},
-        Validators.required
-      ]
+        [Validators.required, Validators.min(0), Validators.max(9999)]
+      ),
+      units: new FormControl({ value: 'Sin definir', disabled: this.isReadOnly }, Validators.required),
+      task_description: new FormControl({ value: '', disabled: this.isReadOnly }, Validators.required),
+      assigned_to: new FormControl({ value: '', disabled: this.isReadOnly }),
+      assigned_to_name: new FormControl({ value: '', disabled: this.isReadOnly }),
+      observations: new FormControl({ value: '', disabled: this.isReadOnly }, Validators.required),
+      created_by: new FormControl({ value: '1', disabled: true }, Validators.required)
     });
   }
 
@@ -150,8 +137,13 @@ export class AssignTasksComponent implements OnInit {
     });
   }
 
+  get f(): { [key: string]: AbstractControl } {
+    return this.taskForm.controls;
+  }
+
   onSubmit(): void {
     if (this.taskForm.invalid || this.isReadOnly) {
+      this.submitted = true;
       return;
     }
     if (this.meetingId !== null) {
@@ -160,6 +152,7 @@ export class AssignTasksComponent implements OnInit {
         meeting_id: this.meetingId,
       });
     }
+    
 
     const taskData = this.taskForm.value;
 
