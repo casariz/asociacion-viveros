@@ -37,16 +37,31 @@
                     <th class="text-start align-middle">PERIODO [ALERTA]</th>
                     <th class="text-start align-middle">VENCE - ÚLTIMO REPORTE</th>
                     <th class="text-start align-middle">OBSERVACIONES</th>
-                    <th class="text-start align-middle">ACCIONES</th>
+                    <th class="text-end align-middle">ACCIONES</th>
                 </tr>
             </thead>
             <tbody>
                 @for (wallet of filteredWallets; track $index) {
-                <tr>
+                <tr [class.table-danger]="wallet.status.status === 13"
+                [class.table-warning]="wallet.status.status === 12" [class.table-success]="wallet.status.status === 10">
                     <td class="align-middle">
-                        <span class="badge">
-                            <i class="fas fa-check-circle" style="color: #1b9123;"></i>
-                        </span>
+                        @if (wallet.status.status == 9) {
+                            <span class="badge">
+                              <i class="fas fa-check-circle" style="color: #ffffff; font-size: 1em"></i>
+                            </span>
+                            } @else if (wallet.status.status == 10) {
+                            <span class="badge">
+                              <i class="fas fa-check-circle" style="color: #009900; font-size: 1em"></i>
+                            </span>
+                            } @else if (wallet.status.status == 12) {
+                            <span class="badge">
+                              <i class="fas fa-exclamation-triangle" style="color: #FF9966; font-size: 1em"></i>
+                            </span>
+                            } @else {
+                            <span class="badge">
+                              <i class="fas fa-times-circle" style="color: #AA0000; font-size: 1em"></i>
+                            </span>
+                            }
                     </td>
                     <td class="align-middle">{{ wallet.obligation_id }}</td>
                     <td class="align-middle">{{wallet.obligation_description}}</td>
@@ -56,20 +71,26 @@
                     <td class="align-middle">
                         {{ wallet.observations }}
                     </td>
-                    <td class="align-middle justify-content-center">
+                    <td class="align-middle d-flex justify-content-end">
                         <div class="btn-group" role="group">
-                            <a type="button" class="btn btn-outline-secondary" [routerLink]="['/', 'wallet', wallet.obligation_id, 'edit']">
-                                <i class="fas fa-edit"></i>
-                            </a>
-                            <a type="button" class="btn btn-outline-secondary" [routerLink]="['/', 'wallet', 'report', wallet.obligation_id]">
-                                <i class="fas fa-file-circle-check"></i>
-                            </a>
+                            @if (wallet.status.status != 9) {
+                                <a type="button" class="btn btn-outline-secondary" [routerLink]="['/', 'wallet', wallet.obligation_id, 'edit']">
+                                    <i class="fas fa-edit"></i>
+                                </a>
+                                @if (wallet.status.status != 10) {
+                                    <a type="button" class="btn btn-outline-secondary" [routerLink]="['/', 'wallet', 'report', wallet.obligation_id]">
+                                        <i class="fas fa-file-circle-check"></i>
+                                    </a>
+                                }
+                                
+                                <button type="button" class="btn btn-outline-secondary" (click)="deleteWallet(wallet.obligation_id)">
+                                    <i class="fas fa-trash"></i>
+                                </button>
+                            }
+                            
                             <a type="button" class="btn btn-outline-secondary" [routerLink]="['/', 'wallet', wallet.obligation_id, 'view']">
                                 <i class="fas fa-eye"></i>
                             </a>
-                            <button type="button" class="btn btn-outline-secondary" (click)="deleteWallet(wallet.obligation_id)">
-                                <i class="fas fa-trash"></i>
-                            </button>
                         </div>
                     </td>
                 </tr>

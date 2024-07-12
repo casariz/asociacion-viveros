@@ -7,20 +7,19 @@ import { ActivatedRoute, Router } from '@angular/router';
   standalone: true,
   imports: [],
   templateUrl: './table-payments.component.html',
-  styleUrl: './table-payments.component.css'
+  styleUrl: './table-payments.component.css',
 })
-export class TablePaymentsComponent implements OnInit{
+export class TablePaymentsComponent implements OnInit {
   payments: any[] = [];
   walletId: number | null = null;
 
-  constructor(private walletService: WalletService,
+  constructor(
+    private walletService: WalletService,
     private route: ActivatedRoute,
-    private router: Router,
-  ){
+    private router: Router
+  ) {}
 
-  }
-
-  ngOnInit(): void{
+  ngOnInit(): void {
     this.route.paramMap.subscribe((params) => {
       const id = params.get('id');
       if (id) {
@@ -30,11 +29,11 @@ export class TablePaymentsComponent implements OnInit{
     });
   }
 
-  loadPayments(): void{
-    if(this.walletId){
+  loadPayments(): void {
+    if (this.walletId) {
       this.walletService.getPayment(this.walletId).subscribe((payment) => {
-        this.payments = payment.payments
-      })
+        this.payments = payment.payments;
+      });
     }
   }
 }

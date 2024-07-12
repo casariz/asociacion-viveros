@@ -118,7 +118,6 @@ export class MeetingsComponent implements OnInit {
     const statusFormArray = this.filterForm.get('status') as FormArray;
     statusFormArray.clear();
 
-    // Agregar los estados por defecto ("Creado" y "Realizado")
     this.status.forEach(state => {
       if (state === 'Creado' || state === 'Realizado') {
         statusFormArray.push(this.fb.control(state));

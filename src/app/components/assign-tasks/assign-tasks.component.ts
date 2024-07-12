@@ -29,7 +29,7 @@ export class AssignTasksComponent implements OnInit {
   taskId: number | null = null;
   meetingId: number | null = null;
   searchTerm: string = '';
-  users: any[] = [/* Tu lista de usuarios */];
+  users: any[] = [];
   filteredUsers: any[] = [];
   showDropdown = false;
 
@@ -146,7 +146,6 @@ export class AssignTasksComponent implements OnInit {
         this.users = value;
       },
       error: (err) => {
-        // Manejar el error
       },
     });
   }
@@ -164,18 +163,17 @@ export class AssignTasksComponent implements OnInit {
 
     const taskData = this.taskForm.value;
 
-    // Verifica si assigned_to está vacío y establece null
     if (!taskData.assigned_to_name) {
       taskData.assigned_to = '';
     }
     
     if (this.isEditMode && this.taskId) {
       this.taskService.updateTask(this.taskId, taskData).subscribe(() => {
-        this.router.navigate(['/tasks']); // Redirige a la lista de tareas
+        this.router.navigate(['/tasks']);
       });
     } else {
       this.taskService.createTask(taskData).subscribe(() => {
-        this.router.navigate(['/tasks']); // Redirige a la lista de tareas
+        this.router.navigate(['/tasks']);
       });
     }
   }

@@ -44,6 +44,7 @@ export class WalletComponent implements OnInit {
     this.walletService.getWallets().subscribe({
       next: (value) => {
         this.wallets = value.data;
+        console.log(this.wallets);
         this.filteredWallets = this.wallets;
         this.applyFilters();
       },
@@ -72,7 +73,6 @@ export class WalletComponent implements OnInit {
     this.status.forEach((state) => {
       if (
         state === 'Activa' ||
-        state === 'Auditada' ||
         state === 'Pendiente' ||
         state === 'Vencida'
       ) {

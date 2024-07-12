@@ -96,7 +96,6 @@
                                 [routerLink]="['/', 'meetings', meeting.meeting_id, 'edit']"><i
                                     class="fas fa-pen-fancy"></i></a>
                                     }
-                            <a type="button" class="btn btn-outline-secondary"><i class="fas fa-print"></i></a>
                             @if (meeting.status.status == 3) {
                             <button (click)="addTaskInMeeting(meeting.meeting_id)" class="btn btn-outline-secondary"><i
                                     class="fas fa-th-list"></i></button> }

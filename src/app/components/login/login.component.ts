@@ -29,7 +29,6 @@ export class LoginComponent {
     
     this.authService.login(loginData).subscribe({
       next: (response) => {
-        // Asumiendo que la respuesta tiene el token en 'response.token'
         this.authService.saveToken(response.token);
         console.log('Login successful');
         this.router.navigate(['/meetings']);
