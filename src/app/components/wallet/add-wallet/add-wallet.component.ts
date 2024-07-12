@@ -9,11 +9,12 @@ import {
 import { CommonModule } from '@angular/common';
 import { ActivatedRoute, Router } from '@angular/router';
 import { WalletService } from '../../../services/wallet.service';
+import { TablePaymentsComponent } from '../table-payments/table-payments.component';
 
 @Component({
   selector: 'app-add-wallet',
   standalone: true,
-  imports: [FormsModule, ReactiveFormsModule, CommonModule],
+  imports: [FormsModule, ReactiveFormsModule, CommonModule, TablePaymentsComponent],
   templateUrl: './add-wallet.component.html',
   styleUrl: './add-wallet.component.css',
 })
@@ -74,7 +75,6 @@ export class AddWalletComponent implements OnInit {
   loadWallet(): void {
     if (this.walletId) {
       this.walletService.getWalletById(this.walletId).subscribe((wallet) => {
-        this.walletId = wallet.obligation.obligation_id;
         this.walletForm.patchValue(wallet.obligation);
       });
     }
@@ -85,8 +85,6 @@ export class AddWalletComponent implements OnInit {
 
   onSubmit(): void {
     if (this.walletForm.invalid || this.isReadOnly) {
-      console.log(this.walletForm.value);
-
       return;
     }
     if (this.walletId !== null) {
@@ -97,7 +95,6 @@ export class AddWalletComponent implements OnInit {
     }
 
     const walletData = this.walletForm.value;
-    console.log(walletData);
 
     if (this.isEditMode && this.walletId) {
       this.walletService

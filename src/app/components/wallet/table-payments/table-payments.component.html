@@ -1,0 +1,24 @@
+<div class="">
+        <table class="table table-hover caption-bottom text-sm">
+            <thead>
+                <tr>
+                    <th class="text-start align-middle">PERIODO</th>
+                    <th class="text-start align-middle">REPORTÓ <br> FECHA</th>
+                    <th class="text-start align-middle">VALOR</th>
+                </tr>
+            </thead>
+            <tbody>
+                @for (payment of payments; track $index) {
+                <tr>
+                    <td class="align-middle">{{payment.date_ini}} <br> {{payment.date_end}}</td>
+                    <td class="align-middle">{{payment.created_by.first_name}} {{payment.created_by.last_name}} <br> {{payment.creation_date}}</td>
+                    <td class="align-middle">$ {{payment.paid}}</td>
+                </tr>
+                } @empty {
+                <tr>
+                    <td colspan="7" class="text-center">No se han reportado pagos.</td>
+                </tr>
+                }
+            </tbody>
+        </table>
+</div>

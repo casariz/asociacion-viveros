@@ -29,4 +29,12 @@ export class WalletService {
   deleteWallet(id: number): Observable<any> {
     return this.http.put(`${this.apiUrl}/obligations/${id}/delete`, []);
   }
+
+  getPayment(id: number): Observable<any> {
+    return this.http.get(`${this.apiUrl}/payments/${id}`);
+  }
+
+  createPayment(payment: any): Observable<any> {
+    return this.http.post(`${this.apiUrl}/payments`, payment);
+  }
 }
