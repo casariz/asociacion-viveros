@@ -1,5 +1,5 @@
 import { Component, OnInit } from '@angular/core';
-import { FormsModule } from '@angular/forms';
+import { AbstractControl, FormsModule } from '@angular/forms';
 import {
   FormBuilder,
   FormGroup,
@@ -34,6 +34,7 @@ export class AddMeetingsComponent implements OnInit {
   newAssistants: any[] = [];
   showDropdown = false;
   showDropdownAssistant = false;
+  submitted = false;
 
   constructor(
     private fb: FormBuilder,
@@ -51,10 +52,10 @@ export class AddMeetingsComponent implements OnInit {
       called_by_name: ['', Validators.required],
       placement: ['', Validators.required],
       meeting_description: ['', Validators.required],
-      assistant_id: ['', Validators.required],
-      assistant_name: ['', Validators.required],
+      assistant_id: [''],
+      assistant_name: [''],
       type: ['Orden del día', Validators.required],
-      topic: ['', Validators.required],
+      topic: [''],
     });
   }
 
@@ -98,6 +99,10 @@ export class AddMeetingsComponent implements OnInit {
         });
       this.getAssistants();
     }
+  }
+
+  get f(): { [key: string]: AbstractControl } {
+    return this.meetingForm.controls;
   }
 
   getUsers(): void {
@@ -273,6 +278,11 @@ export class AddMeetingsComponent implements OnInit {
 
   // METODO PARA ENVIAR FORMULARIO
   onSubmit(): void {
+    if (this.meetingForm.invalid) {
+      this.submitted = true;
+      return;
+    }
+
     const meetingData = this.meetingForm.value;
 
     if (this.isEditMode && this.meetingId) {

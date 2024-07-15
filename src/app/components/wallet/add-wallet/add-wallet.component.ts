@@ -1,5 +1,5 @@
 import { Component, OnInit } from '@angular/core';
-import { FormsModule } from '@angular/forms';
+import { AbstractControl, FormsModule } from '@angular/forms';
 import {
   FormBuilder,
   FormGroup,
@@ -24,6 +24,7 @@ export class AddWalletComponent implements OnInit {
   isEditMode: boolean = false;
   isCreateMode: boolean = false;
   isReadOnly: boolean = false;
+  submitted = false;
 
   constructor(
     private fb: FormBuilder,
@@ -83,8 +84,13 @@ export class AddWalletComponent implements OnInit {
     }
   }
 
+  get f(): { [key: string]: AbstractControl } {
+    return this.walletForm.controls;
+  }
+
   onSubmit(): void {
     if (this.walletForm.invalid || this.isReadOnly) {
+      this.submitted = true;
       return;
     }
     if (this.walletId !== null) {

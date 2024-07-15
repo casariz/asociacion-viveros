@@ -13,11 +13,25 @@
           <div class="d-inline-flex gap-2 py-0">
             <div class="input-group">
               <span class="input-group-text"><i class="fas fa-calendar-day"></i></span>
-              <input type="date" class="form-control p-0 ps-2" id="date" required formControlName="meeting_date" />
+              <input type="date" class="form-control p-0 ps-2" id="date" required formControlName="meeting_date" [ngClass]="{ 'is-invalid': submitted && f['meeting_date'].errors }"/>
+              @if (submitted && f['meeting_date'].errors) {
+                <div class="invalid-feedback">
+                  @if (f['meeting_date'].errors['required']) {
+                  <div>Fecha requerido</div>
+                  }
+                </div>
+                }
             </div>
             <div class="input-group">
               <span class="input-group-text"><i class="fas fa-clock"></i></span>
-              <input type="time" class="form-control p-0 ps-2" id="time" required formControlName="start_hour" />
+              <input type="time" class="form-control p-0 ps-2" id="time" required formControlName="start_hour" [ngClass]="{ 'is-invalid': submitted && f['start_hour'].errors }"/>
+              @if (submitted && f['start_hour'].errors) {
+                <div class="invalid-feedback">
+                  @if (f['start_hour'].errors['required']) {
+                  <div>Hora requerido</div>
+                  }
+                </div>
+                }
             </div>
           </div>
           <div class="input-group position-relative">
@@ -25,7 +39,14 @@
             <input type="hidden" id="called_by" formControlName="called_by" />
             <input class="form-control p-0 ps-2" id="called_by_visible" formControlName="called_by_name" type="text"
               size="50" placeholder="Seleccione vinculado..." autocomplete="off" required (input)="onSearch()"
-              (focus)="showDropdown = true" />
+              (focus)="showDropdown = true" [ngClass]="{ 'is-invalid': submitted && f['called_by_name'].errors }"/>
+              @if (submitted && f['called_by_name'].errors) {
+                <div class="invalid-feedback">
+                  @if (f['called_by_name'].errors['required']) {
+                  <div>Convocado por es requerido</div>
+                  }
+                </div>
+                }
             <ul class="dropdown-menu w-75" [class.show]="showDropdown" *ngIf="filteredUsers.length"
               style="margin-top: 32px; margin-left: 35px">
               <li *ngFor="let user of filteredUsers" class="dropdown-item" (click)="selectUser(user)">
@@ -36,12 +57,26 @@
           <div class="input-group">
             <span class="input-group-text"><i class="fas fa-location-dot"></i></span>
             <input type="text" class="form-control p-0 ps-2" id="placement" required formControlName="placement"
-              placeholder="Lugar de la reunión..." />
+              placeholder="Lugar de la reunión..." [ngClass]="{ 'is-invalid': submitted && f['placement'].errors }"/>
+              @if (submitted && f['placement'].errors) {
+                <div class="invalid-feedback">
+                  @if (f['placement'].errors['required']) {
+                  <div>Lugar requerido</div>
+                  }
+                </div>
+                }
           </div>
           <div class="input-group">
             <span class="input-group-text"><i class="fas fa-signature"></i></span>
             <input type="text" class="form-control p-0 ps-2" id="meeting_description" required
-              formControlName="meeting_description" placeholder="Descripción de la reunión..." />
+              formControlName="meeting_description" placeholder="Descripción de la reunión..." [ngClass]="{ 'is-invalid': submitted && f['meeting_description'].errors }"/>
+              @if (submitted && f['meeting_description'].errors) {
+                <div class="invalid-feedback">
+                  @if (f['meeting_description'].errors['required']) {
+                  <div>Descripcion de la reunion requerido</div>
+                  }
+                </div>
+                }
           </div>
 
           <div class="input-group my-2">

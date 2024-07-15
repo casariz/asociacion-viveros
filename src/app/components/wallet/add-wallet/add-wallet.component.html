@@ -18,13 +18,27 @@
               <div class="input-group">
                 <span class="input-group-text"><i class="fas fa-signature"></i></span>
                 <input type="text" class="form-control p-0 ps-2" id="obligation_description" required
-                  formControlName="obligation_description" placeholder="Descripción..." />
+                  formControlName="obligation_description" placeholder="Descripción..."  [ngClass]="{ 'is-invalid': submitted && f['obligation_description'].errors }"/>
+                  @if (submitted && f['obligation_description'].errors) {
+                    <div class="invalid-feedback">
+                      @if (f['obligation_description'].errors['required']) {
+                      <div>Descripcion de la cartera requerido</div>
+                      }
+                    </div>
+                    }
               </div>
     
               <div class="input-group">
                 <span class="input-group-text"><i class="fas fa-stopwatch"></i></span>
                 <input type="number" class="form-control p-0 ps-2" id="quantity" required formControlName="quantity" min="1"
-                  max="365" value="1" />
+                  max="365" value="1"  [ngClass]="{ 'is-invalid': submitted && f['quantity'].errors }"/>
+                  @if (submitted && f['quantity'].errors) {
+                    <div class="invalid-feedback">
+                      @if (f['quantity'].errors['required']) {
+                      <div>Plazo de cartera requerido</div>
+                      }
+                    </div>
+                    }
                 <select class="form-select p-0 ps-2" id="period" required formControlName="period">
                   <option selected>Sin definir</option>
                   <option>Día(s)</option>
@@ -36,8 +50,15 @@
               <div class="input-group">
                 <span class="input-group-text"><i class="fas fa-bell"></i></span>
                 <input type="number" class="form-control p-0 ps-2" id="alert_time" required formControlName="alert_time"
-                  min="0" max="60" value="15" />
+                  min="0" max="60" value="15"  [ngClass]="{ 'is-invalid': submitted && f['alert_time'].errors }"/>
                 <span class="input-group-text p-0 ps-2">días previos</span>
+                @if (submitted && f['alert_time'].errors) {
+                  <div class="invalid-feedback">
+                    @if (f['alert_time'].errors['required']) {
+                    <div>Tiempo de alerta requerido</div>
+                    }
+                  </div>
+                  }
               </div>
               <div class="input-group">
                 <span class="input-group-text"><i class="fas fa-comment"></i></span>
