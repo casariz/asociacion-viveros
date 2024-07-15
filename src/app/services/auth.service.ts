@@ -59,4 +59,13 @@ export class AuthService {
   getAuthState(): Observable<boolean> {
     return this.authState.asObservable();
   }
+
+  getUserRole(): string | null {
+    const token = this.getToken();
+    if (token) {
+      const payload = JSON.parse(atob(token.split('.')[1]));
+      return payload.role; // Ajusta según la estructura de tu token JWT
+    }
+    return null;
+  }
 }

@@ -11,6 +11,7 @@ import { RegisterComponent } from './components/register/register.component';
 import { ReportComponent } from './components/wallet/report/report.component';
 import { UsersComponent } from './components/users/users.component';
 import { EditUsersComponent } from './components/users/edit-users/edit-users.component';
+import { roleGuard } from './services/role.guard';
 
 export const routes: Routes = [
   ///LOGUEO
@@ -39,7 +40,8 @@ export const routes: Routes = [
     component: AddMeetingsComponent,
     title: 'Añadir reunion',
     pathMatch: 'full',
-    canActivate: [authGuard]
+    canActivate: [authGuard, roleGuard],
+    data: { expectedRoles: ['Administrador(a)'] }
   },
   {
     path: 'meetings/:id/edit',
@@ -47,7 +49,7 @@ export const routes: Routes = [
     title: 'Editar reunion',
     pathMatch: 'full',
     data: { mode: 'edit' },
-    canActivate: [authGuard]
+    canActivate: [authGuard, roleGuard]
   },
   /// TAREAS
   {
@@ -63,7 +65,7 @@ export const routes: Routes = [
     title: 'Asignar tarea',
     pathMatch: 'full',
     data: { mode: 'create' },
-    canActivate: [authGuard]
+    canActivate: [authGuard, roleGuard]
   },
   {
     path: 'tasks/:id/edit',
@@ -71,7 +73,7 @@ export const routes: Routes = [
     title: 'Editar tarea',
     pathMatch: 'full',
     data: { mode: 'edit' },
-    canActivate: [authGuard]
+    canActivate: [authGuard, roleGuard]
   },
   {
     path: 'tasks/:id/view',
@@ -79,7 +81,7 @@ export const routes: Routes = [
     title: 'Ver tarea',
     pathMatch: 'full',
     data: { mode: 'view' },
-    canActivate: [authGuard]
+    canActivate: [authGuard, roleGuard]
   },
   /// CARTERA
   {
@@ -94,7 +96,7 @@ export const routes: Routes = [
     component: AddWalletComponent,
     title: 'Añadir cartera',
     pathMatch: 'full',
-    canActivate: [authGuard]
+    canActivate: [authGuard, roleGuard]
   },
   {
     path: 'wallet/:id/edit',
@@ -102,7 +104,7 @@ export const routes: Routes = [
     title: 'Editar cartera',
     pathMatch: 'full',
     data: { mode: 'edit' },
-    canActivate: [authGuard]
+    canActivate: [authGuard,roleGuard]
   },
   {
     path: 'wallet/:id/view',
@@ -110,14 +112,14 @@ export const routes: Routes = [
     title: 'Ver cartera',
     pathMatch: 'full',
     data: { mode: 'view' },
-    canActivate: [authGuard]
+    canActivate: [authGuard, roleGuard]
   },
   {
     path: 'wallet/report/:id',
     component: ReportComponent,
     title: 'Añadir pago',
     pathMatch: 'full',
-    canActivate: [authGuard]
+    canActivate: [authGuard, roleGuard]
   },
   //USUARIOS
   {
@@ -132,6 +134,6 @@ export const routes: Routes = [
     component: EditUsersComponent,
     title: 'Editar usuario',
     pathMatch: 'full',
-    canActivate: [authGuard]
+    canActivate: [authGuard, roleGuard]
   }
 ];

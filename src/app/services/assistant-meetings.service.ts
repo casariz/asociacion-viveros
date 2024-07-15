@@ -29,5 +29,4 @@ export class AssistantMeetingsService {
   deleteAssistant(meeting_id: number, user_id: number): Observable<any> {
     return this.http.delete<any>(`${this.apiUrl}/assistants/${meeting_id}/delete/${user_id}`, {});
   }
-  
 }
