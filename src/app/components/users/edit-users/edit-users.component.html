@@ -1,0 +1,89 @@
+<div class="d-flex row bg-light py-5 px-3 justify-content-center">
+    <h2 class="text-center fw-bold">Editar usuarios</h2>
+    <div class="card w-50 p-0">
+        <div class="card-body">
+            <form [formGroup]="userForm" (ngSubmit)="onSubmit()">
+                <div class="p-1 px-2 d-flex row gap-3">
+                    <h6 class="fw-bold m-0">Datos</h6>
+                    <div class="input-group">
+                        <span class="input-group-text"><i class="fas fa-user"></i></span>
+                        <input type="text" formControlName="first_name" class="form-control p-0 ps-2" id="first_name"
+                            placeholder="Nombres..." required
+                            [ngClass]="{ 'is-invalid': submitted && f['first_name'].errors }" />
+                        @if (submitted && f['first_name'].errors) {
+                        <div class="invalid-feedback">
+                            @if (f['first_name'].errors['required']) {
+                            <div>Nombres requerido</div>
+                            }
+                        </div>
+                        }
+                    </div>
+                    <div class="input-group">
+                        <span class="input-group-text"><i class="fas fa-user"></i></span>
+                        <input type="text" formControlName="last_name" class="form-control p-0 ps-2" id="last_name"
+                            placeholder="Apellidos..." required
+                            [ngClass]="{ 'is-invalid': submitted && f['last_name'].errors }" />
+                        @if (submitted && f['last_name'].errors) {
+                        <div class="invalid-feedback">
+                            @if (f['last_name'].errors['required']) {
+                            <div>Apellidos requerido</div>
+                            }
+                        </div>
+                        }
+                    </div>
+                    <div class="input-group">
+                        <span class="input-group-text"><i class="fas fa-lock"></i></span>
+                        <select formControlName="user_type" class="form-select p-0 ps-2" id="user_type" required>
+                            <option selected>Escoge un tipo de usuario</option>
+                            <option>Asociado(a)</option>
+                            <option>Secretario(a)</option>
+                            <option>Cartera</option>
+                            <option>Administrador(a)</option>
+                        </select>
+                        @if (submitted && f['user_type'].errors) {
+                        <div class="invalid-feedback">
+                            @if (f['user_type'].errors['required']) {
+                            <div>Fecha iniciales requerido</div>
+                            }
+                        </div>
+                        }
+                    </div>
+                    <div class="input-group">
+                        <span class="input-group-text"><i class="fas fa-id-card"></i></span>
+                        <input type="text" formControlName="document_number" class="form-control p-0 ps-2"
+                            id="document_number" required placeholder="Número de documento..."
+                            [ngClass]="{ 'is-invalid': submitted && f['document_number'].errors }" />
+                        @if (submitted && f['document_number'].errors) {
+                        <div class="invalid-feedback">
+                            @if (f['document_number'].errors['required']) {
+                            <div>Número de documento requerido</div>
+                            }
+                        </div>
+                        }
+                    </div>
+                    <div class="input-group">
+                        <span class="input-group-text"><i class="fas fa-envelope"></i></span>
+                        <input type="text" formControlName="email" class="form-control p-0 ps-2"
+                            id="email" required placeholder="Número de documento..."
+                            [ngClass]="{ 'is-invalid': submitted && f['email'].errors }" />
+                        @if (submitted && f['email'].errors) {
+                        <div class="invalid-feedback">
+                            @if (f['email'].errors['required']) {
+                            <div>Email requerido</div>
+                            }
+                        </div>
+                        }
+                    </div>
+                </div>
+
+            </form>
+
+        </div>
+        <div class="card-footer d-flex justify-content-end">
+            <button class="btn btn-success" type="submit" (click)="onSubmit()">
+
+                <i class="fas fa-rotate-right"></i> ACTUALIZAR
+            </button>
+        </div>
+    </div>
+</div>

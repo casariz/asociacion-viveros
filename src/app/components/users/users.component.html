@@ -1,0 +1,84 @@
+<section class="flex bg-light py-5 px-3">
+    <h2>Usuarios</h2>
+    <div class="mx-auto max-w-md w-100 rounded bg-white p-2 shadow">
+      <div class="d-flex justify-content-end">
+        <form [formGroup]="filterForm" (ngSubmit)="applyFilters()">
+          <div class="d-flex gap-2">
+            <input class="form-control" type="text" formControlName="employee" placeholder="ID/Nombre empleado...">
+            <div class="d-flex gap-1">
+              <div class="btn-group">
+                <button class="btn btn-outline-secondary dropdown-toggle" data-bs-toggle="dropdown">Estado</button>
+                <ul class="dropdown-menu">
+                  @for (state of status; track $index) {
+                  <li class="border-bottom p-2">
+                    <input type="checkbox" [checked]="statusFormArray.value.includes(state)"
+                      (change)="onStatusChange($event, state)">
+                    {{ state }}
+                  </li>
+                  }
+                </ul>
+              </div>
+            </div>
+            <div class="btn-group">
+              <button class="btn btn-outline-secondary" type="submit"><i class="fas fa-search"></i></button>
+              <button class="btn btn-outline-secondary" type="button" (click)="resetFilters()"><i
+                  class="fas fa-delete-left text-danger"></i></button>
+            </div>
+          </div>
+        </form>
+      </div>
+      <table class="table table-hover caption-bottom text-sm">
+        <thead>
+          <tr>
+            <th></th>
+            <th>ID</th>
+            <th>NOMBRE COMPLETO</th>
+            <th>Nº DOCUMENTO</th>
+            <th>TIPO DE USUARIO</th>
+            <th class="text-end">ACCIONES</th>
+          </tr>
+        </thead>
+        <tbody>
+          @for (user of filteredUsers; track $index) {
+          <tr [class.table-danger]="user.status === 5 || user.status === 8"
+            [class.table-warning]="user.status === 6" [class.table-success]="user.status === 7">
+            <td class="align-middle">
+              @if (user.status == 5) {
+              <span class="badge">
+                <i class="fas fa-exclamation-triangle" style="color: #AA0000; font-size: 1em"></i>
+              </span>
+              } @else if (user.status == 6) {
+              <span class="badge">
+                <i class="fas fa-exclamation-triangle" style="color: #FF9966; font-size: 1em"></i>
+              </span>
+            }
+            </td>
+            <td class="align-middle">{{user.id}}</td>
+            <td class="align-middle">{{user.first_name}} {{user.last_name}}</td>
+            <td class="align-middle">@if (!user.document_number) { N/A } @else {{{user.document_number}}}</td>
+            <td class="align-middle">@if (!user.user_type) { N/A } @else {{{user.user_type}}}</td>
+            <td class="d-flex justify-content-end p-3">
+              <div class="btn-group" role="group">
+                
+                <a type="button" class="btn btn-outline-secondary" [routerLink]="['/', 'users', user.id, 'edit']"><i
+                    class="fas fa-edit" ></i></a>
+                <a type="button" class="btn btn-outline-secondary"><i
+                    class="fas fa-trash"></i></a>
+  
+              </div>
+            </td>
+          </tr>
+          } @empty {
+          <tr>
+            <td colspan="7" class="text-center">No se encontraron usuarios.</td>
+          </tr>
+          }
+        </tbody>
+      </table>
+
+    </div>
+    <div class="d-flex justify-content-end m-2 gap-2">
+      <button class="btn btn-lg rounded-circle btn-primary border-0 add-button" ><i
+          class="fas fa-plus"></i></button>
+    </div>
+  </section>

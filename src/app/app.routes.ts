@@ -9,6 +9,8 @@ import { AddWalletComponent } from './components/wallet/add-wallet/add-wallet.co
 import { authGuard } from './services/auth.guard';
 import { RegisterComponent } from './components/register/register.component';
 import { ReportComponent } from './components/wallet/report/report.component';
+import { UsersComponent } from './components/users/users.component';
+import { EditUsersComponent } from './components/users/edit-users/edit-users.component';
 
 export const routes: Routes = [
   ///LOGUEO
@@ -114,6 +116,21 @@ export const routes: Routes = [
     path: 'wallet/report/:id',
     component: ReportComponent,
     title: 'Añadir pago',
+    pathMatch: 'full',
+    canActivate: [authGuard]
+  },
+  //USUARIOS
+  {
+    path: 'users',
+    component: UsersComponent,
+    title: 'Usuarios',
+    pathMatch: 'full',
+    canActivate: [authGuard]
+  },
+  {
+    path: 'users/:id/edit',
+    component: EditUsersComponent,
+    title: 'Editar usuario',
     pathMatch: 'full',
     canActivate: [authGuard]
   }
