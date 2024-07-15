@@ -81,7 +81,7 @@ export const routes: Routes = [
     title: 'Ver tarea',
     pathMatch: 'full',
     data: { mode: 'view' },
-    canActivate: [authGuard, roleGuard]
+    canActivate: [authGuard]
   },
   /// CARTERA
   {
@@ -113,7 +113,7 @@ export const routes: Routes = [
     title: 'Ver cartera',
     pathMatch: 'full',
     data: { mode: 'view' },
-    canActivate: [authGuard, roleGuard]
+    canActivate: [authGuard]
   },
   {
     path: 'wallet/report/:id',
