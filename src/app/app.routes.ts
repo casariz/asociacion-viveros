@@ -48,7 +48,7 @@ export const routes: Routes = [
     component: AddMeetingsComponent,
     title: 'Editar reunion',
     pathMatch: 'full',
-    data: { mode: 'edit' },
+    data: { mode: 'edit', expectedRoles: ['Administrador(a)']},
     canActivate: [authGuard, roleGuard]
   },
   /// TAREAS
@@ -64,7 +64,7 @@ export const routes: Routes = [
     component: AssignTasksComponent,
     title: 'Asignar tarea',
     pathMatch: 'full',
-    data: { mode: 'create' },
+    data: { mode: 'create', expectedRoles: ['Administrador(a)'] },
     canActivate: [authGuard, roleGuard]
   },
   {
@@ -72,7 +72,7 @@ export const routes: Routes = [
     component: AssignTasksComponent,
     title: 'Editar tarea',
     pathMatch: 'full',
-    data: { mode: 'edit' },
+    data: { mode: 'edit', expectedRoles: ['Administrador(a)'] },
     canActivate: [authGuard, roleGuard]
   },
   {
@@ -96,14 +96,15 @@ export const routes: Routes = [
     component: AddWalletComponent,
     title: 'Añadir cartera',
     pathMatch: 'full',
-    canActivate: [authGuard, roleGuard]
+    canActivate: [authGuard, roleGuard],
+    data: {expectedRoles: ['Administrador(a)']}
   },
   {
     path: 'wallet/:id/edit',
     component: AddWalletComponent,
     title: 'Editar cartera',
     pathMatch: 'full',
-    data: { mode: 'edit' },
+    data: { mode: 'edit', expectedRoles: ['Administrador(a)'] },
     canActivate: [authGuard,roleGuard]
   },
   {
@@ -119,7 +120,8 @@ export const routes: Routes = [
     component: ReportComponent,
     title: 'Añadir pago',
     pathMatch: 'full',
-    canActivate: [authGuard, roleGuard]
+    canActivate: [authGuard, roleGuard],
+    data: {expectedRoles: ['Administrador(a)']}
   },
   //USUARIOS
   {
@@ -134,6 +136,7 @@ export const routes: Routes = [
     component: EditUsersComponent,
     title: 'Editar usuario',
     pathMatch: 'full',
-    canActivate: [authGuard, roleGuard]
+    canActivate: [authGuard, roleGuard],
+    data: {expectedRoles: ['Administrador(a)']}
   }
 ];
