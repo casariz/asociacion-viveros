@@ -33,7 +33,7 @@ export class EditUsersComponent implements OnInit {
       first_name: ['', Validators.required],
       last_name: ['', Validators.required],
       document_number: ['', Validators.required],
-      email: ['', Validators.required, Validators.email],
+      email: ['', [Validators.required, Validators.email]],
       user_type: ['Escoge un tipo de usuario', Validators.required],
     });
   }

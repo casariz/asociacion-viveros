@@ -71,6 +71,9 @@
                             @if (f['email'].errors['required']) {
                             <div>Email requerido</div>
                             }
+                            @if (f['email'].errors['email']) {
+                                <div>Email es invalido</div>
+                                }
                         </div>
                         }
                     </div>
