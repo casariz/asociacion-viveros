@@ -43,6 +43,17 @@ export class UsersComponent implements OnInit{
     })
   }
 
+  deleteUser(id: any): void{
+    this.userService.deleteUser(id).subscribe({
+      next:(value)=> {
+        location.reload();
+      },
+      error:(err)=> {
+        console.log('Algo ha fallado:', err);
+      },
+    })
+  }
+
   setDefaultStatus(): void {
     const statusFormArray = this.filterForm.get('status') as FormArray;
     statusFormArray.clear();

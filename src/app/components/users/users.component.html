@@ -62,7 +62,7 @@
                 
                 <a type="button" class="btn btn-outline-secondary" [routerLink]="['/', 'users', user.id, 'edit']"><i
                     class="fas fa-edit" ></i></a>
-                <a type="button" class="btn btn-outline-secondary"><i
+                <a type="button" class="btn btn-outline-secondary" (click)="deleteUser(user.id)"><i
                     class="fas fa-trash"></i></a>
   
               </div>
