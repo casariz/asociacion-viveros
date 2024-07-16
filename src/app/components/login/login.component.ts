@@ -13,6 +13,7 @@ import { FormBuilder, FormGroup, FormsModule, ReactiveFormsModule, Validators } 
 })
 export class LoginComponent {
   loginForm: FormGroup;
+  userType: string | null = null;
 
   constructor(private authService: AuthService, private router: Router, private fb: FormBuilder) {
     this.loginForm = this.fb.group({
@@ -29,8 +30,15 @@ export class LoginComponent {
     
     this.authService.login(loginData).subscribe({
       next: (response) => {
-        this.authService.saveToken(response.token);
-        console.log('Login successful');
+        // this.authService.saveToken(response.token);
+        // this.authService.fetchUserType().subscribe((response) => {
+        //   if (response) {
+            
+            
+        //     this.userType = response.user_type;
+        //     localStorage.setItem('user-type', response.user_type);
+        //   }
+        // });
         this.router.navigate(['/meetings']);
       },
       error: (error) => {

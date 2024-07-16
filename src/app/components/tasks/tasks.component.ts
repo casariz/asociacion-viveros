@@ -6,6 +6,7 @@ import { CommonModule } from '@angular/common';
 import { FormArray, FormBuilder, FormGroup, ReactiveFormsModule } from '@angular/forms';
 import { StatusService } from '../../services/status.service';
 import { MeetingsService } from '../../services/meetings.service';
+import { AuthService } from '../../services/auth.service';
 
 @Component({
   selector: 'app-tasks',
@@ -16,17 +17,20 @@ import { MeetingsService } from '../../services/meetings.service';
 })
 export class TasksComponent implements OnInit {
   filterForm: FormGroup;
-  tasks: Tasks[] = []; // Replace with your actual task type
+  tasks: Tasks[] = [];
   filteredTasks: Tasks[] = [];
   currentPage: number = 1;
   totalPages: number = 1;
-  status: any[] = []
+  status: any[] = [];
+  userRole: string | null = '';
 
   constructor(private fb: FormBuilder,
+    private router: Router,
     private taskService: TaskService,
     private statusService: StatusService,
     private meetingsService: MeetingsService,
-    private router: Router) {
+    private authService: AuthService
+    ) {
     this.filterForm = this.fb.group({
       startDate: [''],
       endDate: [''],
@@ -37,6 +41,7 @@ export class TasksComponent implements OnInit {
   }
 
   ngOnInit(): void {
+    this.getUserRole();
     this.getStatusTasks();
     this.getTasks(this.currentPage);
   }
@@ -79,6 +84,10 @@ export class TasksComponent implements OnInit {
         console.log("Error al traer status: ", err);
       },
     })
+  }
+
+  getUserRole():void{
+    this.userRole = this.authService.getUserRole();
   }
 
   changePage(page: number): void {

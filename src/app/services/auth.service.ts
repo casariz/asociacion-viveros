@@ -1,6 +1,6 @@
 import { Injectable } from '@angular/core';
 import { HttpClient, HttpHeaders } from '@angular/common/http';
-import { Observable, BehaviorSubject, tap } from 'rxjs';
+import { Observable, BehaviorSubject, tap, switchMap } from 'rxjs';
 
 const AUTH_API = 'http://localhost:8000/api/';
 const httpOptions = {
@@ -13,7 +13,7 @@ const httpOptions = {
 export class AuthService {
   private authState = new BehaviorSubject<boolean>(this.isLoggedIn());
   private userType: string | null = null;
-  
+
   constructor(private http: HttpClient) {}
 
   login(credentials: any): Observable<any> {
@@ -21,9 +21,11 @@ export class AuthService {
       tap((response: any) => {
         if (response.token) {
           this.saveToken(response.token);
-          this.authState.next(true);
-          this.fetchUserType().subscribe();
         }
+      }),
+      switchMap(() => this.fetchUserType()), 
+      tap(() => {
+        this.authState.next(true);
       })
     );
   }
@@ -37,13 +39,13 @@ export class AuthService {
       tap(() => {
         this.removeToken();
         this.authState.next(false);
+        location.reload();
       })
     );
   }
 
   saveToken(token: string): void {
     localStorage.setItem('auth-token', token);
-    this.authState.next(true);
   }
 
   getToken(): string | null {

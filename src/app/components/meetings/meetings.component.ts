@@ -6,6 +6,7 @@ import { MeetingsService } from '../../services/meetings.service';
 import { Meetings } from '../../interfaces/meetings';
 import { StatusService } from '../../services/status.service';
 import { TopicsService } from '../../services/topics.service';
+import { AuthService } from '../../services/auth.service';
 
 @Component({
   selector: 'app-meetings',
@@ -22,12 +23,14 @@ export class MeetingsComponent implements OnInit {
   filteredMeetings: Meetings[] = [];
   topics: any[] = [];
   status: any[] = [];
+  userRole: string | null = '';
 
   constructor(private fb: FormBuilder,
               private router: Router,
               private meetingsService: MeetingsService, 
               private statusService: StatusService,
-              private topicsService: TopicsService
+              private topicsService: TopicsService,
+              private authService: AuthService
               ) {
     this.filterForm = this.fb.group({
       startDate: [''],
@@ -36,12 +39,14 @@ export class MeetingsComponent implements OnInit {
       description: [''],
       status: this.fb.array([])
     });
+    
   }
 
   ngOnInit(): void {
     this.getStatusMeetings();
     this.getMeetings(this.currentPage);
     this.getTopics();
+    this.getUserRole();
   }
 
   addTaskInMeeting(id: number): void {
@@ -78,6 +83,10 @@ export class MeetingsComponent implements OnInit {
         console.log('Algo ha fallado:', err);
       },
     });
+  }
+
+  getUserRole():void{
+    this.userRole = this.authService.getUserRole();
   }
 
   changePage(page: number): void {

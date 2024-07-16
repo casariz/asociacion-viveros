@@ -73,20 +73,23 @@
                     </td>
                     <td class="align-middle d-flex justify-content-end">
                         <div class="btn-group" role="group">
-                            @if (wallet.status.status != 9) {
-                                <a type="button" class="btn btn-outline-secondary" [routerLink]="['/', 'wallet', wallet.obligation_id, 'edit']">
-                                    <i class="fas fa-edit"></i>
-                                </a>
-                                @if (wallet.status.status != 10) {
-                                    <a type="button" class="btn btn-outline-secondary" [routerLink]="['/', 'wallet', 'report', wallet.obligation_id]">
-                                        <i class="fas fa-file-circle-check"></i>
+                            @if (userRole === 'Administrador(a)' || userRole === 'Secretario(a)' || userRole === 'Cartera') {
+                                @if (wallet.status.status != 9) {
+                                    <a type="button" class="btn btn-outline-secondary" [routerLink]="['/', 'wallet', wallet.obligation_id, 'edit']">
+                                        <i class="fas fa-edit"></i>
                                     </a>
+                                    @if (wallet.status.status != 10) {
+                                        <a type="button" class="btn btn-outline-secondary" [routerLink]="['/', 'wallet', 'report', wallet.obligation_id]">
+                                            <i class="fas fa-file-circle-check"></i>
+                                        </a>
+                                    }
+                                    
+                                    <button type="button" class="btn btn-outline-secondary" (click)="deleteWallet(wallet.obligation_id)">
+                                        <i class="fas fa-trash"></i>
+                                    </button>
                                 }
-                                
-                                <button type="button" class="btn btn-outline-secondary" (click)="deleteWallet(wallet.obligation_id)">
-                                    <i class="fas fa-trash"></i>
-                                </button>
                             }
+                            
                             
                             <a type="button" class="btn btn-outline-secondary" [routerLink]="['/', 'wallet', wallet.obligation_id, 'view']">
                                 <i class="fas fa-eye"></i>

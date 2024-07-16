@@ -41,14 +41,14 @@ export const routes: Routes = [
     title: 'Añadir reunion',
     pathMatch: 'full',
     canActivate: [authGuard, roleGuard],
-    data: { expectedRoles: ['Administrador(a)'] }
+    data: { expectedRoles: ['Administrador(a)', 'Secretario(a)'] }
   },
   {
     path: 'meetings/:id/edit',
     component: AddMeetingsComponent,
     title: 'Editar reunion',
     pathMatch: 'full',
-    data: { mode: 'edit', expectedRoles: ['Administrador(a)']},
+    data: { mode: 'edit', expectedRoles: ['Administrador(a)', 'Secretario(a)']},
     canActivate: [authGuard, roleGuard]
   },
   /// TAREAS
@@ -64,7 +64,7 @@ export const routes: Routes = [
     component: AssignTasksComponent,
     title: 'Asignar tarea',
     pathMatch: 'full',
-    data: { mode: 'create', expectedRoles: ['Administrador(a)'] },
+    data: { mode: 'create', expectedRoles: ['Administrador(a)', 'Secretario(a)'] },
     canActivate: [authGuard, roleGuard]
   },
   {
@@ -72,7 +72,7 @@ export const routes: Routes = [
     component: AssignTasksComponent,
     title: 'Editar tarea',
     pathMatch: 'full',
-    data: { mode: 'edit', expectedRoles: ['Administrador(a)'] },
+    data: { mode: 'edit', expectedRoles: ['Administrador(a)', 'Secretario(a)'] },
     canActivate: [authGuard, roleGuard]
   },
   {
@@ -97,14 +97,14 @@ export const routes: Routes = [
     title: 'Añadir cartera',
     pathMatch: 'full',
     canActivate: [authGuard, roleGuard],
-    data: {expectedRoles: ['Administrador(a)', 'Cartera']}
+    data: {expectedRoles: ['Administrador(a)', 'Secretario(a)', 'Cartera']}
   },
   {
     path: 'wallet/:id/edit',
     component: AddWalletComponent,
     title: 'Editar cartera',
     pathMatch: 'full',
-    data: { mode: 'edit', expectedRoles: ['Administrador(a)', 'Cartera'] },
+    data: { mode: 'edit', expectedRoles: ['Administrador(a)', 'Secretario(a)', 'Cartera',] },
     canActivate: [authGuard,roleGuard]
   },
   {
@@ -121,7 +121,7 @@ export const routes: Routes = [
     title: 'Añadir pago',
     pathMatch: 'full',
     canActivate: [authGuard, roleGuard],
-    data: {expectedRoles: ['Administrador(a)', 'Cartera']}
+    data: {expectedRoles: ['Administrador(a)', 'Secretario(a)', 'Cartera']}
   },
   //USUARIOS
   {
@@ -129,7 +129,8 @@ export const routes: Routes = [
     component: UsersComponent,
     title: 'Usuarios',
     pathMatch: 'full',
-    canActivate: [authGuard]
+    canActivate: [authGuard, roleGuard],
+    data: {expectedRoles: ['Administrador(a)']}
   },
   {
     path: 'users/:id/edit',

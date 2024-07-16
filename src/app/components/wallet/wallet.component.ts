@@ -9,6 +9,7 @@ import { RouterLink } from '@angular/router';
 import { WalletService } from '../../services/wallet.service';
 import { Wallet } from '../../interfaces/wallet';
 import { StatusService } from '../../services/status.service';
+import { AuthService } from '../../services/auth.service';
 
 @Component({
   selector: 'app-wallet',
@@ -22,19 +23,23 @@ export class WalletComponent implements OnInit {
   wallets: Wallet[] = []; // Aquí irán tus reuniones
   filteredWallets: Wallet[] = [];
   status: any[] = [];
+  userRole: string | null = '';
 
   constructor(
     private fb: FormBuilder,
     private walletService: WalletService,
-    private statusService: StatusService
+    private statusService: StatusService,
+    private authService: AuthService
   ) {
     this.filterForm = this.fb.group({
       description: [''],
       status: this.fb.array([]), // Agregamos un campo para el estado
     });
+    
   }
 
   ngOnInit(): void {
+    this.getUserRole();
     this.getStatusWallet();
     this.getWallets();
   }
@@ -44,12 +49,15 @@ export class WalletComponent implements OnInit {
     this.walletService.getWallets().subscribe({
       next: (value) => {
         this.wallets = value.data;
-        console.log(this.wallets);
         this.filteredWallets = this.wallets;
         this.applyFilters();
       },
       error: (err) => {},
     });
+  }
+
+  getUserRole():void{
+    this.userRole = this.authService.getUserRole();
   }
 
   getStatusWallet(): void {
