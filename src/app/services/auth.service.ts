@@ -12,6 +12,7 @@ const httpOptions = {
 })
 export class AuthService {
   private authState = new BehaviorSubject<boolean>(this.isLoggedIn());
+  private userType: string | null = null;
   
   constructor(private http: HttpClient) {}
 
@@ -21,6 +22,7 @@ export class AuthService {
         if (response.token) {
           this.saveToken(response.token);
           this.authState.next(true);
+          this.fetchUserType().subscribe();
         }
       })
     );
@@ -50,6 +52,7 @@ export class AuthService {
 
   removeToken(): void {
     localStorage.removeItem('auth-token');
+    localStorage.removeItem('user-type');
   }
 
   isLoggedIn(): boolean {
@@ -60,11 +63,25 @@ export class AuthService {
     return this.authState.asObservable();
   }
 
+  fetchUserType(): Observable<any> {
+    return this.http.get(AUTH_API + 'user_type', httpOptions).pipe(
+      tap((response: any) => {
+        if (response.user_type) {
+          this.userType = response.user_type;
+          localStorage.setItem('user-type', response.user_type);
+        }
+      })
+    );
+  }
+
   getUserRole(): string | null {
-    const token = this.getToken();
-    if (token) {
-      const payload = JSON.parse(atob(token.split('.')[1]));
-      return payload.role; // Ajusta según la estructura de tu token JWT
+    if (this.userType) {
+      return this.userType;
+    }
+    const savedUserType = localStorage.getItem('user-type');
+    if (savedUserType) {
+      this.userType = savedUserType;
+      return this.userType;
     }
     return null;
   }

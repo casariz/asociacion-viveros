@@ -97,14 +97,14 @@ export const routes: Routes = [
     title: 'Añadir cartera',
     pathMatch: 'full',
     canActivate: [authGuard, roleGuard],
-    data: {expectedRoles: ['Administrador(a)']}
+    data: {expectedRoles: ['Administrador(a)', 'Cartera']}
   },
   {
     path: 'wallet/:id/edit',
     component: AddWalletComponent,
     title: 'Editar cartera',
     pathMatch: 'full',
-    data: { mode: 'edit', expectedRoles: ['Administrador(a)'] },
+    data: { mode: 'edit', expectedRoles: ['Administrador(a)', 'Cartera'] },
     canActivate: [authGuard,roleGuard]
   },
   {
@@ -121,7 +121,7 @@ export const routes: Routes = [
     title: 'Añadir pago',
     pathMatch: 'full',
     canActivate: [authGuard, roleGuard],
-    data: {expectedRoles: ['Administrador(a)']}
+    data: {expectedRoles: ['Administrador(a)', 'Cartera']}
   },
   //USUARIOS
   {
