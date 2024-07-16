@@ -22,7 +22,7 @@ import { CommonModule } from '@angular/common';
   standalone: true,
   imports: [ReactiveFormsModule, CommonModule],
   templateUrl: './assign-tasks.component.html',
-  styleUrls: ['./assign-tasks.component.css']
+  styleUrls: ['./assign-tasks.component.css'],
 })
 export class AssignTasksComponent implements OnInit {
   taskForm: FormGroup;
@@ -45,19 +45,43 @@ export class AssignTasksComponent implements OnInit {
     private userService: UsersService
   ) {
     this.taskForm = new FormGroup({
-      meeting_id: new FormControl({ value: '', disabled: true }, Validators.required),
-      meeting_description: new FormControl({ value: '', disabled: true }, Validators.required),
-      start_date: new FormControl({ value: '', disabled: this.isReadOnly }, Validators.required),
+      meeting_id: new FormControl(
+        { value: '', disabled: true },
+        Validators.required
+      ),
+      meeting_description: new FormControl(
+        { value: '', disabled: true },
+        Validators.required
+      ),
+      start_date: new FormControl(
+        { value: '', disabled: this.isReadOnly },
+        Validators.required
+      ),
       estimated_time: new FormControl(
         { value: '', disabled: this.isReadOnly },
         [Validators.required, Validators.min(0), Validators.max(9999)]
       ),
-      units: new FormControl({ value: 'Sin definir', disabled: this.isReadOnly }, Validators.required),
-      task_description: new FormControl({ value: '', disabled: this.isReadOnly }, Validators.required),
+      units: new FormControl(
+        { value: 'Sin definir', disabled: this.isReadOnly },
+        Validators.required
+      ),
+      task_description: new FormControl(
+        { value: '', disabled: this.isReadOnly },
+        Validators.required
+      ),
       assigned_to: new FormControl({ value: '', disabled: this.isReadOnly }),
-      assigned_to_name: new FormControl({ value: '', disabled: this.isReadOnly }),
-      observations: new FormControl({ value: '', disabled: this.isReadOnly }, Validators.required),
-      created_by: new FormControl({ value: '1', disabled: true }, Validators.required)
+      assigned_to_name: new FormControl({
+        value: '',
+        disabled: this.isReadOnly,
+      }),
+      observations: new FormControl(
+        { value: '', disabled: this.isReadOnly },
+        Validators.required
+      ),
+      created_by: new FormControl(
+        { value: '1', disabled: true },
+        Validators.required
+      ),
     });
   }
 
@@ -65,8 +89,10 @@ export class AssignTasksComponent implements OnInit {
     this.getUsers();
     this.meetingId = this.meetingsService.getMeetingId();
     if (this.meetingId !== null) {
+      console.log("hola");
+      
       this.taskForm.patchValue({
-        meeting_id: this.meetingId
+        meeting_id: this.meetingId,
       });
     } else {
       this.route.paramMap.subscribe((params) => {
@@ -86,19 +112,47 @@ export class AssignTasksComponent implements OnInit {
   loadTask(): void {
     if (this.taskId) {
       this.taskService.getTaskById(this.taskId).subscribe((task) => {
-        this.meetingId = task.task.meeting_id;
+        
         this.taskForm.patchValue(task.task);
         if (task.task.meeting) {
+          this.meetingId = task.task.meeting.meeting_id;
           this.taskForm.patchValue({
-            meeting_description: task.task.meeting.meeting_description || '',
-            assigned_to: task.task.assigned_to.id,
-            assigned_to_name: task.task.assigned_to.first_name+" "+task.task.assigned_to.last_name,
+            meeting_description: task.task.meeting.meeting_description,
           });
-        } else if (task.task.assigned_to) {
-          this.taskForm.patchValue({
-            assigned_to: task.task.assigned_to.id,
-            assigned_to_name: task.task.assigned_to.first_name+" "+task.task.assigned_to.last_name,
-          });
+          if (task.task.assigned_to) {
+            this.taskForm.patchValue({
+              assigned_to: task.task.assigned_to.id,
+              assigned_to_name:
+                task.task.assigned_to.first_name +
+                ' ' +
+                task.task.assigned_to.last_name,
+            });
+          } else if (!task.task.assigned_to) {
+            this.taskForm.patchValue({
+              assigned_to: '',
+              assigned_to_name: '',
+            });
+          }
+        } else {
+          {
+            this.taskForm.patchValue({
+              meeting_description: '',
+            });
+            if (task.task.assigned_to) {
+              this.taskForm.patchValue({
+                assigned_to: task.task.assigned_to.id,
+                assigned_to_name:
+                  task.task.assigned_to.first_name +
+                  ' ' +
+                  task.task.assigned_to.last_name,
+              });
+            } else if (!task.task.assigned_to) {
+              this.taskForm.patchValue({
+                assigned_to: '',
+                assigned_to_name: '',
+              });
+            }
+          }
         }
         if (this.isReadOnly) {
           this.taskForm.disable();
@@ -108,11 +162,14 @@ export class AssignTasksComponent implements OnInit {
   }
 
   onSearch(): void {
-    const searchTerm = this.taskForm.get('assigned_to_name')?.value.toLowerCase();
+    const searchTerm = this.taskForm
+      .get('assigned_to_name')
+      ?.value.toLowerCase();
     if (searchTerm) {
-      this.filteredUsers = this.users.filter(user =>
-        user.first_name.toLowerCase().includes(searchTerm) ||
-        user.last_name.toLowerCase().includes(searchTerm)
+      this.filteredUsers = this.users.filter(
+        (user) =>
+          user.first_name.toLowerCase().includes(searchTerm) ||
+          user.last_name.toLowerCase().includes(searchTerm)
       );
     } else {
       this.filteredUsers = [];
@@ -120,9 +177,9 @@ export class AssignTasksComponent implements OnInit {
   }
 
   selectUser(user: any) {
-    this.taskForm.patchValue({ 
+    this.taskForm.patchValue({
       assigned_to: user.id,
-      assigned_to_name: `${user.first_name} ${user.last_name}`
+      assigned_to_name: `${user.first_name} ${user.last_name}`,
     });
     this.showDropdown = false;
   }
@@ -132,8 +189,7 @@ export class AssignTasksComponent implements OnInit {
       next: (value) => {
         this.users = value;
       },
-      error: (err) => {
-      },
+      error: (err) => {},
     });
   }
 
@@ -152,14 +208,13 @@ export class AssignTasksComponent implements OnInit {
         meeting_id: this.meetingId,
       });
     }
-    
 
     const taskData = this.taskForm.value;
 
     if (!taskData.assigned_to_name) {
       taskData.assigned_to = '';
     }
-    
+
     if (this.isEditMode && this.taskId) {
       this.taskService.updateTask(this.taskId, taskData).subscribe(() => {
         this.router.navigate(['/tasks']);
