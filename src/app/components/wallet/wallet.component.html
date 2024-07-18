@@ -67,6 +67,7 @@
                     <td class="align-middle">{{wallet.obligation_description}}</td>
                     <td class="align-middle">Cada {{ wallet.quantity }} {{wallet.period}} [{{ wallet.alert_time }} días previos]</td>
                     <td class="align-middle"> @if (!wallet.expiration_date) {N/A} @else {
+                        {{wallet.expiration_date}} - ${{wallet.last_payment}}
                         }</td>
                     <td class="align-middle">
                         {{ wallet.observations }}
@@ -89,8 +90,6 @@
                                     </button>
                                 }
                             }
-                            
-                            
                             <a type="button" class="btn btn-outline-secondary" [routerLink]="['/', 'wallet', wallet.obligation_id, 'view']">
                                 <i class="fas fa-eye"></i>
                             </a>

@@ -1,0 +1,40 @@
+<div class="container mt-5">
+    <div class="d-flex justify-content-between">
+        <div>
+            <img src="asovalvi.png" alt="" style="width: 150px;">
+            <h4>ACTA NO. {{ acta.numero }}</h4>
+        </div>
+        <div>
+            <p>{{ acta.fecha }}</p>
+        </div>
+
+        <div>
+            <p>{{ acta.hora }}</p>
+            <p>{{ acta.tipoReunion }}</p>
+        </div>
+
+    </div>
+    <div class="card">
+
+        <div class="card-body">
+            <h5 class="card-title">Organizador: {{ acta.organizador }}</h5>
+            <p class="card-text"><strong>Apuntador:</strong> {{ acta.apuntador }}</p>
+            <h5 class="card-title">Asistentes</h5>
+            <ul class="list-group list-group-flush">
+                <li *ngFor="let asistente of acta.asistentes" class="list-group-item">{{ asistente }}</li>
+            </ul>
+            <h5 class="card-title mt-3">Orden del Día</h5>
+            <ol class="list-group list-group-flush">
+                <li *ngFor="let punto of acta.ordenDia" class="list-group-item">{{ punto }}</li>
+            </ol>
+            <div *ngFor="let tema of acta.temas">
+                <h5 class="card-title mt-3">{{ tema.titulo }}</h5>
+                <p><strong>Discusión:</strong> {{ tema.discusion }}</p>
+                <p><strong>Conclusión:</strong> {{ tema.conclusion }}</p>
+            </div>
+        </div>
+        <div class="card-footer text-muted text-center">
+            <p>Reunión finalizada a las {{ acta.horaClausura }}</p>
+        </div>
+    </div>
+</div>

@@ -12,6 +12,7 @@ import { ReportComponent } from './components/wallet/report/report.component';
 import { UsersComponent } from './components/users/users.component';
 import { EditUsersComponent } from './components/users/edit-users/edit-users.component';
 import { roleGuard } from './services/role.guard';
+import { ReportMeetingComponent } from './components/meetings/report-meeting/report-meeting.component';
 
 export const routes: Routes = [
   ///LOGUEO
@@ -50,6 +51,13 @@ export const routes: Routes = [
     pathMatch: 'full',
     data: { mode: 'edit', expectedRoles: ['Administrador(a)', 'Secretario(a)']},
     canActivate: [authGuard, roleGuard]
+  },
+  {
+    path: 'meetings/:id/view',
+    component: ReportMeetingComponent,
+    title: 'Acta reunion',
+    pathMatch: 'full',
+    canActivate: [authGuard]
   },
   /// TAREAS
   {
