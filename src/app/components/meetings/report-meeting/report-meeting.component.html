@@ -2,10 +2,10 @@
     <div class="d-flex justify-content-between align-items-end">
         <div>
             <img src="asovalvi.png" alt="" style="width: 150px;">
-            <h4>ACTA NO. {{ acta.numero }}</h4>
+            <h4>ACTA NO. {{ meeting.meeting_id }}</h4>
         </div>
         <div class="">
-            <p class="fw-bolder">{{ acta.fecha }}</p>
+            <p class="fw-bolder">{{ meeting.meeting_date }}</p>
         </div>
 
 
@@ -16,7 +16,7 @@
         <tbody>
             <tr>
                 <th>REUNION CONVOCADA POR</th>
-                <td>{{acta.organizador}}</td>
+                <td>{{meeting.called_by.first_name}} {{meeting.called_by.last_name}}</td>
             </tr>
             <tr>
                 <th>TIPO DE REUNION</th>
@@ -24,7 +24,7 @@
             </tr>
             <tr>
                 <th>ORGANIZADOR</th>
-                <td>{{acta.organizador}}</td>
+                <td>{{meeting.created_by.first_name}} {{meeting.created_by.last_name}}</td>
             </tr>
             <tr>
                 <th>APUNTADOR</th>
@@ -32,7 +32,9 @@
             </tr>
             <tr>
                 <th>ASISTENTES</th>
-                <td>{{acta.asistentes}}</td>
+                <td>@for (assistant of assistants; track $index) {
+                    {{assistant.first_name}}    
+                }</td>
             </tr>
             <tr>
                 <th>ORDEN DEL DÍA</th>
