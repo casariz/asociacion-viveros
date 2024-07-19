@@ -51,8 +51,7 @@ export class AddWalletComponent implements OnInit {
         Validators.required,
       ],
       observations: [
-        { value: '', disabled: this.isReadOnly },
-        Validators.required,
+        { value: '', disabled: this.isReadOnly }
       ],
     });
   }

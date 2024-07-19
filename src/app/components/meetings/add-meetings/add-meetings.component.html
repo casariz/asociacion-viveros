@@ -38,8 +38,8 @@
             <span class="input-group-text"><i class="fas fa-microphone"></i></span>
             <input type="hidden" id="called_by" formControlName="called_by" />
             <input class="form-control p-0 ps-2" id="called_by_visible" formControlName="called_by_name" type="text"
-              size="50" placeholder="Seleccione vinculado..." autocomplete="off" required (input)="onSearch()"
-              (focus)="showDropdown = true" [ngClass]="{ 'is-invalid': submitted && f['called_by_name'].errors }"/>
+              size="50" placeholder="Seleccione vinculado..." autocomplete="off" required (input)="onSearch('called_by_name')"
+              (focus)="showDropdownCalledBy = true" [ngClass]="{ 'is-invalid': submitted && f['called_by_name'].errors }"/>
               @if (submitted && f['called_by_name'].errors) {
                 <div class="invalid-feedback">
                   @if (f['called_by_name'].errors['required']) {
@@ -47,9 +47,9 @@
                   }
                 </div>
                 }
-            <ul class="dropdown-menu w-75" [class.show]="showDropdown" *ngIf="filteredUsers.length"
+            <ul class="dropdown-menu w-75" [class.show]="showDropdownCalledBy" *ngIf="filteredUsers.length"
               style="margin-top: 32px; margin-left: 35px">
-              <li *ngFor="let user of filteredUsers" class="dropdown-item" (click)="selectUser(user)">
+              <li *ngFor="let user of filteredUsers" class="dropdown-item" (click)="selectCalledBy(user)">
                 {{user.first_name}} {{user.last_name}}
               </li>
             </ul>
@@ -79,13 +79,55 @@
                 }
           </div>
 
-          <div class="input-group my-2">
+          <div class="input-group position-relative">
+            <span class="input-group-text"><i class="fas fa-building-user"></i></span>
+            <input type="hidden" id="director" formControlName="director" />
+            <input class="form-control p-0 ps-2" id="director_name" formControlName="director_name" type="text"
+              size="50" placeholder="Seleccione director ejecutivo..." autocomplete="off" required (input)="onSearch('director_name')"
+              (focus)="showDropdownDirector = true" [ngClass]="{ 'is-invalid': submitted && f['director_name'].errors }"/>
+              @if (submitted && f['director_name'].errors) {
+                <div class="invalid-feedback">
+                  @if (f['director_name'].errors['required']) {
+                  <div>Director es requerido</div>
+                  }
+                </div>
+                }
+            <ul class="dropdown-menu w-75" [class.show]="showDropdownDirector" *ngIf="filteredUsers.length"
+              style="margin-top: 32px; margin-left: 35px">
+              <li *ngFor="let user of filteredUsers" class="dropdown-item" (click)="selectDirector(user)">
+                {{user.first_name}} {{user.last_name}}
+              </li>
+            </ul>
+          </div>
+
+          <div class="input-group position-relative">
+            <span class="input-group-text"><i class="fas fa-pen-nib"></i></span>
+            <input type="hidden" id="secretary" formControlName="secretary" />
+            <input class="form-control p-0 ps-2" id="secretary_name" formControlName="secretary_name" type="text"
+              size="50" placeholder="Seleccione secretario(a)..." autocomplete="off" required (input)="onSearch('secretary_name')"
+              (focus)="showDropdownSecretary = true" [ngClass]="{ 'is-invalid': submitted && f['secretary_name'].errors }"/>
+              @if (submitted && f['secretary_name'].errors) {
+                <div class="invalid-feedback">
+                  @if (f['secretary_name'].errors['required']) {
+                  <div>Secretario es requerido</div>
+                  }
+                </div>
+                }
+            <ul class="dropdown-menu w-75" [class.show]="showDropdownSecretary" *ngIf="filteredUsers.length"
+              style="margin-top: 32px; margin-left: 35px">
+              <li *ngFor="let user of filteredUsers" class="dropdown-item" (click)="selectSecretary(user)">
+                {{user.first_name}} {{user.last_name}}
+              </li>
+            </ul>
+          </div>
+
+          <div class="input-group">
             <span class="input-group-text"><i class="fas fa-users"></i></span>
             <div class="form-control position-relative">
               <input type="hidden" formControlName="assistant_id" />
               <input class="form-control p-0 ps-2" id="assistant_id_visible" formControlName="assistant_name"
                 type="text" size="50" placeholder="Seleccione vinculado..." autocomplete="off"
-                (input)="onSearchAssistant()" (focus)="showDropdownAssistant = true" />
+                (input)="onSearch('assistant_name')" (focus)="showDropdownAssistant = true" />
               <ul class="dropdown-menu w-100" [class.show]="showDropdownAssistant" *ngIf="filteredUsers.length"
                 style="margin-top: 0px;">
                 <li *ngFor="let user of filteredUsers" class="dropdown-item" (click)="selectAssistant(user)">

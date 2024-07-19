@@ -32,9 +32,13 @@ export class AddMeetingsComponent implements OnInit {
   filteredUsers: User[] = [];
   selectedAssistants: any[] = [];
   newAssistants: any[] = [];
-  showDropdown = false;
+  showDropdownCalledBy = false;
   showDropdownAssistant = false;
+  showDropdownDirector = false;
+  showDropdownSecretary = false;
   submitted = false;
+
+  [key: string]: any;
 
   constructor(
     private fb: FormBuilder,
@@ -56,6 +60,10 @@ export class AddMeetingsComponent implements OnInit {
       assistant_name: [''],
       type: ['Orden del día', Validators.required],
       topic: [''],
+      director: ['', Validators.required],
+      director_name: ['', Validators.required],
+      secretary: ['', Validators.required],
+      secretary_name: ['', Validators.required]
     });
   }
 
@@ -114,10 +122,8 @@ export class AddMeetingsComponent implements OnInit {
     });
   }
 
-  onSearch(): void {
-    const searchTerm = this.meetingForm
-      .get('called_by_name')
-      ?.value.toLowerCase();
+  onSearch(fieldName: string): void {
+    const searchTerm = this.meetingForm.get(fieldName)?.value.toLowerCase();
     if (searchTerm) {
       this.filteredUsers = this.users.filter(
         (user) =>
@@ -129,15 +135,25 @@ export class AddMeetingsComponent implements OnInit {
     }
   }
 
-  selectUser(user: any): void {
-    this.meetingForm.patchValue({
-      called_by: user.id,
-      called_by_name: `${user.first_name} ${user.last_name}`,
-    });
-    this.showDropdown = false;
+  selectUser(user: any, fieldName: string, idFieldName: string | null, dropdownFlag: string): void {
+    const patchValue: { [key: string]: any } = {
+      [fieldName]: `${user.first_name} ${user.last_name}`
+    };
+    if (idFieldName) {
+      patchValue[idFieldName] = user.id;
+    }
+    this.meetingForm.patchValue(patchValue);
+    this[dropdownFlag] = false;
+
+    if (fieldName === 'assistant_name') {
+      this.selectedAssistants.push(user);
+      this.meetingForm.patchValue({ assistant_name: '' });
+      if (this.meetingId) {
+        this.addAssistantsToMeeting();
+      }
+    }
   }
 
-  // METODOS PARA LOS ASISTENTES DE REUNIONES
   getAssistants(): void {
     if (this.meetingId) {
       this.assistantService.getAssistantByMeeting(this.meetingId).subscribe({
@@ -149,37 +165,27 @@ export class AddMeetingsComponent implements OnInit {
     }
   }
 
-  onSearchAssistant(): void {
-    const searchTerm = this.meetingForm
-      .get('assistant_name')
-      ?.value.toLowerCase();
-    if (searchTerm) {
-      this.filteredUsers = this.users.filter(
-        (user) =>
-          user.first_name.toLowerCase().includes(searchTerm) ||
-          user.last_name.toLowerCase().includes(searchTerm)
-      );
-    } else {
-      this.filteredUsers = [];
-    }
+  selectCalledBy(user: any): void {
+    this.selectUser(user, 'called_by_name', 'called_by', 'showDropdownCalledBy');
   }
 
   selectAssistant(user: any): void {
-    this.selectedAssistants.push(user);
-    this.meetingForm.patchValue({ assistant_name: '' });
-    this.showDropdownAssistant = false;
-    if(this.meetingId){
-      this.addAssistantsToMeeting();
-    }
+    this.selectUser(user, 'assistant_name', null, 'showDropdownAssistant');
+  }
+
+  selectDirector(user: any): void {
+    this.selectUser(user, 'director_name', 'director', 'showDropdownDirector');
+  }
+
+  selectSecretary(user: any): void {
+    this.selectUser(user, 'secretary_name', 'secretary', 'showDropdownSecretary');
   }
 
   removeAssistant(assistant: any): void {
     if (this.meetingId) {
-      
       this.assistantService.deleteAssistant(this.meetingId, assistant.user_id.id).subscribe({
         next: (response) => {
           location.reload()
-          // Elimina el asistente de la lista local después de una eliminación exitosa
           this.selectedAssistants = this.selectedAssistants.filter(
             (a) => a.user_id.id !== assistant.user_id.id || a.status !== 1
           );
@@ -189,7 +195,6 @@ export class AddMeetingsComponent implements OnInit {
         },
       });
     } else {
-      // Elimina el asistente de la lista local si no hay un meetingId
       this.selectedAssistants = this.selectedAssistants.filter(
         (a) => a.id !== assistant.id
       );
@@ -198,7 +203,6 @@ export class AddMeetingsComponent implements OnInit {
 
   addAssistantsToMeeting(): void {
     if (this.meetingId) {
-      // Filtrar los asistentes que tienen un id no nulo y luego mapear para obtener solo los ids
       const assistantIds = this.selectedAssistants
         .filter(a => a.id !== null && a.id !== undefined)
         .map(a => a.id);
@@ -210,20 +214,13 @@ export class AddMeetingsComponent implements OnInit {
         })
         .subscribe({
           next: (value) => {
-            // Manejar la respuesta exitosa
             location.reload()
           },
-          error: (err) => {
-            // Manejar el error
-          },
+          error: (err) => {},
         });
-    }
-    else {
-
     }
   }
 
-  // METODOS PARA TOPICS
   getTopics(): void {
     if (this.meetingId) {
       this.topicsService.getTopicsByMeetingId(this.meetingId).subscribe({
@@ -276,7 +273,6 @@ export class AddMeetingsComponent implements OnInit {
     }
   }
 
-  // METODO PARA ENVIAR FORMULARIO
   onSubmit(): void {
     if (this.meetingForm.invalid) {
       this.submitted = true;
@@ -288,15 +284,15 @@ export class AddMeetingsComponent implements OnInit {
     if (this.isEditMode && this.meetingId) {
       this.meetingsService
         .updateMeeting(this.meetingId, meetingData)
-        .subscribe(() => { // Agrega los asistentes después de actualizar la reunión
-          this.router.navigate(['/meetings']); // Redirige a la lista de reuniones
+        .subscribe(() => {
+          this.router.navigate(['/meetings']);
         });
     } else {
       this.meetingsService.createMeeting(meetingData).subscribe((value) => {
         this.meetingId = value.meeting.meeting_id;
         this.addTopicsToMeeting();
-        this.addAssistantsToMeeting(); // Agrega los asistentes después de crear la reunión
-        this.router.navigate(['/meetings']); // Redirige a la lista de reuniones
+        this.addAssistantsToMeeting();
+        this.router.navigate(['/meetings']);
       });
     }
   }

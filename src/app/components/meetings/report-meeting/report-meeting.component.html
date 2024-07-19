@@ -1,40 +1,89 @@
 <div class="container mt-5">
-    <div class="d-flex justify-content-between">
+    <div class="d-flex justify-content-between align-items-end">
         <div>
             <img src="asovalvi.png" alt="" style="width: 150px;">
             <h4>ACTA NO. {{ acta.numero }}</h4>
         </div>
-        <div>
+        <div class="">
             <p class="fw-bolder">{{ acta.fecha }}</p>
         </div>
 
-        <div class="fw-bolder">
-            <p>{{ acta.hora }}</p>
-            <p>{{ acta.tipoReunion }}</p>
-        </div>
 
     </div>
-    <div class="card">
 
-        <div class="card-body">
-            <h5 class="card-title">Organizador: {{ acta.organizador }}</h5>
-            <p class="card-text"><strong>Apuntador:</strong> {{ acta.apuntador }}</p>
-            <h5 class="card-title">Asistentes</h5>
-            <ul class="list-group list-group-flush">
-                <li *ngFor="let asistente of acta.asistentes" class="list-group-item">{{ asistente }}</li>
-            </ul>
-            <h5 class="card-title mt-3">Orden del Día</h5>
-            <ol class="list-group list-group-flush">
-                <li *ngFor="let punto of acta.ordenDia" class="list-group-item">{{ punto }}</li>
-            </ol>
-            <div *ngFor="let tema of acta.temas">
-                <h5 class="card-title mt-3">{{ tema.titulo }}</h5>
-                <p><strong>Discusión:</strong> {{ tema.discusion }}</p>
-                <p><strong>Conclusión:</strong> {{ tema.conclusion }}</p>
-            </div>
+    <table class="table table-bordered">
+
+        <tbody>
+            <tr>
+                <th>REUNION CONVOCADA POR</th>
+                <td>{{acta.organizador}}</td>
+            </tr>
+            <tr>
+                <th>TIPO DE REUNION</th>
+                <td>{{acta.tipoReunion}}</td>
+            </tr>
+            <tr>
+                <th>ORGANIZADOR</th>
+                <td>{{acta.organizador}}</td>
+            </tr>
+            <tr>
+                <th>APUNTADOR</th>
+                <td>{{acta.apuntador}}</td>
+            </tr>
+            <tr>
+                <th>ASISTENTES</th>
+                <td>{{acta.asistentes}}</td>
+            </tr>
+            <tr>
+                <th>ORDEN DEL DÍA</th>
+                <td>
+                    <ol class="list-group-numbered m-0 fw-bold">
+                        <li *ngFor="let punto of acta.ordenDia" class="list-group-item">{{ punto }}</li>
+                    </ol>
+                </td>
+            </tr>
+            @for (task of acta.temas; track $index) {
+            <tr>
+                <th>TEMA {{$index + 1}}</th>
+                <td class="fw-bold">{{task.titulo}}</td>
+            </tr>
+            <tr>
+                <th>DISCUSION</th>
+                <td>{{task.discusion}}</td>
+            </tr>
+            }
+        </tbody>
+    </table>
+
+    <table class="table table-bordered">
+        <thead>
+            <tr>
+                <th scope="col">COMPROMISO DEL MES</th>
+                <th scope="col">RESPONSABLE</th>
+                <th scope="col">PLAZO</th>
+            </tr>
+        </thead>
+
+        <tbody>
+            <tr>
+                <td>{{acta.organizador}}</td>
+                <td>{{acta.organizador}}</td>
+                <td>{{acta.organizador}}</td>
+            </tr>
+            <tr>
+                <td>{{acta.tipoReunion}}</td>
+                <td>{{acta.tipoReunion}}</td>
+                <td>{{acta.tipoReunion}}</td>
+            </tr>
+
+        </tbody>
+    </table>
+    <div class="d-flex justify-content-start text-center gap-4 mt-5 mb-5">
+        <div class="border-top border-dark text-start" style="flex-basis: 30%;">
+            <p class="m-0">Director Ejecutivo</p>
         </div>
-        <div class="card-footer text-muted text-center">
-            <p>Reunión finalizada a las {{ acta.horaClausura }}</p>
+        <div class="border-top border-dark text-start" style="flex-basis: 30%;">
+            <p class="m-0">Secretario(a)</p>
         </div>
     </div>
 </div>
