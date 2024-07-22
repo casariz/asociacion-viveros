@@ -7,6 +7,8 @@ import { ActivatedRoute } from '@angular/router';
 import { Meetings } from '../../../interfaces/meetings';
 import { User } from '../../../interfaces/user';
 import { AssistantMeetingsService } from '../../../services/assistant-meetings.service';
+import { Assistants } from '../../../interfaces/assistants';
+import { Topic } from '../../../interfaces/topics';
 
 @Component({
   selector: 'app-report-meeting',
@@ -50,7 +52,8 @@ export class ReportMeetingComponent {
       title: '',
     },
   };
-  assistants: User[] = [];
+  assistants: Assistants[] = [];
+  topics: Topic[] = [];
 
   acta = {
     numero: 71,
@@ -116,6 +119,7 @@ export class ReportMeetingComponent {
         this.meetingId = +id;
         this.getMeeting();
         this.getAssistant();
+        this.getTopic();
       }
     });
   }
@@ -136,5 +140,12 @@ export class ReportMeetingComponent {
       .subscribe((assistant) => {
         this.assistants = assistant.assistants;
       });
+  }
+
+  getTopic(): void {
+    this.topicService.getTopicsByMeetingId(this.meetingId).subscribe((topic) => {
+      console.log(topic.topics);
+      this.topics = topic.topics
+    })
   }
 }

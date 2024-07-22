@@ -37,6 +37,7 @@ export class AddMeetingsComponent implements OnInit {
   showDropdownDirector = false;
   showDropdownSecretary = false;
   submitted = false;
+  isDevelopment: boolean = false;
 
   [key: string]: any;
 
@@ -63,7 +64,8 @@ export class AddMeetingsComponent implements OnInit {
       director: ['', Validators.required],
       director_name: ['', Validators.required],
       secretary: ['', Validators.required],
-      secretary_name: ['', Validators.required]
+      secretary_name: ['', Validators.required],
+      title: ['']
     });
   }
 
@@ -113,6 +115,14 @@ export class AddMeetingsComponent implements OnInit {
     return this.meetingForm.controls;
   }
 
+  onTypeChange(event: Event): void {
+    const selectElement = event.target as HTMLSelectElement;
+    this.isDevelopment = selectElement.value === 'Desarrollo';
+    if (!this.isDevelopment) {
+      this.meetingForm.get('title')?.reset();
+    }
+  }
+
   getUsers(): void {
     this.userService.getUsers().subscribe({
       next: (value) => {
@@ -135,9 +145,14 @@ export class AddMeetingsComponent implements OnInit {
     }
   }
 
-  selectUser(user: any, fieldName: string, idFieldName: string | null, dropdownFlag: string): void {
+  selectUser(
+    user: any,
+    fieldName: string,
+    idFieldName: string | null,
+    dropdownFlag: string
+  ): void {
     const patchValue: { [key: string]: any } = {
-      [fieldName]: `${user.first_name} ${user.last_name}`
+      [fieldName]: `${user.first_name} ${user.last_name}`,
     };
     if (idFieldName) {
       patchValue[idFieldName] = user.id;
@@ -166,7 +181,12 @@ export class AddMeetingsComponent implements OnInit {
   }
 
   selectCalledBy(user: any): void {
-    this.selectUser(user, 'called_by_name', 'called_by', 'showDropdownCalledBy');
+    this.selectUser(
+      user,
+      'called_by_name',
+      'called_by',
+      'showDropdownCalledBy'
+    );
   }
 
   selectAssistant(user: any): void {
@@ -178,22 +198,29 @@ export class AddMeetingsComponent implements OnInit {
   }
 
   selectSecretary(user: any): void {
-    this.selectUser(user, 'secretary_name', 'secretary', 'showDropdownSecretary');
+    this.selectUser(
+      user,
+      'secretary_name',
+      'secretary',
+      'showDropdownSecretary'
+    );
   }
 
   removeAssistant(assistant: any): void {
     if (this.meetingId) {
-      this.assistantService.deleteAssistant(this.meetingId, assistant.user_id.id).subscribe({
-        next: (response) => {
-          location.reload()
-          this.selectedAssistants = this.selectedAssistants.filter(
-            (a) => a.user_id.id !== assistant.user_id.id || a.status !== 1
-          );
-        },
-        error: (err) => {
-          return
-        },
-      });
+      this.assistantService
+        .deleteAssistant(this.meetingId, assistant.user_id.id)
+        .subscribe({
+          next: (response) => {
+            location.reload();
+            this.selectedAssistants = this.selectedAssistants.filter(
+              (a) => a.user_id.id !== assistant.user_id.id || a.status !== 1
+            );
+          },
+          error: (err) => {
+            return;
+          },
+        });
     } else {
       this.selectedAssistants = this.selectedAssistants.filter(
         (a) => a.id !== assistant.id
@@ -204,9 +231,9 @@ export class AddMeetingsComponent implements OnInit {
   addAssistantsToMeeting(): void {
     if (this.meetingId) {
       const assistantIds = this.selectedAssistants
-        .filter(a => a.id !== null && a.id !== undefined)
-        .map(a => a.id);
-  
+        .filter((a) => a.id !== null && a.id !== undefined)
+        .map((a) => a.id);
+
       this.assistantService
         .addAssistantsMeeting({
           meeting_id: this.meetingId,
@@ -214,7 +241,7 @@ export class AddMeetingsComponent implements OnInit {
         })
         .subscribe({
           next: (value) => {
-            location.reload()
+            location.reload();
           },
           error: (err) => {},
         });
@@ -234,13 +261,18 @@ export class AddMeetingsComponent implements OnInit {
 
   addTopic(): void {
     const type = this.meetingForm.get('type')?.value;
-    const topic = this.meetingForm.get('topic')?.value;
-    if (type && topic) {
+    const title = this.meetingForm.get('title')?.value || '';
+    const topicData = this.meetingForm.get('topic')?.value;
+    const topic = `${title ? `${title}: ` : ''}${topicData}`;
+    if (type && topicData) {
       this.topicList.push({ type, topic, status: 2 });
       if (this.isEditMode) {
         this.addTopicService(type, topic, this.meetingId);
       }
+      
     }
+    console.log(this.topicList);
+    
   }
 
   addTopicService(type: string, topic: string, id: any): void {

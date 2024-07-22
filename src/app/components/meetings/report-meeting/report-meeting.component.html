@@ -7,8 +7,6 @@
         <div class="">
             <p class="fw-bolder">{{ meeting.meeting_date }}</p>
         </div>
-
-
     </div>
 
     <table class="table table-bordered">
@@ -33,14 +31,18 @@
             <tr>
                 <th>ASISTENTES</th>
                 <td>@for (assistant of assistants; track $index) {
-                    {{assistant.first_name}}    
-                }</td>
+                    {{assistant.user_id.first_name}} {{assistant.user_id.last_name}} <br>
+                    }</td>
             </tr>
             <tr>
                 <th>ORDEN DEL DÍA</th>
                 <td>
                     <ol class="list-group-numbered m-0 fw-bold">
-                        <li *ngFor="let punto of acta.ordenDia" class="list-group-item">{{ punto }}</li>
+                        <li *ngFor="let topic of topics" class="list-group-item">
+                            @if (topic.type === 'Orden del día') {
+                            {{ topic.topic }}
+                            }
+                        </li>
                     </ol>
                 </td>
             </tr>

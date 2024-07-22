@@ -19,7 +19,7 @@ export class TopicsService {
     return this.http.post(`${this.apiUrl}/topics`, topic);
   }
 
-  getTopicsByMeetingId(id: number):Observable<any> {
+  getTopicsByMeetingId(id: any):Observable<any> {
     return this.http.get(`${this.apiUrl}/topics/${id}`);
   }
 

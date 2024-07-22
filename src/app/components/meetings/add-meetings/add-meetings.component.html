@@ -156,14 +156,18 @@
           <div class="d-flex gap-1">
             <div class="input-group">
               <span class="input-group-text"><i class="fas fa-comment-dots"></i></span>
-              <select class="form-select p-0 ps-2" id="type" formControlName="type" required>
+              <select class="form-select p-0 ps-2" id="type" formControlName="type" (change)="onTypeChange($event)" required>
                 <option>Orden del día</option>
                 <option>Desarrollo</option>
                 <option>Pendiente</option>
               </select>
+              
               <input type="text" class="form-control w-25 p-0 ps-2" id="topic" formControlName="topic"
                 placeholder="Anotaciones..." />
+                
             </div>
+            <input *ngIf="isDevelopment" type="text" class="form-control w-25 p-0 ps-2" id="title" formControlName="title" placeholder="Título" />
+            
             <div class="d-flex-wrap align-content-center">
               <button type="button" class="btn btn-sm btn-success" name="action" title="Enviar" (click)="addTopic()">
                 <i class="fas fa-paper-plane"></i>
