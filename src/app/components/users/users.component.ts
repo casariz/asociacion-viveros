@@ -15,7 +15,7 @@ export class UsersComponent implements OnInit{
   filterForm: FormGroup;
   users: any[] = [];
   filteredUsers: any[] = [];
-  status: any[] = []
+  status: any[] = ['Activo', 'Inactivo']
 
   constructor(private fb: FormBuilder,
     private userService: UsersService

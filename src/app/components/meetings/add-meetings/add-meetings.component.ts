@@ -260,19 +260,16 @@ export class AddMeetingsComponent implements OnInit {
   }
 
   addTopic(): void {
-    const type = this.meetingForm.get('type')?.value;
     const title = this.meetingForm.get('title')?.value || '';
+    const type = this.meetingForm.get('type')?.value;
     const topicData = this.meetingForm.get('topic')?.value;
-    const topic = `${title ? `${title}: ` : ''}${topicData}`;
+    const topic = `${title ? `${title}:* ` : ''}${topicData}`;
     if (type && topicData) {
       this.topicList.push({ type, topic, status: 2 });
       if (this.isEditMode) {
         this.addTopicService(type, topic, this.meetingId);
       }
-      
     }
-    console.log(this.topicList);
-    
   }
 
   addTopicService(type: string, topic: string, id: any): void {

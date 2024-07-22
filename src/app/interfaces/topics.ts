@@ -3,4 +3,5 @@ export interface Topic {
     meeting_id: number;
     type: string;
     topic: string;
+    status: number;
 }

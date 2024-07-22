@@ -38,11 +38,14 @@
                 <th>ORDEN DEL DÍA</th>
                 <td>
                     <ol class="list-group-numbered m-0 fw-bold">
-                        <li *ngFor="let topic of topics" class="list-group-item">
-                            @if (topic.type === 'Orden del día') {
+                        @for (topic of topics; track $index) {
+                        @if (topic.type === 'Orden del día' && topic.status === 2) {
+                        <li class="list-group-item">
                             {{ topic.topic }}
-                            }
                         </li>
+                        }
+                        }
+
                     </ol>
                 </td>
             </tr>

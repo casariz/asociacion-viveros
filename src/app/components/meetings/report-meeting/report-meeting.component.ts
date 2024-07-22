@@ -9,6 +9,7 @@ import { User } from '../../../interfaces/user';
 import { AssistantMeetingsService } from '../../../services/assistant-meetings.service';
 import { Assistants } from '../../../interfaces/assistants';
 import { Topic } from '../../../interfaces/topics';
+import { Tasks } from '../../../interfaces/tasks';
 
 @Component({
   selector: 'app-report-meeting',
@@ -54,6 +55,7 @@ export class ReportMeetingComponent {
   };
   assistants: Assistants[] = [];
   topics: Topic[] = [];
+  tasks: Tasks[] = [];
 
   acta = {
     numero: 71,
@@ -120,6 +122,7 @@ export class ReportMeetingComponent {
         this.getMeeting();
         this.getAssistant();
         this.getTopic();
+        this.getTask();
       }
     });
   }
@@ -144,8 +147,14 @@ export class ReportMeetingComponent {
 
   getTopic(): void {
     this.topicService.getTopicsByMeetingId(this.meetingId).subscribe((topic) => {
-      console.log(topic.topics);
       this.topics = topic.topics
+    })
+  }
+
+  getTask():void {
+    this.taskService.getTaskByMeetingId(this.meetingId).subscribe((task) => {
+      console.log(task.tasks);
+      this.tasks = task.tasks
     })
   }
 }
