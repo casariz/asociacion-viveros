@@ -104,6 +104,14 @@ export class AddMeetingsComponent implements OnInit {
                 meeting.meeting.called_by.first_name +
                 ' ' +
                 meeting.meeting.called_by.last_name,
+              director: meeting.meeting.director.id,
+              director_name: meeting.meeting.director.first_name +
+              ' ' +
+              meeting.meeting.director.last_name,
+              secretary: meeting.meeting.secretary.id,
+              secretary_name: meeting.meeting.secretary.first_name +
+              ' ' +
+              meeting.meeting.secretary.last_name,
             });
           }
         });
@@ -259,6 +267,11 @@ export class AddMeetingsComponent implements OnInit {
     }
   }
 
+  cleanTopic(topic: string): string {    
+    return topic.replace(/\*/, '');
+  }
+
+
   addTopic(): void {
     const title = this.meetingForm.get('title')?.value || '';
     const type = this.meetingForm.get('type')?.value;
@@ -309,11 +322,13 @@ export class AddMeetingsComponent implements OnInit {
     }
 
     const meetingData = this.meetingForm.value;
+    console.log(meetingData);
+    
 
     if (this.isEditMode && this.meetingId) {
       this.meetingsService
         .updateMeeting(this.meetingId, meetingData)
-        .subscribe(() => {
+        .subscribe((l) => {
           this.router.navigate(['/meetings']);
         });
     } else {

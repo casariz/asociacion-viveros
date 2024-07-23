@@ -5,3 +5,7 @@ tbody tr th {
 thead tr th {
     background-color: #F3F3F3;
 }
+
+.report th{
+    width: 200px;
+}

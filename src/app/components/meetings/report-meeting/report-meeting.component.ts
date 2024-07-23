@@ -52,57 +52,28 @@ export class ReportMeetingComponent {
       class: '',
       title: '',
     },
+    director: {
+      id: 0,
+      first_name: '',
+      last_name: '',
+      document_number: '',
+      user_type: '',
+      status: 0
+    },
+    secretary: {
+      id: 0,
+      first_name: '',
+      last_name: '',
+      document_number: '',
+      user_type: '',
+      status: 0
+    }
   };
   assistants: Assistants[] = [];
   topics: Topic[] = [];
   tasks: Tasks[] = [];
 
-  acta = {
-    numero: 71,
-    fecha: 'Mayo 28 de 2024',
-    hora: '8 A 9:30 P.M.',
-    tipoReunion: 'Reunión virtual',
-    organizador: 'Jaime Valencia',
-    apuntador: 'Martha Lucía Salazar',
-    asistentes: [
-      'Ecovivero Los Farallones - Jaime Valencia',
-      'Occiverde – Martha Lucía Salazar',
-      'Vivero San Miguel – Libia Quintero',
-      'Ecovida Mundo Verde – Juan Felipe Arango',
-      'John Jairo Imbachí – Vivero El Lido',
-      'Vivero Bi Verde – Angela Marcela Carvajal',
-      'Vivero Lotos – Armando Arévalo',
-      'Vivero Flores Janny – Freddy Velasco',
-      'Vivero Jardines Rubeiro – Rubeiro Sotelo',
-      'Vivero El Rosal – Rubén Darío Ortíz',
-      'Sebastián Lucuara – Director Ejecutivo',
-    ],
-    ordenDia: [
-      'Verificación del quórum',
-      'Lectura y Aprobación del acta No 70 de Mayo 27 de 2024',
-      'COP 16',
-      'Proposiciones y varios',
-      'Clausura',
-    ],
-    temas: [
-      {
-        titulo: 'Verificación del Quorum',
-        discusion: 'Se reunieron los miembros de la Junta Directiva...',
-        conclusion: 'Se acuerda llevar a cabo la reunión...',
-      },
-      {
-        titulo: 'Lectura y aprobación del acta No. 70 del 27 de mayo de 2024',
-        discusion: 'Se lee el acta No. 70 de la reunión...',
-        conclusion: 'La Junta Directiva, aprueba el acta No. 70...',
-      },
-      {
-        titulo: 'COP 16',
-        discusion: 'Sebastián Lucuara primero agradece a todos...',
-        conclusion: 'Se decide sobre la participación en la COP 16...',
-      },
-    ],
-    horaClausura: '9:24 PM',
-  };
+
 
   constructor(
     private meetingService: MeetingsService,
@@ -115,7 +86,6 @@ export class ReportMeetingComponent {
   ngOnInit(): void {
     this.route.paramMap.subscribe((params) => {
       const id = params.get('id');
-      const mode = this.route.snapshot.data['mode'];
 
       if (id) {
         this.meetingId = +id;
@@ -146,14 +116,24 @@ export class ReportMeetingComponent {
   }
 
   getTopic(): void {
-    this.topicService.getTopicsByMeetingId(this.meetingId).subscribe((topic) => {
-      this.topics = topic.topics
-    })
+    this.topicService.getTopicsByMeetingId(this.meetingId).subscribe((response) => {
+      this.topics = response.topics.map((topic: Topic) => ({
+        ...topic,
+        formattedTopic: this.formatTopic(topic.topic)
+      }));
+    });
+  }
+
+  formatTopic(topicText: string): string {
+    const parts = topicText.split('*');
+    if (parts.length > 1) {
+      return `<b>${parts[0]}</b> <br> ${parts[1]}`;
+    }
+    return topicText;
   }
 
   getTask():void {
     this.taskService.getTaskByMeetingId(this.meetingId).subscribe((task) => {
-      console.log(task.tasks);
       this.tasks = task.tasks
     })
   }

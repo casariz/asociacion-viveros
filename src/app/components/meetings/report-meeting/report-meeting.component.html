@@ -11,14 +11,14 @@
 
     <table class="table table-bordered">
 
-        <tbody>
+        <tbody class="report">
             <tr>
                 <th>REUNION CONVOCADA POR</th>
                 <td>{{meeting.called_by.first_name}} {{meeting.called_by.last_name}}</td>
             </tr>
             <tr>
                 <th>TIPO DE REUNION</th>
-                <td>{{acta.tipoReunion}}</td>
+                <td>Reunion virtual</td>
             </tr>
             <tr>
                 <th>ORGANIZADOR</th>
@@ -26,13 +26,20 @@
             </tr>
             <tr>
                 <th>APUNTADOR</th>
-                <td>{{acta.apuntador}}</td>
+                <td>{{meeting.secretary.first_name}} {{meeting.secretary.last_name}}</td>
             </tr>
             <tr>
                 <th>ASISTENTES</th>
-                <td>@for (assistant of assistants; track $index) {
-                    {{assistant.user_id.first_name}} {{assistant.user_id.last_name}} <br>
-                    }</td>
+                <td>
+                    <ol class="list-group-numbered m-0">
+                        @for (assistant of assistants; track $index) {
+                            <li class="list-group-item">
+                                {{assistant.user_id.first_name}} {{assistant.user_id.last_name}}
+                            </li>
+                            
+                            }
+                    </ol>
+                    </td>
             </tr>
             <tr>
                 <th>ORDEN DEL DÍA</th>
@@ -49,15 +56,13 @@
                     </ol>
                 </td>
             </tr>
-            @for (task of acta.temas; track $index) {
+            @for (topic of topics; track $index) {
+            @if (topic.type === 'Desarrollo' && topic.status === 2) {
             <tr>
                 <th>TEMA {{$index + 1}}</th>
-                <td class="fw-bold">{{task.titulo}}</td>
+                <td [innerHTML]="topic.formattedTopic"></td>
             </tr>
-            <tr>
-                <th>DISCUSION</th>
-                <td>{{task.discusion}}</td>
-            </tr>
+            }
             }
         </tbody>
     </table>
@@ -73,30 +78,23 @@
 
         <tbody>
             @for (task of tasks; track $index) {
-                <tr>
-                    <td>{{task.task_description}}</td>
-                    <td>@if (!task.assigned_to) {} @else {{{task.assigned_to.first_name}} {{task.assigned_to.last_name}}} </td>
-                    <td>{{task.estimated_time}}</td>
-                </tr>
+            <tr>
+                <td>{{task.task_description}}</td>
+                <td>@if (!task.assigned_to) {N/A} @else {{{task.assigned_to.first_name}} {{task.assigned_to.last_name}}}
+                </td>
+                <td>{{task.estimated_time}} {{task.units}}</td>
+            </tr>
             }
-            <tr>
-                <td>{{acta.organizador}}</td>
-                <td>{{acta.organizador}}</td>
-                <td>{{acta.organizador}}</td>
-            </tr>
-            <tr>
-                <td>{{acta.tipoReunion}}</td>
-                <td>{{acta.tipoReunion}}</td>
-                <td>{{acta.tipoReunion}}</td>
-            </tr>
 
         </tbody>
     </table>
-    <div class="d-flex justify-content-start text-center gap-4 mt-5 mb-5">
+    <div class="d-flex justify-content-start text-center gap-4 mb-5" style="margin-top: 80px;">
         <div class="border-top border-dark text-start" style="flex-basis: 30%;">
+            <p class="m-0 fw-bold text-uppercase">{{meeting.director.first_name}} {{meeting.director.last_name}}</p>
             <p class="m-0">Director Ejecutivo</p>
         </div>
         <div class="border-top border-dark text-start" style="flex-basis: 30%;">
+            <p class="m-0 fw-bold text-uppercase">{{meeting.secretary.first_name}} {{meeting.secretary.last_name}}</p>
             <p class="m-0">Secretario(a)</p>
         </div>
     </div>

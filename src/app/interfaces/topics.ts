@@ -4,4 +4,5 @@ export interface Topic {
     type: string;
     topic: string;
     status: number;
+    formattedTopic?: string;
 }

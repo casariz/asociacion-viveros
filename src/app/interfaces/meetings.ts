@@ -9,6 +9,8 @@ export interface Meetings {
     placement: string,
     meeting_description: string,
     topics: string,
+    director: User,
+    secretary: User,
     created_by: User,
     creation_date: string,
     status: Status

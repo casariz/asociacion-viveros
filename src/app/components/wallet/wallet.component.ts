@@ -10,17 +10,20 @@ import { WalletService } from '../../services/wallet.service';
 import { Wallet } from '../../interfaces/wallet';
 import { StatusService } from '../../services/status.service';
 import { AuthService } from '../../services/auth.service';
+import { CommonModule } from '@angular/common';
 
 @Component({
   selector: 'app-wallet',
   standalone: true,
-  imports: [RouterLink, ReactiveFormsModule],
+  imports: [RouterLink, ReactiveFormsModule, CommonModule],
   templateUrl: './wallet.component.html',
   styleUrl: './wallet.component.css',
 })
 export class WalletComponent implements OnInit {
   filterForm: FormGroup;
-  wallets: Wallet[] = []; // Aquí irán tus reuniones
+  wallets: Wallet[] = [];
+  currentPage: number = 1;
+  totalPages: number = 1;
   filteredWallets: Wallet[] = [];
   status: any[] = [];
   userRole: string | null = '';
@@ -41,14 +44,16 @@ export class WalletComponent implements OnInit {
   ngOnInit(): void {
     this.getUserRole();
     this.getStatusWallet();
-    this.getWallets();
+    this.getWallets(this.currentPage);
   }
 
-  getWallets(): void {
+  getWallets(page: number): void {
     // Aquí debes cargar las reuniones (puede ser una llamada a un servicio)
     this.walletService.getWallets().subscribe({
       next: (value) => {
         this.wallets = value.data;
+        this.currentPage = value.current_page;
+        this.totalPages = value.last_page;
         this.filteredWallets = this.wallets;
         this.applyFilters();
       },
@@ -71,6 +76,16 @@ export class WalletComponent implements OnInit {
         console.log('Error al traer status: ', err);
       },
     });
+  }
+
+  changePage(page: number): void {
+    if (page > 0 && page <= this.totalPages) {
+      this.getWallets(page);
+    }
+  }
+
+  getPageRange(): number[] {
+    return Array.from({ length: this.totalPages }, (_, i) => i + 1);
   }
 
   setDefaultStatus(): void {
