@@ -7,28 +7,56 @@
                     Nombres
                 </label>
                 <input class="form-control bg-light focus-green" type="first_name" formControlName="first_name" name="first_name"
-                    placeholder="Ingresar nombres" />
+                    placeholder="Ingresar nombres" [ngClass]="{ 'is-invalid': submitted && f['first_name'].errors }"/>
+                    @if (submitted && f['first_name'].errors) {
+                        <div class="invalid-feedback">
+                          @if (f['first_name'].errors['required']) {
+                          <div>Nombres requeridos</div>
+                          }
+                        </div>
+                        }
             </div>
             <div class="mb-3">
                 <label class="form-label" for="last_name">
                     Apellidos
                 </label>
                 <input class="form-control bg-light focus-green" name="last_name" formControlName="last_name"
-                    placeholder="Ingresar apellidos" type="text" />
+                    placeholder="Ingresar apellidos" type="text" [ngClass]="{ 'is-invalid': submitted && f['last_name'].errors }"/>
+                    @if (submitted && f['last_name'].errors) {
+                        <div class="invalid-feedback">
+                          @if (f['last_name'].errors['required']) {
+                          <div>Apellidos requeridos</div>
+                          }
+                        </div>
+                        }
             </div>
             <div class="mb-3">
                 <label class="form-label" for="email">
                     Correo electrónico
                 </label>
                 <input class="form-control bg-light focus-green" name="email" formControlName="email"
-                    placeholder="Ingresar correo" type="email" />
+                    placeholder="Ingresar correo" type="email" [ngClass]="{ 'is-invalid': submitted && f['email'].errors }"/>
+                    @if (submitted && f['email'].errors) {
+                        <div class="invalid-feedback">
+                          @if (f['email'].errors['required']) {
+                          <div>Correo requerido</div>
+                          }
+                        </div>
+                        }
             </div>
             <div class="mb-3">
                 <label class="form-label" for="password">
                     Contraseña
                 </label>
                 <input class="form-control bg-light focus-green" name="password" formControlName="password"
-                    placeholder="Ingresar contraseña" type="password" />
+                    placeholder="Ingresar contraseña" type="password" [ngClass]="{ 'is-invalid': submitted && f['password'].errors }"/>
+                    @if (submitted && f['password'].errors) {
+                        <div class="invalid-feedback">
+                          @if (f['password'].errors['required']) {
+                          <div>Contraseña requerido</div>
+                          }
+                        </div>
+                        }
             </div>
         </form>
         <button class="btn btn-success w-100 fw-bold" type="submit" (click)="onSubmit()">

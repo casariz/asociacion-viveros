@@ -2,7 +2,7 @@ import { Component } from '@angular/core';
 import { Router } from '@angular/router';
 import { AuthService } from '../../services/auth.service';
 import { CommonModule } from '@angular/common';
-import { FormBuilder, FormGroup, FormsModule, ReactiveFormsModule, Validators } from '@angular/forms';
+import { AbstractControl, FormBuilder, FormGroup, FormsModule, ReactiveFormsModule, Validators } from '@angular/forms';
 
 @Component({
   selector: 'app-login',
@@ -14,6 +14,7 @@ import { FormBuilder, FormGroup, FormsModule, ReactiveFormsModule, Validators } 
 export class LoginComponent {
   loginForm: FormGroup;
   userType: string | null = null;
+  submitted = false;
 
   constructor(private authService: AuthService, private router: Router, private fb: FormBuilder) {
     this.loginForm = this.fb.group({
@@ -22,8 +23,13 @@ export class LoginComponent {
     })
   }
 
-  onSubmit() {
+  get f(): { [key: string]: AbstractControl } {
+    return this.loginForm.controls;
+  }
+
+  onSubmit():void {
     if (this.loginForm.invalid) {
+      this.submitted = true;
       return;
     }
     const loginData = this.loginForm.value;

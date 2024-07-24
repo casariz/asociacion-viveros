@@ -6,14 +6,28 @@
         <label class="form-label" for="email">
           Correo
         </label>
-        <input class="form-control bg-light focus-green" type="email" formControlName="email" name="email" placeholder="Ingresar correo" />
+        <input class="form-control bg-light focus-green" type="email" formControlName="email" name="email" placeholder="Ingresar correo" [ngClass]="{ 'is-invalid': submitted && f['email'].errors }"/>
+        @if (submitted && f['email'].errors) {
+          <div class="invalid-feedback">
+            @if (f['email'].errors['required']) {
+              <div>Email requerido</div>
+              }
+          </div>
+          }
       </div>
       <div class="mb-3">
         <label class="form-label" for="password">
           Contraseña
         </label>
         <input class="form-control bg-light focus-green" name="password" formControlName="password" placeholder="Ingresar contraseña"
-          type="password" />
+          type="password" [ngClass]="{ 'is-invalid': submitted && f['password'].errors }"/>
+          @if (submitted && f['password'].errors) {
+            <div class="invalid-feedback">
+              @if (f['password'].errors['required']) {
+              <div>Contraseña requerido</div>
+              }
+            </div>
+            }
       </div>
       <button class="btn btn-success w-100 fw-bold" type="submit" (click)="onSubmit()">
         Iniciar sesión
