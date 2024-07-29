@@ -17,4 +17,5 @@ export interface Wallet {
     reviewed_by: User,
     reviewed_date: string,
     status: Status,
+    total_paid: number
 }

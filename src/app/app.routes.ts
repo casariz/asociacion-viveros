@@ -15,6 +15,9 @@ import { roleGuard } from './services/role.guard';
 import { ReportMeetingComponent } from './components/meetings/report-meeting/report-meeting.component';
 
 export const routes: Routes = [
+
+  { path: '', redirectTo: 'meetings', pathMatch: 'full' },
+  
   ///LOGUEO
   {
     path: 'login',
@@ -147,5 +150,6 @@ export const routes: Routes = [
     pathMatch: 'full',
     canActivate: [authGuard, roleGuard],
     data: {expectedRoles: ['Administrador(a)']}
-  }
+  },
+  {path: '**', redirectTo: 'meetings'},
 ];

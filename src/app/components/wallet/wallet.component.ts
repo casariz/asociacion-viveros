@@ -35,8 +35,10 @@ export class WalletComponent implements OnInit {
     private authService: AuthService
   ) {
     this.filterForm = this.fb.group({
-      description: [''],
-      status: this.fb.array([]), // Agregamos un campo para el estado
+      startDate: [''],
+      endDate: [''],
+      description: [''],  
+      status: this.fb.array([]),
     });
     
   }
@@ -51,7 +53,7 @@ export class WalletComponent implements OnInit {
     // Aquí debes cargar las reuniones (puede ser una llamada a un servicio)
     this.walletService.getWallets().subscribe({
       next: (value) => {
-        this.wallets = value.data;
+        this.wallets = value;
         this.currentPage = value.current_page;
         this.totalPages = value.last_page;
         this.filteredWallets = this.wallets;
@@ -105,17 +107,19 @@ export class WalletComponent implements OnInit {
   }
 
   applyFilters(): void {
-    const { description, status } = this.filterForm.value;
+    const { startDate, endDate, description, status } = this.filterForm.value;
     this.filteredWallets = this.wallets.filter((wallet) => {
-      const matchesDescription =
+      const walletStartDate = !startDate || new Date(wallet.expiration_date) >= new Date(startDate);
+      const walletEndDate = !endDate || new Date(wallet.expiration_date) <= new Date(endDate);
+      const walletDescription =
         !description ||
         wallet.obligation_description
           .toLowerCase()
           .includes(description.toLowerCase());
-      const matchesStatus =
+      const walletStatus =
         status.length === 0 || status.includes(wallet.status.description);
 
-      return matchesDescription && matchesStatus;
+      return walletStartDate && walletEndDate && walletDescription && walletStatus;
     });
   }
 

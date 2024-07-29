@@ -4,6 +4,8 @@
         <div class="d-flex justify-content-end">
             <form [formGroup]="filterForm" (ngSubmit)="applyFilters()">
                 <div class="d-flex gap-2">
+                    <input class="form-control" type="date" formControlName="startDate" placeholder="Fecha inicio">
+                    <input class="form-control" type="date" formControlName="endDate" placeholder="Fecha fin">
                     <input class="form-control" type="text" formControlName="description" placeholder="Descripción...">
                     <div class="d-flex gap-1">
                         <div class="btn-group">
@@ -37,6 +39,7 @@
                     <th class="text-start align-middle">PERIODO [ALERTA]</th>
                     <th class="text-start align-middle">VENCE - ÚLTIMO REPORTE</th>
                     <th class="text-start align-middle">OBSERVACIONES</th>
+                    <th class="text-start align-middle">TOTAL</th>
                     <th class="text-end align-middle">ACCIONES</th>
                 </tr>
             </thead>
@@ -72,6 +75,9 @@
                     <td class="align-middle">
                         {{ wallet.observations }}
                     </td>
+                    <td class="align-middle">
+                        ${{ wallet.total_paid }}
+                    </td>
                     <td class="align-middle d-flex justify-content-end">
                         <div class="btn-group" role="group">
                             @if (userRole === 'Administrador(a)' || userRole === 'Secretario(a)' || userRole === 'Cartera') {
@@ -102,22 +108,21 @@
                 </tr>
                 }
             </tbody>
+
+            <tfoot>
+                <tr class="sticky-bottom z-3">
+                    <td></td>
+                    <td></td>
+                    <td></td>
+                    <td></td>
+                    <td class=""></td>
+                    <td class="fw-bold text-end">TOTAL:</td>
+                    <td class=""></td>
+                    <td class=""></td>
+                </tr>
+            </tfoot>
         </table>
-        <nav aria-label="Page navigation example">
-            <ul class="pagination justify-content-center">
-                <li class="page-item" [class.disabled]="currentPage === 1">
-                    <a class="page-link" (click)="changePage(currentPage - 1)"
-                        [attr.aria-disabled]="currentPage === 1">Anterior</a>
-                </li>
-                <li *ngFor="let page of getPageRange()" class="page-item" [class.active]="page === currentPage">
-                    <a class="page-link" (click)="changePage(page)">{{ page }}</a>
-                </li>
-                <li class="page-item" [class.disabled]="currentPage === totalPages">
-                    <a class="page-link" (click)="changePage(currentPage + 1)"
-                        [attr.aria-disabled]="currentPage === totalPages">Después</a>
-                </li>
-            </ul>
-        </nav>
+
     </div>
     <div class="d-flex justify-content-end m-2 gap-2">
         <a routerLink="add-wallet" class="btn btn-lg rounded-circle btn-primary border-0 add-button"><i
