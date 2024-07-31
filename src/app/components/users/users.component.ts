@@ -34,8 +34,12 @@ export class UsersComponent implements OnInit{
     this.userService.getUsers().subscribe({
       next:(value)=> {
         console.log(value);
+        console.log(value);
+        
         this.users = value
         this.filteredUsers = this.users;
+        this.setDefaultStatus();
+        this.applyFilters();
       },
       error:(err)=> {
         
@@ -66,25 +70,13 @@ export class UsersComponent implements OnInit{
   }
 
   applyFilters() {
-    const { startDate, endDate, employee, description, status } = this.filterForm.value;
+    const { employee, status } = this.filterForm.value;
     this.filteredUsers = this.users.filter((user) => {
-      const matchesStartDate =
-        !startDate || new Date(user.start_date) >= new Date(startDate);
-      const matchesEndDate =
-        !endDate || new Date(user.start_date) <= new Date(endDate);
-      const matchesEmployee =
+      const usersEmployee =
         !employee || user.assigned_to?.toString().includes(employee);
-      const matchesDescription =
-        !description ||
-        user.task_description
-          ?.toLowerCase()
-          .includes(description.toLowerCase());
-        const matchesStatus = status.length === 0 || status.includes(user.status.description);
+        const usersStatus = status.length === 0 || status.includes(user.status.description);
       return (
-        matchesStartDate &&
-        matchesEndDate &&
-        matchesEmployee &&
-        matchesDescription && matchesStatus
+        usersEmployee && usersStatus
       );
     });
   }

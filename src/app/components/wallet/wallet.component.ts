@@ -63,6 +63,10 @@ export class WalletComponent implements OnInit {
     });
   }
 
+  getTotalPaid(): number {
+    return this.filteredWallets.reduce((acc, wallet) => acc + wallet.total_paid, 0);
+  }
+
   getUserRole():void{
     this.userRole = this.authService.getUserRole();
   }

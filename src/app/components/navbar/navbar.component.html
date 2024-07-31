@@ -16,7 +16,7 @@
     <h1 class="h5 fw-bold m-0">ASOVALVI</h1>
   </div>
   <nav class="d-flex align-items-center gap-3">
-    @if (isLoggedIn) {
+    @if (authService.getAuthState() | async) {
     <ul class="nav nav-pills">
       <li class="nav-item">
         <a class="nav-link" routerLink="/meetings" [routerLinkActiveOptions]="{ exact: true }"
@@ -30,7 +30,7 @@
         <a class="nav-link" routerLink="/wallet" [routerLinkActiveOptions]="{ exact: true }"
           routerLinkActive="bg-success active">Cartera</a>
       </li>
-      @if (userRole === 'Administrador(a)') {
+      @if (userRole === 'Administrador(a)' ) {
         <li class="nav-item">
           <a class="nav-link" routerLink="/users" [routerLinkActiveOptions]="{ exact: true }"
             routerLinkActive="bg-success active">Usuarios</a>
