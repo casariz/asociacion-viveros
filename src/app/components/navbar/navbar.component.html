@@ -16,7 +16,7 @@
     <h1 class="h5 fw-bold m-0">ASOVALVI</h1>
   </div>
   <nav class="d-flex align-items-center gap-3">
-    @if (authService.getAuthState() | async) {
+    @if (isLoggedIn) {
     <ul class="nav nav-pills">
       <li class="nav-item">
         <a class="nav-link" routerLink="/meetings" [routerLinkActiveOptions]="{ exact: true }"

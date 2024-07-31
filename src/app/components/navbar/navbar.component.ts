@@ -14,11 +14,14 @@ export class NavbarComponent implements OnInit{
   isLoggedIn: boolean = false;
   userRole: string | null = '';
 
-  constructor(public authService: AuthService, private router: Router) {
+  constructor(private authService: AuthService, private router: Router) {
     this.getUserRole();
   }
 
   ngOnInit(): void {
+    this.authService.getAuthState().subscribe(isLoggedIn => {
+      this.isLoggedIn = isLoggedIn;
+    });
   }
 
   logout(): void {
