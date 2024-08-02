@@ -1,29 +1,28 @@
 import { HttpClient } from '@angular/common/http';
 import { Injectable } from '@angular/core';
 import { Observable } from 'rxjs';
+import { environment } from '../../environments/environment';
 
 @Injectable({
   providedIn: 'root'
 })
 export class TopicsService {
 
-  private apiUrl = 'http://127.0.0.1:8000/api';
-
   constructor(private http: HttpClient) { }
 
   getTopics(): Observable<any>{
-    return this.http.get(`${this.apiUrl}/topics`);
+    return this.http.get(`${environment.apiUrl}/topics`);
   }
 
   createTopic(topic: any): Observable<any> {
-    return this.http.post(`${this.apiUrl}/topics`, topic);
+    return this.http.post(`${environment.apiUrl}/topics`, topic);
   }
 
   getTopicsByMeetingId(id: any):Observable<any> {
-    return this.http.get(`${this.apiUrl}/topics/${id}`);
+    return this.http.get(`${environment.apiUrl}/topics/${id}`);
   }
 
   deleteTopic(id:number): Observable<any> {
-    return this.http.put(`${this.apiUrl}/topics/${id}/delete`, []);
+    return this.http.put(`${environment.apiUrl}/topics/${id}/delete`, []);
   } 
 }

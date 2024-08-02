@@ -1,6 +1,7 @@
 import { HttpClient } from '@angular/common/http';
 import { Injectable } from '@angular/core';
 import { Observable } from 'rxjs';
+import { environment } from '../../environments/environment';
 
 @Injectable({
   providedIn: 'root'
@@ -8,22 +9,20 @@ import { Observable } from 'rxjs';
 export class UsersService {
 
   constructor(private http:HttpClient) { }
-
-  private apiUrl = 'http://127.0.0.1:8000/api';
  
   getUsers(): Observable<any>{
-    return this.http.get(`${this.apiUrl}/users`);
+    return this.http.get(`${environment.apiUrl}/users`);
   }
 
   getUserById(id: number): Observable<any>{
-    return this.http.get(`${this.apiUrl}/users/${id}`)
+    return this.http.get(`${environment.apiUrl}/users/${id}`)
   }
 
   updateUser(id: number, user: any): Observable<any>{
-    return this.http.put(`${this.apiUrl}/users/${id}/update`, user);
+    return this.http.put(`${environment.apiUrl}/users/${id}/update`, user);
   }
 
   deleteUser(id: number): Observable<any>{
-    return this.http.put(`${this.apiUrl}/users/${id}/delete`,[]);
+    return this.http.put(`${environment.apiUrl}/users/${id}/delete`,[]);
   }
 }

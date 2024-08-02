@@ -1,6 +1,7 @@
 import { Injectable } from '@angular/core';
 import { HttpClient, HttpHeaders } from '@angular/common/http';
 import { Observable, BehaviorSubject, tap, switchMap } from 'rxjs';
+import { environment } from '../../environments/environment';
 
 const AUTH_API = 'http://localhost:8000/api/';
 const httpOptions = {
@@ -17,7 +18,7 @@ export class AuthService {
   constructor(private http: HttpClient) {}
 
   login(credentials: any): Observable<any> {
-    return this.http.post(AUTH_API + 'login', credentials, httpOptions).pipe(
+    return this.http.post(environment.apiUrl + '/login', credentials, httpOptions).pipe(
       tap((response: any) => {
         if (response.token) {
           this.saveToken(response.token);
@@ -31,11 +32,11 @@ export class AuthService {
   }
 
   register(userData: any): Observable<any> {
-    return this.http.post(AUTH_API + 'register', userData, httpOptions);
+    return this.http.post(environment.apiUrl + '/register', userData, httpOptions);
   }
 
   logout(): Observable<any> {
-    return this.http.post(AUTH_API + 'logout', {}, httpOptions).pipe(
+    return this.http.post(environment.apiUrl + '/logout', {}, httpOptions).pipe(
       tap(() => {
         this.removeToken();
         this.authState.next(false);
@@ -66,7 +67,7 @@ export class AuthService {
   }
 
   fetchUserType(): Observable<any> {
-    return this.http.get(AUTH_API + 'user_type', httpOptions).pipe(
+    return this.http.get(environment.apiUrl + '/user_type', httpOptions).pipe(
       tap((response: any) => {
         if (response.user_type) {
           this.userType = response.user_type;
