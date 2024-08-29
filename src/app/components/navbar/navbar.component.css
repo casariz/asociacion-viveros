@@ -1,3 +1,9 @@
 li a {
     color: black;
 }
+
+@media print {
+    :host {
+        display: none;
+    }
+}
