@@ -88,9 +88,7 @@ export class AssignTasksComponent implements OnInit {
   ngOnInit(): void {
     this.getUsers();
     this.meetingId = this.meetingsService.getMeetingId();
-    if (this.meetingId !== null) {
-      console.log("hola");
-      
+    if (this.meetingId !== null) {      
       this.taskForm.patchValue({
         meeting_id: this.meetingId,
       });

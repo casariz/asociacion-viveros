@@ -52,7 +52,6 @@ export class EditUsersComponent implements OnInit {
   loadUser(): void {
     if (this.userId) {
       this.userService.getUserById(this.userId).subscribe((user) => {
-        console.log(user);
         this.userForm.patchValue(user);
       });
     }

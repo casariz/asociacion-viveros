@@ -33,8 +33,6 @@ export class UsersComponent implements OnInit{
   getUsers(): void{
     this.userService.getUsers().subscribe({
       next:(value)=> {
-        console.log(value);
-        console.log(value);
         
         this.users = value
         this.filteredUsers = this.users;

@@ -322,7 +322,6 @@ export class AddMeetingsComponent implements OnInit {
     }
 
     const meetingData = this.meetingForm.value;
-    console.log(meetingData);
     
 
     if (this.isEditMode && this.meetingId) {
