@@ -3,6 +3,7 @@ import { Component, OnInit } from '@angular/core';
 import { FormArray, FormBuilder, FormGroup, ReactiveFormsModule } from '@angular/forms';
 import { RouterLink } from '@angular/router';
 import { UsersService } from '../../services/users.service';
+import { AuthService } from '../../services/auth.service';
 
 @Component({
   selector: 'app-users',
@@ -15,11 +16,14 @@ export class UsersComponent implements OnInit{
   filterForm: FormGroup;
   users: any[] = [];
   filteredUsers: any[] = [];
-  status: any[] = ['Activo', 'Inactivo']
+  status: any[] = ['Activo', 'Inactivo'];
+  userRole: string | null = '';
 
   constructor(private fb: FormBuilder,
-    private userService: UsersService
+    private userService: UsersService,
+    private authService: AuthService
   ){
+    
     this.filterForm = this.fb.group({
       employee: [''],
       status: this.fb.array([])
@@ -27,7 +31,12 @@ export class UsersComponent implements OnInit{
   }
 
   ngOnInit(){
+    this.getUserRole();
     this.getUsers()
+  }
+
+  getUserRole():void{
+    this.userRole = this.authService.getUserRole();
   }
 
   getUsers(): void{

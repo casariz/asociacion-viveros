@@ -1,6 +1,6 @@
 <main class="flex bg-light py-5 px-3">
     <div class="mx-auto max-w-md w-25 rounded bg-white p-4 shadow">
-        <h2 class="mb-4 text-center h4 fw-bold">Registrarse</h2>
+        <h2 class="mb-4 text-center h4 fw-bold">Registrar usuario</h2>
         <form [formGroup]="registerForm" (ngSubmit)="onSubmit()">
             <div class="mb-3 form-group">
                 <label class="form-label" for="first_name">
@@ -45,6 +45,36 @@
                         }
             </div>
             <div class="mb-3">
+                <label class="form-label">Tipo de usuario</label>
+                <select formControlName="user_type" class="form-select bg-light focus-green" id="user_type" required>
+                    <option selected>Escoge un tipo de usuario</option>
+                    <option>Asociado(a)</option>
+                    <option>Secretario(a)</option>
+                    <option>Cartera</option>
+                    <option>Administrador(a)</option>
+                </select>
+                @if (submitted && f['user_type'].errors) {
+                <div class="invalid-feedback">
+                    @if (f['user_type'].errors['required']) {
+                    <div>Fecha iniciales requerido</div>
+                    }
+                </div>
+                }
+            </div>
+            <div class="mb-3">
+                <label class="form-label">Número de documento</label>
+                <input type="text" formControlName="document_number" class="form-control bg-light focus-green"
+                    id="document_number" required placeholder="Número de documento..."
+                    [ngClass]="{ 'is-invalid': submitted && f['document_number'].errors }" />
+                @if (submitted && f['document_number'].errors) {
+                <div class="invalid-feedback">
+                    @if (f['document_number'].errors['required']) {
+                    <div>Número de documento requerido</div>
+                    }
+                </div>
+                }
+            </div>
+            <div class="mb-3">
                 <label class="form-label" for="password">
                     Contraseña
                 </label>
@@ -60,7 +90,7 @@
             </div>
         </form>
         <button class="btn btn-success w-100 fw-bold" type="submit" (click)="onSubmit()">
-            Registrarse
+            Registrar
         </button>
     </div>
 </main>

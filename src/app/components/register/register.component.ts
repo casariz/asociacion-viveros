@@ -20,7 +20,10 @@ export class RegisterComponent {
       first_name: ['', Validators.required],
       last_name: ['', Validators.required],
       email: ['', Validators.required],
-      password: ['', Validators.required]
+      password: ['', Validators.required],
+      status: ['2'],
+      document_number: ['', Validators.required],
+      user_type: ['Escoge un tipo de usuario', Validators.required],
     })
   }
 
@@ -37,7 +40,7 @@ export class RegisterComponent {
 
     this.authService.register(registerData).subscribe({
       next:(value)=> {
-        this.router.navigate(['/login']);
+        this.router.navigate(['/users']);
       },
       error:(err)=> {
         

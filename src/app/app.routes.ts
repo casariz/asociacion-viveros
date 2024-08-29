@@ -29,7 +29,9 @@ export const routes: Routes = [
     path: 'register',
     component: RegisterComponent,
     title: 'Registrarse',
-    pathMatch: 'full'
+    pathMatch: 'full',
+    canActivate: [authGuard,roleGuard],
+    data: { expectedRoles: ['Administrador(a)', 'Secretario(a)'] }
   },
   /// REUNIONES
   {
