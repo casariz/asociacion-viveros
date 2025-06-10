@@ -1,3 +1,7 @@
+// ARCHIVO OBSOLETO - La funcionalidad de tokens ha sido eliminada
+// Esta aplicación ahora es de acceso público sin autenticación
+
+/*
 import { Injectable } from '@angular/core';
 
 @Injectable({
@@ -19,3 +23,4 @@ export class TokenService {
     localStorage.removeItem('auth-token');
   }
 }
+*/
