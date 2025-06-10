@@ -1,6 +1,6 @@
 import { Component, OnInit } from '@angular/core';
 import { Router, RouterLink } from '@angular/router';
-import { CommonModule } from '@angular/common';
+
 import { FormArray, FormBuilder, FormGroup, ReactiveFormsModule } from '@angular/forms';
 import { TaskService } from '../services/task.service';
 import { StatusService } from '../../../services/status.service';
@@ -10,7 +10,7 @@ import { MeetingsService } from '../../meetings/services/meetings.service';
 @Component({
   selector: 'app-tasks',
   standalone: true,
-  imports: [RouterLink, CommonModule, ReactiveFormsModule],
+  imports: [RouterLink, ReactiveFormsModule],
   templateUrl: './tasks.component.html',
   styleUrl: './tasks.component.css',
 })

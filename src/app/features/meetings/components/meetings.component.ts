@@ -1,4 +1,4 @@
-import { CommonModule } from '@angular/common';
+
 import { Component, OnInit } from '@angular/core';
 import { FormBuilder, FormGroup, FormArray, ReactiveFormsModule } from '@angular/forms';
 import { RouterLink, Router } from '@angular/router';
@@ -10,7 +10,7 @@ import { TopicsService } from '../services/topics.service';
 @Component({
   selector: 'app-meetings',
   standalone: true,
-  imports: [RouterLink, CommonModule, ReactiveFormsModule],
+  imports: [RouterLink, ReactiveFormsModule],
   templateUrl: './meetings.component.html',
   styleUrl: './meetings.component.css'
 })

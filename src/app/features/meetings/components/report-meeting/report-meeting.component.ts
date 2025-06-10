@@ -1,4 +1,4 @@
-import { CommonModule } from '@angular/common';
+
 import { Component } from '@angular/core';
 import { ActivatedRoute } from '@angular/router';
 import { Meetings } from '../../interfaces/meetings';
@@ -13,7 +13,7 @@ import { AssistantMeetingsService } from '../../services/assistant-meetings.serv
 @Component({
   selector: 'app-report-meeting',
   standalone: true,
-  imports: [CommonModule],
+  imports: [],
   templateUrl: './report-meeting.component.html',
   styleUrl: './report-meeting.component.css',
 })

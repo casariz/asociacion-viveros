@@ -1,139 +1,141 @@
 <section class="flex bg-light py-5 px-3">
-    <h2>Reuniones</h2>
-    <div class="mx-auto max-w-md w-100 rounded bg-white p-2 shadow">
-        <div class="d-flex justify-content-end">
-            <form [formGroup]="filterForm" (ngSubmit)="applyFilters()">
-                <div class="d-flex gap-2">
-                    <input class="form-control" type="date" formControlName="startDate" placeholder="Fecha inicio">
-                    <input class="form-control" type="date" formControlName="endDate" placeholder="Fecha fin">
-                    <input class="form-control" type="text" formControlName="employee" placeholder="Empleado...">
-                    <input class="form-control" type="text" formControlName="description" placeholder="Descripción...">
-                    <div class="d-flex gap-1">
-                        <div class="btn-group">
-                            <button class="btn btn-outline-secondary dropdown-toggle"
-                                data-bs-toggle="dropdown">Estado</button>
-                            <ul class="dropdown-menu">
-                                @for (state of status; track $index) {
-                                <li class="border-bottom p-2">
-                                    <input type="checkbox" [checked]="statusFormArray.value.includes(state)"
-                                        (change)="onStatusChange($event, state)">
-                                    {{ state }}
-                                </li>
-                                }
-                            </ul>
-                        </div>
-                    </div>
-                    <div class="btn-group">
-                        <button class="btn btn-outline-secondary" (click)="applyFilters()"><i
-                                class="fas fa-search"></i></button>
-                        <button class="btn btn-outline-secondary" (click)="resetFilters()"><i
-                                class="fas fa-delete-left text-danger"></i></button>
-                    </div>
-                </div>
-            </form>
-        </div>
-        <table class="table table-hover caption-bottom text-sm">
-            <thead>
-                <tr>
-                    <th class="text-start align-middle"></th>
-                    <th class="text-start align-middle">ID</th>
-                    <th class="text-start align-middle">REPORTÓ</th>
-                    <th class="text-start align-middle">FECHA - LUGAR <br> CONVOCÓ</th>
-                    <th class="text-start align-middle">DESCRIPCIÓN</th>
-                    <th class="text-start align-middle">ORDEN DEL DÍA</th>
-                    <th class="text-end align-middle">ACCIONES</th>
-                </tr>
-            </thead>
-            <tbody>
-                @for (meeting of filteredMeetings; track meeting.meeting_id) {
-                <tr [class.table-success]="meeting.status.status === 4">
-                    <td class="align-middle">
-                        @if (meeting.status.status == 4) {
-                        <span class="badge">
-                            <i class="fas fa-check-circle" style="color: #009900; font-size: 1em"></i>
-                        </span>
-                        } @else if (meeting.status.status == 3) {
-                        <span class="badge">
-                            <i class="fas fa-check-circle" style="color: #ffffff; font-size: 1em"></i>
-                        </span>
+  <h2>Reuniones</h2>
+  <div class="mx-auto max-w-md w-100 rounded bg-white p-2 shadow">
+    <div class="d-flex justify-content-end">
+      <form [formGroup]="filterForm" (ngSubmit)="applyFilters()">
+        <div class="d-flex gap-2">
+          <input class="form-control" type="date" formControlName="startDate" placeholder="Fecha inicio">
+          <input class="form-control" type="date" formControlName="endDate" placeholder="Fecha fin">
+          <input class="form-control" type="text" formControlName="employee" placeholder="Empleado...">
+          <input class="form-control" type="text" formControlName="description" placeholder="Descripción...">
+          <div class="d-flex gap-1">
+            <div class="btn-group">
+              <button class="btn btn-outline-secondary dropdown-toggle"
+              data-bs-toggle="dropdown">Estado</button>
+              <ul class="dropdown-menu">
+                @for (state of status; track $index) {
+                  <li class="border-bottom p-2">
+                    <input type="checkbox" [checked]="statusFormArray.value.includes(state)"
+                      (change)="onStatusChange($event, state)">
+                      {{ state }}
+                    </li>
+                  }
+                </ul>
+              </div>
+            </div>
+            <div class="btn-group">
+              <button class="btn btn-outline-secondary" (click)="applyFilters()"><i
+              class="fas fa-search"></i></button>
+              <button class="btn btn-outline-secondary" (click)="resetFilters()"><i
+              class="fas fa-delete-left text-danger"></i></button>
+            </div>
+          </div>
+        </form>
+      </div>
+      <table class="table table-hover caption-bottom text-sm">
+        <thead>
+          <tr>
+            <th class="text-start align-middle"></th>
+            <th class="text-start align-middle">ID</th>
+            <th class="text-start align-middle">REPORTÓ</th>
+            <th class="text-start align-middle">FECHA - LUGAR <br> CONVOCÓ</th>
+            <th class="text-start align-middle">DESCRIPCIÓN</th>
+            <th class="text-start align-middle">ORDEN DEL DÍA</th>
+            <th class="text-end align-middle">ACCIONES</th>
+          </tr>
+        </thead>
+        <tbody>
+          @for (meeting of filteredMeetings; track meeting.meeting_id) {
+            <tr [class.table-success]="meeting.status.status === 4">
+              <td class="align-middle">
+                @if (meeting.status.status == 4) {
+                  <span class="badge">
+                    <i class="fas fa-check-circle" style="color: #009900; font-size: 1em"></i>
+                  </span>
+                } @else if (meeting.status.status == 3) {
+                  <span class="badge">
+                    <i class="fas fa-check-circle" style="color: #ffffff; font-size: 1em"></i>
+                  </span>
+                }
+              </td>
+              <td class="align-middle">{{ meeting.meeting_id }}</td>
+              <td class="align-middle">{{ meeting.created_by.first_name }} </td>
+              <td class="align-middle">{{ meeting.meeting_date }} - {{ meeting.placement }}, <br> {{
+              meeting.called_by.first_name }} {{ meeting.called_by.last_name }}</td>
+              <td class="align-middle">{{ meeting.meeting_description }}</td>
+              <td class="align-middle">
+                <div class="dropdown">
+                  @if (meeting.topics) {
+                    <button class="btn btn-outline-secondary dropdown-toggle" type="button"
+                      data-bs-toggle="dropdown" aria-expanded="false">
+                      Ver temas
+                    </button>
+                    <ul class="dropdown-menu">
+                      @for (topic of topics; track $index) {
+                        @if (topic.meeting_id == meeting.meeting_id) {
+                          <li class="list-group-item  border-bottom">
+                            {{topic.topic}}
+                          </li>
                         }
-                    </td>
-                    <td class="align-middle">{{ meeting.meeting_id }}</td>
-                    <td class="align-middle">{{ meeting.created_by.first_name }} </td>
-                    <td class="align-middle">{{ meeting.meeting_date }} - {{ meeting.placement }}, <br> {{
-                        meeting.called_by.first_name }} {{ meeting.called_by.last_name }}</td>
-                    <td class="align-middle">{{ meeting.meeting_description }}</td>
-                    <td class="align-middle">
-                        <div class="dropdown">
-                            @if (meeting.topics) {
-                            <button class="btn btn-outline-secondary dropdown-toggle" type="button"
-                                data-bs-toggle="dropdown" aria-expanded="false">
-                                Ver temas
-                            </button>
-                            <ul class="dropdown-menu">
-                                @for (topic of topics; track $index) {
-                                @if (topic.meeting_id == meeting.meeting_id) {
-                                <li class="list-group-item  border-bottom">
-                                    {{topic.topic}}
-                                </li>
-                                }
-                                }
-                            </ul>
-                            }
+                      }
+                    </ul>
+                  }
 
-                        </div>
-                    </td>
-                    <td class="align-middle d-flex p-3 justify-content-end">
-                        <div class="btn-group" role="group">
-                            @if (userRole === 'Administrador(a)'|| userRole === 'Secretario(a)' ) {
-                            @if (meeting.status.status == 3) {
-                            <button type="button" class="btn btn-outline-secondary"
-                                (click)="completeMeeting(meeting.meeting_id)"><i class="fas fa-check"></i></button>
-                            }
-                            @if (meeting.status.status == 3) {
-                            <a type="button" class="btn btn-outline-secondary"
-                                [routerLink]="['/', 'meetings', meeting.meeting_id, 'edit']"><i
-                                    class="fas fa-edit"></i></a> } @else {
-                            <a type="button" class="btn btn-outline-secondary"
-                                [routerLink]="['/', 'meetings', meeting.meeting_id, 'edit']"><i
-                                    class="fas fa-pen-fancy"></i></a>
-                            }
-                            @if (meeting.status.status == 3) {
-                            <button (click)="addTaskInMeeting(meeting.meeting_id)" class="btn btn-outline-secondary"><i
-                                    class="fas fa-th-list"></i></button> }
-                            }
+                </div>
+              </td>
+              <td class="align-middle d-flex p-3 justify-content-end">
+                <div class="btn-group" role="group">
+                  @if (userRole === 'Administrador(a)'|| userRole === 'Secretario(a)' ) {
+                    @if (meeting.status.status == 3) {
+                      <button type="button" class="btn btn-outline-secondary"
+                        (click)="completeMeeting(meeting.meeting_id)"><i class="fas fa-check"></i></button>
+                      }
+                      @if (meeting.status.status == 3) {
+                        <a type="button" class="btn btn-outline-secondary"
+                          [routerLink]="['/', 'meetings', meeting.meeting_id, 'edit']"><i
+                        class="fas fa-edit"></i></a> } @else {
+                        <a type="button" class="btn btn-outline-secondary"
+                          [routerLink]="['/', 'meetings', meeting.meeting_id, 'edit']"><i
+                        class="fas fa-pen-fancy"></i></a>
+                      }
+                      @if (meeting.status.status == 3) {
+                        <button (click)="addTaskInMeeting(meeting.meeting_id)" class="btn btn-outline-secondary"><i
+                        class="fas fa-th-list"></i></button> }
+                      }
 
-                            <a type="button" class="btn btn-outline-secondary" [routerLink]="['/', 'meetings', meeting.meeting_id, 'view']"><i class="fas fa-eye"></i></a>
-                        </div>
-                    </td>
+                      <a type="button" class="btn btn-outline-secondary" [routerLink]="['/', 'meetings', meeting.meeting_id, 'view']"><i class="fas fa-eye"></i></a>
+                    </div>
+                  </td>
                 </tr>
                 } @empty {
                 <tr>
-                    <td colspan="7" class="text-center">No se encontraron reuniones.</td>
+                  <td colspan="7" class="text-center">No se encontraron reuniones.</td>
                 </tr>
-                }
+              }
             </tbody>
-        </table>
-        <nav aria-label="Page navigation example">
+          </table>
+          <nav aria-label="Page navigation example">
             <ul class="pagination justify-content-center">
-                <li class="page-item" [class.disabled]="currentPage === 1">
-                    <a class="page-link" (click)="changePage(currentPage - 1)"
-                        [attr.aria-disabled]="currentPage === 1">Anterior</a>
+              <li class="page-item" [class.disabled]="currentPage === 1">
+                <a class="page-link" (click)="changePage(currentPage - 1)"
+                [attr.aria-disabled]="currentPage === 1">Anterior</a>
+              </li>
+              @for (page of getPageRange(); track page) {
+                <li class="page-item" [class.active]="page === currentPage">
+                  <a class="page-link" (click)="changePage(page)">{{ page }}</a>
                 </li>
-                <li *ngFor="let page of getPageRange()" class="page-item" [class.active]="page === currentPage">
-                    <a class="page-link" (click)="changePage(page)">{{ page }}</a>
-                </li>
-                <li class="page-item" [class.disabled]="currentPage === totalPages">
-                    <a class="page-link" (click)="changePage(currentPage + 1)"
-                        [attr.aria-disabled]="currentPage === totalPages">Después</a>
-                </li>
+              }
+              <li class="page-item" [class.disabled]="currentPage === totalPages">
+                <a class="page-link" (click)="changePage(currentPage + 1)"
+                [attr.aria-disabled]="currentPage === totalPages">Después</a>
+              </li>
             </ul>
-        </nav>
-    </div>
-    <div class="d-flex justify-content-end m-2 gap-2">
-        <a routerLink="add-meetings" class="btn btn-lg rounded-circle btn-primary border-0 add-button"><i
-                class="fas fa-plus"></i></a>
-        <button (click)="createTaskWithoutMeeting()" class="btn btn-lg rounded-circle btn-primary border-0"><i
-                class="fas fa-clipboard-list"></i></button>
-    </div>
-</section>
+          </nav>
+        </div>
+        <div class="d-flex justify-content-end m-2 gap-2">
+          <a routerLink="add-meetings" class="btn btn-lg rounded-circle btn-primary border-0 add-button"><i
+          class="fas fa-plus"></i></a>
+          <button (click)="createTaskWithoutMeeting()" class="btn btn-lg rounded-circle btn-primary border-0"><i
+          class="fas fa-clipboard-list"></i></button>
+        </div>
+      </section>

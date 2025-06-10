@@ -1,8 +1,8 @@
 <div class="d-flex row bg-light py-5 px-3 justify-content-center">
   @if (isEditMode) {
-  <h2 class="text-center fw-bold">Editar reunión</h2>
+    <h2 class="text-center fw-bold">Editar reunión</h2>
   } @else {
-  <h2 class="text-center fw-bold">Convocar reunión</h2>
+    <h2 class="text-center fw-bold">Convocar reunión</h2>
   }
 
   <div class="card w-75 p-0">
@@ -17,10 +17,10 @@
               @if (submitted && f['meeting_date'].errors) {
                 <div class="invalid-feedback">
                   @if (f['meeting_date'].errors['required']) {
-                  <div>Fecha requerido</div>
+                    <div>Fecha requerido</div>
                   }
                 </div>
-                }
+              }
             </div>
             <div class="input-group">
               <span class="input-group-text"><i class="fas fa-clock"></i></span>
@@ -28,10 +28,10 @@
               @if (submitted && f['start_hour'].errors) {
                 <div class="invalid-feedback">
                   @if (f['start_hour'].errors['required']) {
-                  <div>Hora requerido</div>
+                    <div>Hora requerido</div>
                   }
                 </div>
-                }
+              }
             </div>
           </div>
           <div class="input-group position-relative">
@@ -43,157 +43,182 @@
               @if (submitted && f['called_by_name'].errors) {
                 <div class="invalid-feedback">
                   @if (f['called_by_name'].errors['required']) {
-                  <div>Convocado por es requerido</div>
+                    <div>Convocado por es requerido</div>
                   }
                 </div>
-                }
-            <ul class="dropdown-menu w-75" [class.show]="showDropdownCalledBy" *ngIf="filteredUsers.length"
-              style="margin-top: 32px; margin-left: 35px">
-              <li *ngFor="let user of filteredUsers" class="dropdown-item" (click)="selectCalledBy(user)">
-                {{user.first_name}} {{user.last_name}}
-              </li>
-            </ul>
-          </div>
-          <div class="input-group">
-            <span class="input-group-text"><i class="fas fa-location-dot"></i></span>
-            <input type="text" class="form-control p-0 ps-2" id="placement" required formControlName="placement"
-              placeholder="Lugar de la reunión..." [ngClass]="{ 'is-invalid': submitted && f['placement'].errors }"/>
-              @if (submitted && f['placement'].errors) {
-                <div class="invalid-feedback">
-                  @if (f['placement'].errors['required']) {
-                  <div>Lugar requerido</div>
+              }
+              @if (filteredUsers.length) {
+                <ul class="dropdown-menu w-75" [class.show]="showDropdownCalledBy"
+                  style="margin-top: 32px; margin-left: 35px">
+                  @for (user of filteredUsers; track user) {
+                    <li class="dropdown-item" (click)="selectCalledBy(user)">
+                      {{user.first_name}} {{user.last_name}}
+                    </li>
                   }
-                </div>
-                }
-          </div>
-          <div class="input-group">
-            <span class="input-group-text"><i class="fas fa-signature"></i></span>
-            <input type="text" class="form-control p-0 ps-2" id="meeting_description" required
-              formControlName="meeting_description" placeholder="Descripción de la reunión..." [ngClass]="{ 'is-invalid': submitted && f['meeting_description'].errors }"/>
-              @if (submitted && f['meeting_description'].errors) {
-                <div class="invalid-feedback">
-                  @if (f['meeting_description'].errors['required']) {
-                  <div>Descripcion de la reunion requerido</div>
-                  }
-                </div>
-                }
-          </div>
-
-          <div class="input-group position-relative">
-            <span class="input-group-text"><i class="fas fa-building-user"></i></span>
-            <input type="hidden" id="director" formControlName="director" />
-            <input class="form-control p-0 ps-2" id="director_name" formControlName="director_name" type="text"
-              size="50" placeholder="Seleccione director ejecutivo..." autocomplete="off" required (input)="onSearch('director_name')"
-              (focus)="showDropdownDirector = true" [ngClass]="{ 'is-invalid': submitted && f['director_name'].errors }"/>
-              @if (submitted && f['director_name'].errors) {
-                <div class="invalid-feedback">
-                  @if (f['director_name'].errors['required']) {
-                  <div>Director es requerido</div>
-                  }
-                </div>
-                }
-            <ul class="dropdown-menu w-75" [class.show]="showDropdownDirector" *ngIf="filteredUsers.length"
-              style="margin-top: 32px; margin-left: 35px">
-              <li *ngFor="let user of filteredUsers" class="dropdown-item" (click)="selectDirector(user)">
-                {{user.first_name}} {{user.last_name}}
-              </li>
-            </ul>
-          </div>
-
-          <div class="input-group position-relative">
-            <span class="input-group-text"><i class="fas fa-pen-nib"></i></span>
-            <input type="hidden" id="secretary" formControlName="secretary" />
-            <input class="form-control p-0 ps-2" id="secretary_name" formControlName="secretary_name" type="text"
-              size="50" placeholder="Seleccione secretario(a)..." autocomplete="off" required (input)="onSearch('secretary_name')"
-              (focus)="showDropdownSecretary = true" [ngClass]="{ 'is-invalid': submitted && f['secretary_name'].errors }"/>
-              @if (submitted && f['secretary_name'].errors) {
-                <div class="invalid-feedback">
-                  @if (f['secretary_name'].errors['required']) {
-                  <div>Secretario es requerido</div>
-                  }
-                </div>
-                }
-            <ul class="dropdown-menu w-75" [class.show]="showDropdownSecretary" *ngIf="filteredUsers.length"
-              style="margin-top: 32px; margin-left: 35px">
-              <li *ngFor="let user of filteredUsers" class="dropdown-item" (click)="selectSecretary(user)">
-                {{user.first_name}} {{user.last_name}}
-              </li>
-            </ul>
-          </div>
-
-          <div class="input-group">
-            <span class="input-group-text"><i class="fas fa-users"></i></span>
-            <div class="form-control position-relative">
-              <input type="hidden" formControlName="assistant_id" />
-              <input class="form-control p-0 ps-2" id="assistant_id_visible" formControlName="assistant_name"
-                type="text" size="50" placeholder="Seleccione vinculado..." autocomplete="off"
-                (input)="onSearch('assistant_name')" (focus)="showDropdownAssistant = true" />
-              <ul class="dropdown-menu w-100" [class.show]="showDropdownAssistant" *ngIf="filteredUsers.length"
-                style="margin-top: 0px;">
-                <li *ngFor="let user of filteredUsers" class="dropdown-item" (click)="selectAssistant(user)">
-                  {{user.first_name}} {{user.last_name}}
-                </li>
-              </ul>
-              <div *ngIf="selectedAssistants.length" class="d-flex flex-row flex-wrap mt-2 gap-1">
-                <span *ngFor="let assistant of selectedAssistants"
-                  class="badge text-bg-light border border-secondary d-inline-flex align-items-center justify-content-between m-0 p-1 gap-1">
-                  @if (assistant.user_id && assistant.status == 2) {
-                    <span class="align-middle m-0 p-0">{{assistant.user_id.first_name}} {{assistant.user_id.last_name}}</span>
-                  }
-                  <span class="align-middle m-0 p-0">{{assistant.first_name}} {{assistant.last_name}}</span>
-                  
-                  <button type="button" class="btn-close btn-sm m-0 p-0" (click)="removeAssistant(assistant)"></button>
-                </span>
-              </div>
+                </ul>
+              }
             </div>
-          </div>
-        </div>
-
-        <div class="vr"></div>
-
-        <div class="col-sm-6 p-1 px-2 d-flex flex-column gap-2">
-          <h6 class="fw-bold mb-2">Orden de hoy</h6>
-          <div class="d-flex gap-1">
             <div class="input-group">
-              <span class="input-group-text"><i class="fas fa-comment-dots"></i></span>
-              <select class="form-select p-0 ps-2" id="type" formControlName="type" (change)="onTypeChange($event)" required>
-                <option>Orden del día</option>
-                <option>Desarrollo</option>
-                <option>Pendiente</option>
-              </select>
-              
-              <input type="text" class="form-control w-25 p-0 ps-2" id="topic" formControlName="topic"
-                placeholder="Anotaciones..." />
-                
-            </div>
-            <input *ngIf="isDevelopment" type="text" class="form-control w-25 p-0 ps-2" id="title" formControlName="title" placeholder="Título" />
-            
-            <div class="d-flex-wrap align-content-center">
-              <button type="button" class="btn btn-sm btn-success" name="action" title="Enviar" (click)="addTopic()">
-                <i class="fas fa-paper-plane"></i>
-              </button>
-            </div>
-          </div>
-          <div class="mt-4" style="height:17em; overflow-y:scroll;">
-            <ul class="d-flex gap-1 row">
-              <li class="d-flex align-items-center border border-secondary rounded w-75"
-                *ngFor="let topic of topicList; let i = index">
-                <button type="button" class="btn btn-close btn-sm p-2" (click)="removeTopic(topic.topic_id)"
-                  *ngIf="topic.status==2"></button>
-                <div class="px-2 {{topic.status==1 ? 'text-decoration-line-through' : ''}}">
-                  {{ cleanTopic(topic.topic) }}
+              <span class="input-group-text"><i class="fas fa-location-dot"></i></span>
+              <input type="text" class="form-control p-0 ps-2" id="placement" required formControlName="placement"
+                placeholder="Lugar de la reunión..." [ngClass]="{ 'is-invalid': submitted && f['placement'].errors }"/>
+                @if (submitted && f['placement'].errors) {
+                  <div class="invalid-feedback">
+                    @if (f['placement'].errors['required']) {
+                      <div>Lugar requerido</div>
+                    }
+                  </div>
+                }
+              </div>
+              <div class="input-group">
+                <span class="input-group-text"><i class="fas fa-signature"></i></span>
+                <input type="text" class="form-control p-0 ps-2" id="meeting_description" required
+                  formControlName="meeting_description" placeholder="Descripción de la reunión..." [ngClass]="{ 'is-invalid': submitted && f['meeting_description'].errors }"/>
+                  @if (submitted && f['meeting_description'].errors) {
+                    <div class="invalid-feedback">
+                      @if (f['meeting_description'].errors['required']) {
+                        <div>Descripcion de la reunion requerido</div>
+                      }
+                    </div>
+                  }
                 </div>
-              </li>
-            </ul>
-          </div>
-        </div>
-      </form>
-    </div>
-    <div class="card-footer d-flex justify-content-end">
-      <button class="btn btn-success" type="submit" (click)="onSubmit()">
-        <i class="fas {{ isEditMode ? 'fa-rotate-right' : 'fa-plus' }}"></i> {{ isEditMode ? 'ACTUALIZAR' :
-        'AGREGAR' }}
-      </button>
-    </div>
-  </div>
-</div>
+
+                <div class="input-group position-relative">
+                  <span class="input-group-text"><i class="fas fa-building-user"></i></span>
+                  <input type="hidden" id="director" formControlName="director" />
+                  <input class="form-control p-0 ps-2" id="director_name" formControlName="director_name" type="text"
+                    size="50" placeholder="Seleccione director ejecutivo..." autocomplete="off" required (input)="onSearch('director_name')"
+                    (focus)="showDropdownDirector = true" [ngClass]="{ 'is-invalid': submitted && f['director_name'].errors }"/>
+                    @if (submitted && f['director_name'].errors) {
+                      <div class="invalid-feedback">
+                        @if (f['director_name'].errors['required']) {
+                          <div>Director es requerido</div>
+                        }
+                      </div>
+                    }
+                    @if (filteredUsers.length) {
+                      <ul class="dropdown-menu w-75" [class.show]="showDropdownDirector"
+                        style="margin-top: 32px; margin-left: 35px">
+                        @for (user of filteredUsers; track user) {
+                          <li class="dropdown-item" (click)="selectDirector(user)">
+                            {{user.first_name}} {{user.last_name}}
+                          </li>
+                        }
+                      </ul>
+                    }
+                  </div>
+
+                  <div class="input-group position-relative">
+                    <span class="input-group-text"><i class="fas fa-pen-nib"></i></span>
+                    <input type="hidden" id="secretary" formControlName="secretary" />
+                    <input class="form-control p-0 ps-2" id="secretary_name" formControlName="secretary_name" type="text"
+                      size="50" placeholder="Seleccione secretario(a)..." autocomplete="off" required (input)="onSearch('secretary_name')"
+                      (focus)="showDropdownSecretary = true" [ngClass]="{ 'is-invalid': submitted && f['secretary_name'].errors }"/>
+                      @if (submitted && f['secretary_name'].errors) {
+                        <div class="invalid-feedback">
+                          @if (f['secretary_name'].errors['required']) {
+                            <div>Secretario es requerido</div>
+                          }
+                        </div>
+                      }
+                      @if (filteredUsers.length) {
+                        <ul class="dropdown-menu w-75" [class.show]="showDropdownSecretary"
+                          style="margin-top: 32px; margin-left: 35px">
+                          @for (user of filteredUsers; track user) {
+                            <li class="dropdown-item" (click)="selectSecretary(user)">
+                              {{user.first_name}} {{user.last_name}}
+                            </li>
+                          }
+                        </ul>
+                      }
+                    </div>
+
+                    <div class="input-group">
+                      <span class="input-group-text"><i class="fas fa-users"></i></span>
+                      <div class="form-control position-relative">
+                        <input type="hidden" formControlName="assistant_id" />
+                        <input class="form-control p-0 ps-2" id="assistant_id_visible" formControlName="assistant_name"
+                          type="text" size="50" placeholder="Seleccione vinculado..." autocomplete="off"
+                          (input)="onSearch('assistant_name')" (focus)="showDropdownAssistant = true" />
+                          @if (filteredUsers.length) {
+                            <ul class="dropdown-menu w-100" [class.show]="showDropdownAssistant"
+                              style="margin-top: 0px;">
+                              @for (user of filteredUsers; track user) {
+                                <li class="dropdown-item" (click)="selectAssistant(user)">
+                                  {{user.first_name}} {{user.last_name}}
+                                </li>
+                              }
+                            </ul>
+                          }
+                          @if (selectedAssistants.length) {
+                            <div class="d-flex flex-row flex-wrap mt-2 gap-1">
+                              @for (assistant of selectedAssistants; track assistant) {
+                                <span
+                                  class="badge text-bg-light border border-secondary d-inline-flex align-items-center justify-content-between m-0 p-1 gap-1">
+                                  @if (assistant.user_id && assistant.status == 2) {
+                                    <span class="align-middle m-0 p-0">{{assistant.user_id.first_name}} {{assistant.user_id.last_name}}</span>
+                                  }
+                                  <span class="align-middle m-0 p-0">{{assistant.first_name}} {{assistant.last_name}}</span>
+                                  <button type="button" class="btn-close btn-sm m-0 p-0" (click)="removeAssistant(assistant)"></button>
+                                </span>
+                              }
+                            </div>
+                          }
+                        </div>
+                      </div>
+                    </div>
+
+                    <div class="vr"></div>
+
+                    <div class="col-sm-6 p-1 px-2 d-flex flex-column gap-2">
+                      <h6 class="fw-bold mb-2">Orden de hoy</h6>
+                      <div class="d-flex gap-1">
+                        <div class="input-group">
+                          <span class="input-group-text"><i class="fas fa-comment-dots"></i></span>
+                          <select class="form-select p-0 ps-2" id="type" formControlName="type" (change)="onTypeChange($event)" required>
+                            <option>Orden del día</option>
+                            <option>Desarrollo</option>
+                            <option>Pendiente</option>
+                          </select>
+
+                          <input type="text" class="form-control w-25 p-0 ps-2" id="topic" formControlName="topic"
+                            placeholder="Anotaciones..." />
+
+                          </div>
+                          @if (isDevelopment) {
+                            <input type="text" class="form-control w-25 p-0 ps-2" id="title" formControlName="title" placeholder="Título" />
+                          }
+
+                          <div class="d-flex-wrap align-content-center">
+                            <button type="button" class="btn btn-sm btn-success" name="action" title="Enviar" (click)="addTopic()">
+                              <i class="fas fa-paper-plane"></i>
+                            </button>
+                          </div>
+                        </div>
+                        <div class="mt-4" style="height:17em; overflow-y:scroll;">
+                          <ul class="d-flex gap-1 row">
+                            @for (topic of topicList; track topic; let i = $index) {
+                              <li class="d-flex align-items-center border border-secondary rounded w-75"
+                                >
+                                @if (topic.status==2) {
+                                  <button type="button" class="btn btn-close btn-sm p-2" (click)="removeTopic(topic.topic_id)"
+                                  ></button>
+                                }
+                                <div class="px-2 {{topic.status==1 ? 'text-decoration-line-through' : ''}}">
+                                  {{ cleanTopic(topic.topic) }}
+                                </div>
+                              </li>
+                            }
+                          </ul>
+                        </div>
+                      </div>
+                    </form>
+                  </div>
+                  <div class="card-footer d-flex justify-content-end">
+                    <button class="btn btn-success" type="submit" (click)="onSubmit()">
+                      <i class="fas {{ isEditMode ? 'fa-rotate-right' : 'fa-plus' }}"></i> {{ isEditMode ? 'ACTUALIZAR' :
+                      'AGREGAR' }}
+                    </button>
+                  </div>
+                </div>
+              </div>
