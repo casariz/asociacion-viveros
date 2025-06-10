@@ -2,23 +2,28 @@
 @import "tailwindcss";
 
 
-h1,
-h2,
-h3,
-h4,
-h5,
-h6 {
-  font-family: "Fraunces", serif;
-}
+/* Configuración global para el fondo animado */
+html,
 body {
-  font-family: "Bricolage Grotesque", sans-serif;
-  font-size: 15px;
+  margin: 0;
+  padding: 0;
+  min-height: 100vh;
+  overflow-x: hidden;
 }
 
-.add-button {
-  background-color: #198754;
+/* Asegurar que el contenido esté por encima del fondo */
+app-root {
+  position: relative;
+  z-index: 1;
 }
 
-.add-button:hover {
-  background-color: #126840;
+@layer base {
+  html {
+    scroll-behavior: smooth;
+  }
+
+  body {
+    overflow-x: hidden;
+    font-family: "Geist", sans-serif;
+  }
 }
