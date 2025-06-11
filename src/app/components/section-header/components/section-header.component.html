@@ -1,21 +1,30 @@
 <div class="flex flex-col sm:flex-row gap-4 items-start sm:items-center justify-between">
-    <h1 class="text-2xl font-bold text-gray-900">{{title}}</h1>
-    <div class="flex flex-col sm:flex-row gap-3 w-full sm:w-auto">
+    <h1 class="text-2xl font-bold text-gray-900">{{ title }}</h1>
+
+    <form [formGroup]="filterForm" class="flex flex-col sm:flex-row gap-3 w-full sm:w-auto" (ngSubmit)="onSearch()">
         <div class="flex gap-2">
-            <input type="date" class="w-40" placeholder="dd/mm/yyyy">
-            <input type="date" class="w-40" placeholder="dd/mm/yyyy">
+            <input type="date"
+                class="px-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500"
+                formControlName="startDate" />
+            <input type="date"
+                class="px-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500"
+                formControlName="endDate" />
         </div>
-        <select name="" id="">
-            <option value="">Estado</option>
-            <option value="1">Todos</option>
-            <option value="2">Pendiente</option>
-            <option value="3">Finalizado</option>
-        </select>
-        <button>
-            <lucide-angular [img]="searchIcon" class="h-4 w-4"></lucide-angular>
+
+        <input type="text" placeholder="Descripción"
+            class="px-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500"
+            formControlName="description" />
+
+        <button type="submit"
+            class="flex items-center gap-2 px-4 py-2 bg-blue-600 text-white rounded-md hover:bg-blue-700 focus:outline-none focus:ring-2 focus:ring-blue-500">
+            <lucide-angular [img]="searchIcon" class="w-5 h-5"></lucide-angular>
+
         </button>
-        <button>
-            <lucide-angular [img]="filterIcon" class="h-4 w-4"></lucide-angular>
+
+        <button type="button" (click)="onReset()"
+            class="flex items-center gap-2 px-4 py-2 border border-gray-300 text-gray-700 rounded-md hover:bg-gray-50 focus:outline-none focus:ring-2 focus:ring-blue-500">
+            <lucide-angular [img]="filterIcon" class="w-5 h-5"></lucide-angular>
+
         </button>
-    </div>
+    </form>
 </div>

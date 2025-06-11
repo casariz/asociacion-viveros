@@ -16,7 +16,7 @@ export const routes: Routes = [
   /// INICIO
   {
     path: 'dashboard',
-    loadComponent: () => import('../app/features/dashboard/dashboard.component').then(m => m.DashboardComponent),
+    component: DashboardComponent,
     title: 'Inicio',
     pathMatch: 'full'
   },
@@ -24,7 +24,7 @@ export const routes: Routes = [
   /// REUNIONES
   {
     path: 'meetings',
-    loadComponent: () => import('../app/features/meetings/components/meetings.component').then(m => m.MeetingsComponent),
+    component: MeetingsComponent,
     title: 'Reuniones',
     pathMatch: 'full'
   },
@@ -50,7 +50,7 @@ export const routes: Routes = [
   /// TAREAS
   {
     path: 'tasks',
-    loadComponent: () => import('../app/features/tasks/components/tasks.component').then(m => m.TasksComponent),
+    component: TasksComponent,
     title: 'Tareas',
     pathMatch: 'full'
   },
@@ -78,7 +78,7 @@ export const routes: Routes = [
   /// CARTERA
   {
     path: 'wallet',
-    loadComponent: () => import('../app/features/wallet/components/wallet.component').then(m => m.WalletComponent),
+    component: WalletComponent,
     title: 'Cartera',
     pathMatch: 'full'
   },
@@ -108,5 +108,5 @@ export const routes: Routes = [
     title: 'Añadir pago',
     pathMatch: 'full'
   },
-  { path: '**', redirectTo: 'meetings' },
+  { path: '**', redirectTo: 'dashboard' },
 ];
