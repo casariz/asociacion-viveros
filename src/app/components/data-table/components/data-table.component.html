@@ -1,0 +1,68 @@
+<app-card>
+    <div class="overflow-x-auto">
+        <table class="w-full">
+            <thead class="bg-gray-50 border-b">
+                <tr>
+                    @for (column of columns; track column.key) {
+                    <th class="px-4 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider"
+                        [ngStyle]="{ width: column.width }">
+                        {{ column.label }}
+                    </th>
+                    }
+                </tr>
+            </thead>
+
+            <tbody class="bg-white divide-y divide-gray-200">
+                @if (data.length === 0) {
+                <tr>
+                    <td [attr.colspan]="columns.length" class="px-4 py-8 text-center text-gray-500">
+                        {{ emptyMessage }}
+                    </td>
+                </tr>
+                } @else {
+                @for (item of data; let i = $index; track item.id || i) {
+                <tr class="hover:bg-gray-50">
+                    @for (column of columns; track column.key) {
+                    <td class="px-4 py-4 text-sm text-gray-900">
+                        @if (column.key === 'acciones') {
+                        <button class="px-3 py-1 text-sm border rounded hover:bg-gray-100">
+                            Ver
+                        </button>
+                        } @else if (column.key === 'total') {
+                        ${{ item[column.key] | number: '1.2-2' }}
+                        } @else {
+                        {{ item[column.key] }}
+                        }
+                    </td>
+                    }
+                </tr>
+                }
+                }
+            </tbody>
+        </table>
+    </div>
+
+    <!-- Paginación -->
+    <div class="flex items-center py-4 border-t"
+        [ngClass]="{ 'justify-between bg-gray-50': showTotal, 'justify-center': !showTotal }">
+        <div class="flex items-center gap-2 px-4">
+            <button (click)="previousPage.emit()" class="px-3 py-1 text-sm border rounded hover:bg-gray-100">
+                Anterior
+            </button>
+
+            <span class="px-3 py-1 text-sm font-semibold bg-blue-600 text-white rounded">
+                {{ currentPage }}
+            </span>
+
+            <button (click)="nextPage.emit()" class="px-3 py-1 text-sm border rounded hover:bg-gray-100">
+                Después
+            </button>
+        </div>
+
+        @if (showTotal) {
+        <div class="px-4">
+            <span class="text-sm font-medium text-gray-900">TOTAL: ${{ totalValue | number: '1.2-2' }}</span>
+        </div>
+        }
+    </div>
+</app-card>

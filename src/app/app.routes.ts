@@ -7,15 +7,24 @@ import { AssignTasksComponent } from './features/tasks/components/assign-tasks/a
 import { WalletComponent } from './features/wallet/components/wallet.component';
 import { AddWalletComponent } from './features/wallet/components/add-wallet/add-wallet.component';
 import { ReportComponent } from './features/wallet/components/report/report.component';
+import { DashboardComponent } from './features/dashboard/dashboard.component';
 
 
 export const routes: Routes = [
-  { path: '', redirectTo: 'meetings', pathMatch: 'full' },
-  
+  { path: '', redirectTo: 'dashboard', pathMatch: 'full' },
+
+  /// INICIO
+  {
+    path: 'dashboard',
+    loadComponent: () => import('../app/features/dashboard/dashboard.component').then(m => m.DashboardComponent),
+    title: 'Inicio',
+    pathMatch: 'full'
+  },
+
   /// REUNIONES
   {
     path: 'meetings',
-    component: MeetingsComponent,
+    loadComponent: () => import('../app/features/meetings/components/meetings.component').then(m => m.MeetingsComponent),
     title: 'Reuniones',
     pathMatch: 'full'
   },
@@ -41,7 +50,7 @@ export const routes: Routes = [
   /// TAREAS
   {
     path: 'tasks',
-    component: TasksComponent,
+    loadComponent: () => import('../app/features/tasks/components/tasks.component').then(m => m.TasksComponent),
     title: 'Tareas',
     pathMatch: 'full'
   },
@@ -69,7 +78,7 @@ export const routes: Routes = [
   /// CARTERA
   {
     path: 'wallet',
-    component: WalletComponent,
+    loadComponent: () => import('../app/features/wallet/components/wallet.component').then(m => m.WalletComponent),
     title: 'Cartera',
     pathMatch: 'full'
   },
@@ -99,5 +108,5 @@ export const routes: Routes = [
     title: 'Añadir pago',
     pathMatch: 'full'
   },
-  {path: '**', redirectTo: 'meetings'},
+  { path: '**', redirectTo: 'meetings' },
 ];

@@ -1,5 +1,6 @@
 import { CommonModule } from '@angular/common';
 import { Component, EventEmitter, Input, Output } from '@angular/core';
+import { Router } from '@angular/router';
 import { LucideAngularModule } from 'lucide-angular';
 
 @Component({
@@ -14,8 +15,12 @@ export class SidebarComponent {
   @Input() activeSection!: string;
   @Output() sectionChange = new EventEmitter<string>();
 
+  constructor(private router: Router) { }
 
   onSectionChange(sectionId: string) {
+    this.router.navigate([this.navItems.find(item => item.id === sectionId)?.path || '']);
     this.sectionChange.emit(sectionId);
   }
+
+
 }

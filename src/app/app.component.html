@@ -1,5 +1,8 @@
 <app-navbar></app-navbar>
 <div class="flex">
-    <app-sidebar [activeSection]="activeSection" [navItems]="navItems" (sectionChange)="onSectionChange($event)"></app-sidebar>
-    <router-outlet />
+    <app-sidebar [activeSection]="activeSection" [navItems]="navItems"
+        (sectionChange)="onSectionChange($event)"></app-sidebar>
+    <main class="flex-1 p-6">
+        <router-outlet></router-outlet>
+    </main>
 </div>

@@ -10,7 +10,7 @@ import { MeetingsService } from '../../meetings/services/meetings.service';
 @Component({
   selector: 'app-tasks',
   standalone: true,
-  imports: [RouterLink, ReactiveFormsModule],
+  imports: [ReactiveFormsModule],
   templateUrl: './tasks.component.html',
   styleUrl: './tasks.component.css',
 })
