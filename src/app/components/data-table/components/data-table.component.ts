@@ -20,9 +20,24 @@ export class DataTableComponent {
 
   @Output() previousPage = new EventEmitter<void>();
   @Output() nextPage = new EventEmitter<void>();
-  @Output() viewItem = new EventEmitter<number>(); // Nuevo para manejar acciones
+  @Output() viewItem = new EventEmitter<number>();
+  @Output() editItem = new EventEmitter<number>(); // Added for edit action
+  @Output() completeItem = new EventEmitter<number>(); // Added for complete action
+  @Output() rejectItem = new EventEmitter<number>(); // Added for reject action
 
-  onView(itemId: number) {
+  onView(itemId: number): void {
     this.viewItem.emit(itemId);
+  }
+
+  onEdit(itemId: number): void { // Added handler for edit
+    this.editItem.emit(itemId);
+  }
+
+  onComplete(itemId: number): void { // Added handler for complete
+    this.completeItem.emit(itemId);
+  }
+
+  onReject(itemId: number): void { // Added handler for reject
+    this.rejectItem.emit(itemId);
   }
 }
