@@ -6,11 +6,14 @@ import { TaskService } from '../services/task.service';
 import { StatusService } from '../../../services/status.service';
 import { Tasks } from '../interfaces/tasks';
 import { MeetingsService } from '../../meetings/services/meetings.service';
+import { SectionHeaderComponent } from '../../../components/section-header/components/section-header.component';
+import { DataTableComponent } from '../../../components/data-table/components/data-table.component';
+import { Column } from '../../../components/data-table/interfaces/data-table';
 
 @Component({
   selector: 'app-tasks',
   standalone: true,
-  imports: [ReactiveFormsModule],
+  imports: [ReactiveFormsModule, SectionHeaderComponent, DataTableComponent, RouterLink],
   templateUrl: './tasks.component.html',
   styleUrl: './tasks.component.css',
 })
@@ -23,12 +26,21 @@ export class TasksComponent implements OnInit {
   status: any[] = [];
   userRole: string | null = '';
 
+  columns: Column[] = [
+    { key: 'meeting_id', label: 'ID' },
+    { key: 'reportadoPor', label: 'Reportó' },
+    { key: 'fechaLugar', label: 'Fecha - Lugar' },
+    { key: 'meeting_description', label: 'Descripción' },
+    { key: 'topics', label: 'Orden del día' },
+    { key: 'acciones', label: 'Acciones' }
+  ];
+
   constructor(private fb: FormBuilder,
     private router: Router,
     private taskService: TaskService,
     private statusService: StatusService,
     private meetingsService: MeetingsService
-    ) {
+  ) {
     this.filterForm = this.fb.group({
       startDate: [''],
       endDate: [''],
@@ -70,21 +82,21 @@ export class TasksComponent implements OnInit {
       },
     });
   }
-  
+
   getStatusTasks(): void {
     this.statusService.getStatusTasks().subscribe({
-      next:(value) => {
+      next: (value) => {
         this.status = value.status;
         this.setDefaultStatus();
         this.applyFilters();
       },
-      error:(err) => {
+      error: (err) => {
         console.log("Error al traer status: ", err);
       },
     })
   }
 
-  getUserRole():void{
+  getUserRole(): void {
     this.userRole = ''; // Removed authService usage
   }
 
@@ -145,7 +157,7 @@ export class TasksComponent implements OnInit {
         task.task_description
           ?.toLowerCase()
           .includes(description.toLowerCase());
-        const matchesStatus = status.length === 0 || status.includes(task.status.description);
+      const matchesStatus = status.length === 0 || status.includes(task.status.description);
       return (
         matchesStartDate &&
         matchesEndDate &&
