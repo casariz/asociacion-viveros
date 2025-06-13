@@ -78,7 +78,7 @@ export class UsersComponent implements OnInit{
     this.filteredUsers = this.users.filter((user) => {
       const usersEmployee =
         !employee || user.assigned_to?.toString().includes(employee);
-        const usersStatus = status.length === 0 || status.includes(user.status.description);
+        const usersStatus = status.length === 0 || status.includes(user.status.status_name);
       return (
         usersEmployee && usersStatus
       );

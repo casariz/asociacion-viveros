@@ -46,11 +46,11 @@ export class ReportMeetingComponent {
     creation_date: '',
     status: {
       status: 0,
-      description: '',
+      status_name: '',
+      status_description: '',
       module: '',
       icon: '',
-      class: '',
-      title: '',
+      context: ''
     },
     director: {
       id: 0,

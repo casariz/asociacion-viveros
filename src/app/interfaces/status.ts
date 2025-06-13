@@ -1,8 +1,8 @@
 export interface Status {
   status: number;
-  description: string;
+  status_name: string;
+  status_description: string;
+  context: string
   module: string;
   icon: string;
-  class: string
-  title: string;
 }

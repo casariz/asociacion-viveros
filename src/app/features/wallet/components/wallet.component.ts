@@ -114,7 +114,7 @@ export class WalletComponent implements OnInit {
           .toLowerCase()
           .includes(description.toLowerCase());
       const walletStatus =
-        status.length === 0 || status.includes(wallet.status.description);
+        status.length === 0 || status.includes(wallet.status.status_name);
 
       return walletStartDate && walletEndDate && walletDescription && walletStatus;
     });

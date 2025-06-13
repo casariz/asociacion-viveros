@@ -28,7 +28,7 @@ export class MeetingsComponent implements OnInit {
 
   columns: Column[] = [
     { key: 'meeting_id', label: 'ID' },
-    { key: 'reportadoPor', label: 'Reportó' },
+    { key: 'called_by', label: 'Reportó' },
     { key: 'fechaLugar', label: 'Fecha - Lugar' },
     { key: 'meeting_description', label: 'Descripción' },
     { key: 'topics', label: 'Orden del día' },
@@ -132,7 +132,7 @@ export class MeetingsComponent implements OnInit {
     return this.filteredMeetings.slice(start, start + this.itemsPerPage).map(meeting => ({
       ...meeting,
       fechaLugar: `${meeting.meeting_date} - ${meeting.placement}`,
-      reportadoPor: meeting.called_by.first_name + meeting.called_by.last_name, // Changed from 'Pepe'
+      called_by: (meeting.called_by && meeting.called_by.first_name) ? meeting.called_by.first_name : 'N/A', // Changed from 'Pepe'
       topics: Array.isArray(meeting.topics)
         ? meeting.topics.map((topic: any) => topic.topic).join(', ')
         : typeof meeting.topics === 'object' && meeting.topics !== null && 'topic' in meeting.topics

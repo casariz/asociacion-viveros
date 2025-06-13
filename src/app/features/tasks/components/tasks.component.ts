@@ -30,7 +30,7 @@ export class TasksComponent implements OnInit {
     { key: 'taskInfo', label: 'ID [Reunión]' },
     { key: 'reportadoPor', label: 'Reportó' },
     { key: 'fechaEstimado', label: 'Fecha - Tiempo estimado' },
-    { key: 'responsale', label: 'Responsable' },
+    { key: 'assigned_to', label: 'Responsable' },
     { key: 'descriptions', label: 'Descripción - Observaciones' },
     { key: 'statusText', label: 'Estado' },
     { key: 'acciones', label: 'Acciones' }
@@ -67,6 +67,8 @@ export class TasksComponent implements OnInit {
     this.errorMessage = '';
     this.taskService.getTasks(page).subscribe({
       next: (value) => {
+        console.log(value.data);
+        
         this.tasks = value.data;
         this.currentPage = value.current_page;
         this.totalPages = value.last_page;
@@ -153,9 +155,9 @@ export class TasksComponent implements OnInit {
       taskInfo: `${task.task_id}${task.meeting ? ' [' + task.meeting.meeting_id + ']' : ''}`,
       reportadoPor: task.created_by?.first_name || 'N/A',
       fechaEstimado: `${task.start_date}${task.estimated_time ? ', ' + task.estimated_time + ' ' + task.units : ''}`,
-      responsale: task.assigned_to?.first_name || 'N/A',
+      assigned_to: task.assigned_to?.first_name || 'N/A',
       descriptions: `${task.task_description || ''}${task.observations ? (task.task_description ? ' - ' : '') + task.observations : ''}`,
-      statusText: task.status?.description || 'N/A',
+      statusText: task.status?.status_name || 'N/A',
     }));
   }
 }
