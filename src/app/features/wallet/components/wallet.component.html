@@ -1,35 +1,8 @@
+<app-section-header [title]="'Cartera'" (search)="applyFilters()" (reset)="resetFilters()">
+</app-section-header>
+
 <section class="flex bg-light py-5 px-3">
-    <h2>Cartera</h2>
     <div class="mx-auto max-w-md w-100 rounded bg-white p-2 shadow">
-        <div class="d-flex justify-content-end">
-            <form [formGroup]="filterForm" (ngSubmit)="applyFilters()">
-                <div class="d-flex gap-2">
-                    <input class="form-control" type="date" formControlName="startDate" placeholder="Fecha inicio">
-                    <input class="form-control" type="date" formControlName="endDate" placeholder="Fecha fin">
-                    <input class="form-control" type="text" formControlName="description" placeholder="Descripción...">
-                    <div class="d-flex gap-1">
-                        <div class="btn-group">
-                            <button class="btn btn-outline-secondary dropdown-toggle"
-                                data-bs-toggle="dropdown">Estado</button>
-                            <ul class="dropdown-menu">
-                                @for (state of status; track $index) {
-                                <li class="border-bottom p-2">
-                                    <input type="checkbox" [checked]="statusFormArray.value.includes(state)"
-                                        (change)="onStatusChange($event, state)">
-                                    {{ state }}
-                                </li>
-                                }
-                            </ul>
-                        </div>
-                    </div>
-                    <div class="btn-group">
-                        <button class="btn btn-outline-secondary" type="submit"><i class="fas fa-search"></i></button>
-                        <button class="btn btn-outline-secondary" type="button" (click)="resetFilters()"><i
-                                class="fas fa-delete-left text-danger"></i></button>
-                    </div>
-                </div>
-            </form>
-        </div>
         <table class="table table-hover caption-bottom text-sm">
             <thead>
                 <tr>
@@ -46,29 +19,31 @@
             <tbody>
                 @for (wallet of filteredWallets; track $index) {
                 <tr [class.table-danger]="wallet.status.status === 13"
-                [class.table-warning]="wallet.status.status === 12" [class.table-success]="wallet.status.status === 10">
+                    [class.table-warning]="wallet.status.status === 12"
+                    [class.table-success]="wallet.status.status === 10">
                     <td class="align-middle">
                         @if (wallet.status.status == 9) {
-                            <span class="badge">
-                              <i class="fas fa-check-circle" style="color: #ffffff; font-size: 1em"></i>
-                            </span>
-                            } @else if (wallet.status.status == 10) {
-                            <span class="badge">
-                              <i class="fas fa-check-circle" style="color: #009900; font-size: 1em"></i>
-                            </span>
-                            } @else if (wallet.status.status == 12) {
-                            <span class="badge">
-                              <i class="fas fa-exclamation-triangle" style="color: #FF9966; font-size: 1em"></i>
-                            </span>
-                            } @else {
-                            <span class="badge">
-                              <i class="fas fa-times-circle" style="color: #AA0000; font-size: 1em"></i>
-                            </span>
-                            }
+                        <span class="badge">
+                            <i class="fas fa-check-circle" style="color: #ffffff; font-size: 1em"></i>
+                        </span>
+                        } @else if (wallet.status.status == 10) {
+                        <span class="badge">
+                            <i class="fas fa-check-circle" style="color: #009900; font-size: 1em"></i>
+                        </span>
+                        } @else if (wallet.status.status == 12) {
+                        <span class="badge">
+                            <i class="fas fa-exclamation-triangle" style="color: #FF9966; font-size: 1em"></i>
+                        </span>
+                        } @else {
+                        <span class="badge">
+                            <i class="fas fa-times-circle" style="color: #AA0000; font-size: 1em"></i>
+                        </span>
+                        }
                     </td>
                     <td class="align-middle">{{ wallet.obligation_id }}</td>
                     <td class="align-middle">{{wallet.obligation_description}}</td>
-                    <td class="align-middle">Cada {{ wallet.quantity }} {{wallet.period}} [{{ wallet.alert_time }} días previos]</td>
+                    <td class="align-middle">Cada {{ wallet.quantity }} {{wallet.period}} [{{ wallet.alert_time }} días
+                        previos]</td>
                     <td class="align-middle"> @if (!wallet.expiration_date) {N/A} @else {
                         {{wallet.expiration_date}} - ${{wallet.last_payment}}
                         }</td>
@@ -80,23 +55,28 @@
                     </td>
                     <td class="align-middle d-flex justify-content-end">
                         <div class="btn-group" role="group">
-                            @if (userRole === 'Administrador(a)' || userRole === 'Secretario(a)' || userRole === 'Cartera') {
-                                @if (wallet.status.status != 9) {
-                                    <a type="button" class="btn btn-outline-secondary" [routerLink]="['/', 'wallet', wallet.obligation_id, 'edit']">
-                                        <i class="fas fa-edit"></i>
-                                    </a>
-                                    @if (wallet.status.status != 10) {
-                                        <a type="button" class="btn btn-outline-secondary" [routerLink]="['/', 'wallet', 'report', wallet.obligation_id]">
-                                            <i class="fas fa-file-circle-check"></i>
-                                        </a>
-                                    }
-                                    
-                                    <button type="button" class="btn btn-outline-secondary" (click)="deleteWallet(wallet.obligation_id)">
-                                        <i class="fas fa-trash"></i>
-                                    </button>
-                                }
+                            @if (userRole === 'Administrador(a)' || userRole === 'Secretario(a)' || userRole ===
+                            'Cartera') {
+                            @if (wallet.status.status != 9) {
+                            <a type="button" class="btn btn-outline-secondary"
+                                [routerLink]="['/', 'wallet', wallet.obligation_id, 'edit']">
+                                <i class="fas fa-edit"></i>
+                            </a>
+                            @if (wallet.status.status != 10) {
+                            <a type="button" class="btn btn-outline-secondary"
+                                [routerLink]="['/', 'wallet', 'report', wallet.obligation_id]">
+                                <i class="fas fa-file-circle-check"></i>
+                            </a>
                             }
-                            <a type="button" class="btn btn-outline-secondary" [routerLink]="['/', 'wallet', wallet.obligation_id, 'view']">
+
+                            <button type="button" class="btn btn-outline-secondary"
+                                (click)="deleteWallet(wallet.obligation_id)">
+                                <i class="fas fa-trash"></i>
+                            </button>
+                            }
+                            }
+                            <a type="button" class="btn btn-outline-secondary"
+                                [routerLink]="['/', 'wallet', wallet.obligation_id, 'view']">
                                 <i class="fas fa-eye"></i>
                             </a>
                         </div>

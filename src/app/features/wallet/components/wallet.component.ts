@@ -5,11 +5,12 @@ import { CommonModule } from '@angular/common';
 import { Wallet } from '../interfaces/wallet';
 import { WalletService } from '../services/wallet.service';
 import { StatusService } from '../../../services/status.service';
+import { SectionHeaderComponent } from '../../../components/section-header/components/section-header.component';
 
 @Component({
   selector: 'app-wallet',
   standalone: true,
-  imports: [RouterLink, ReactiveFormsModule, CommonModule],
+  imports: [RouterLink, ReactiveFormsModule, CommonModule, SectionHeaderComponent],
   templateUrl: './wallet.component.html',
   styleUrl: './wallet.component.css',
 })

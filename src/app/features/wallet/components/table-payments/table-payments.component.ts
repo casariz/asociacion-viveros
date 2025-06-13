@@ -16,7 +16,6 @@ export class TablePaymentsComponent implements OnInit {
   constructor(
     private walletService: WalletService,
     private route: ActivatedRoute,
-    private router: Router
   ) {}
 
   ngOnInit(): void {
