@@ -9,6 +9,7 @@ import { MeetingsService } from '../../services/meetings.service';
 import { TaskService } from '../../../tasks/services/task.service';
 import { TopicsService } from '../../services/topics.service';
 import { AssistantMeetingsService } from '../../services/assistant-meetings.service';
+import { User } from 'lucide-angular';
 
 @Component({
   selector: 'app-report-meeting',
@@ -23,7 +24,14 @@ export class ReportMeetingComponent {
     meeting_id: 0,
     meeting_date: '',
     start_hour: '',
-    called_by: '',
+    called_by: {
+      id: 0,
+      first_name: '',
+      last_name: '',
+      document_number: '',
+      user_type: '',
+      status: 0
+    },
     placement: '',
     meeting_description: '',
     topics: '',

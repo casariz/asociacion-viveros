@@ -7,7 +7,7 @@ export interface Meetings {
     meeting_id: number,
     meeting_date: string,
     start_hour: string,
-    called_by: string,
+    called_by: User,
     placement: string,
     meeting_description: string,
     topics: Topic | Topic[] | string,

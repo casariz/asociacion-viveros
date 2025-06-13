@@ -132,7 +132,7 @@ export class MeetingsComponent implements OnInit {
     return this.filteredMeetings.slice(start, start + this.itemsPerPage).map(meeting => ({
       ...meeting,
       fechaLugar: `${meeting.meeting_date} - ${meeting.placement}`,
-      reportadoPor: meeting.called_by, // Changed from 'Pepe'
+      reportadoPor: meeting.called_by.first_name + meeting.called_by.last_name, // Changed from 'Pepe'
       topics: Array.isArray(meeting.topics)
         ? meeting.topics.map((topic: any) => topic.topic).join(', ')
         : typeof meeting.topics === 'object' && meeting.topics !== null && 'topic' in meeting.topics
