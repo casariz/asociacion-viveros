@@ -7,11 +7,12 @@ import { TopicsService } from '../services/topics.service';
 import { SectionHeaderComponent } from '../../../components/section-header/components/section-header.component';
 import { DataTableComponent } from '../../../components/data-table/components/data-table.component';
 import { Column } from '../../../components/data-table/interfaces/data-table';
+import { AddMeetingsComponent } from './add-meetings/add-meetings.component';
 
 @Component({
   selector: 'app-meetings',
   standalone: true,
-  imports: [SectionHeaderComponent, DataTableComponent],
+  imports: [SectionHeaderComponent, DataTableComponent, AddMeetingsComponent],
   templateUrl: './meetings.component.html',
   styleUrl: './meetings.component.css'
 })
@@ -21,6 +22,7 @@ export class MeetingsComponent implements OnInit {
   currentPage: number = 1;
   totalPages: number = 1;
   itemsPerPage: number = 5;
+  isAddMeetingModalOpen: boolean = false;
 
   userRole: string = '';
   isLoading: boolean = false;
@@ -38,8 +40,6 @@ export class MeetingsComponent implements OnInit {
   constructor(
     private router: Router,
     private meetingsService: MeetingsService,
-    private statusService: StatusService,
-    private topicsService: TopicsService
   ) { }
 
   ngOnInit(): void {
@@ -125,6 +125,15 @@ export class MeetingsComponent implements OnInit {
 
   getUserRole(): void {
     this.userRole = localStorage.getItem('userRole') || 'Usuario';
+  }
+
+  openAddMeetingModal(): void {
+    this.isAddMeetingModalOpen = true;
+  }
+
+  closeAddMeetingModal(): void {
+    this.isAddMeetingModalOpen = false;
+    this.fetchMeetings(); // Refresh the list after closing modal
   }
 
   get paginatedMeetings(): any[] {

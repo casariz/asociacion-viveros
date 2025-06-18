@@ -8,6 +8,7 @@
   [columns]="columns" 
   [data]="paginatedTasks" 
   [currentPage]="currentPage"
+  [totalPages]="totalPages"
   (previousPage)="changePage(currentPage - 1)"
   (nextPage)="changePage(currentPage + 1)"
   (viewItem)="viewTaskWithoutMeeting($event)"

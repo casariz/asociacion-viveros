@@ -1,0 +1,55 @@
+@if (isOpen) {
+<div class="fixed inset-0 bg-black/50 flex items-center justify-center z-50 p-4" 
+     (click)="onBackdropClick($event)"
+     (keydown.escape)="onEscapeKey($event)"
+     tabindex="0">
+  
+  <div class="bg-white rounded-lg shadow-xl max-h-[90vh] overflow-hidden flex flex-col"
+       [ngClass]="{
+         'max-w-sm w-full': size === 'sm',
+         'max-w-md w-full': size === 'md', 
+         'max-w-2xl w-full': size === 'lg',
+         'max-w-4xl w-full': size === 'xl'
+       }">
+    
+    <!-- Header Section -->
+    <div class="flex items-center justify-between p-6 border-b border-gray-200">
+      <h2 class="text-xl font-semibold text-gray-900 m-0">{{ title }}</h2>
+      
+      @if (showCloseButton) {
+      <button class="p-2 hover:bg-gray-100 rounded-md transition-colors duration-200 text-gray-400 hover:text-gray-600" 
+              (click)="onClose()"
+              type="button"
+              aria-label="Cerrar modal">
+        <lucide-angular [img]="X" class="w-5 h-5"></lucide-angular>
+      </button>
+      }
+    </div>
+    
+    <!-- Content Section -->
+    <div class="p-6 flex-1 overflow-y-auto">
+      <ng-content></ng-content>
+    </div>
+    
+    <!-- Footer/Buttons Section -->
+    <div class="flex items-center justify-end gap-3 p-6 border-t border-gray-200 bg-gray-50">
+      <ng-content select="[slot=footer]"></ng-content>
+      
+      <!-- Default buttons if no custom footer is provided -->
+      <ng-container *ngIf="!hasFooterContent()">
+        <button class="px-4 py-2 rounded-md text-sm font-medium transition-colors duration-200 border bg-white text-gray-700 border-gray-300 hover:bg-gray-50 focus:ring-2 focus:ring-gray-500 focus:ring-offset-2" 
+                (click)="onCancel()"
+                type="button">
+          Cancelar
+        </button>
+        <button class="px-4 py-2 rounded-md text-sm font-medium transition-colors duration-200 border bg-green-600 text-white border-transparent hover:bg-green-700 focus:ring-2 focus:ring-green-500 focus:ring-offset-2" 
+                (click)="onConfirm()"
+                type="button">
+          + AGREGAR
+        </button>
+      </ng-container>
+    </div>
+    
+  </div>
+</div>
+}

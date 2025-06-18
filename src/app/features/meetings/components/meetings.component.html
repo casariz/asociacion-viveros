@@ -8,7 +8,22 @@
   [columns]="columns" 
   [data]="paginatedMeetings" 
   [currentPage]="currentPage"
+  [totalPages]="totalPages"
   (previousPage)="changePage(currentPage - 1)"
   (nextPage)="changePage(currentPage + 1)"
   (viewItem)="addTaskInMeeting($event)">
 </app-data-table>
+
+<!-- Botón flotante para agregar nueva reunión -->
+<button 
+  class="fixed bottom-5 right-5 w-14 h-14 bg-green-600 text-white border-0 rounded-full text-2xl cursor-pointer shadow-lg hover:bg-green-700 transition-all duration-300 z-50 flex items-center justify-center hover:scale-110 active:scale-95"
+  (click)="openAddMeetingModal()"
+  title="Agregar nueva reunión">
+  <i class="fas fa-plus text-xl"></i>
+</button>
+
+<!-- Modal de agregar/editar reunión -->
+<app-add-meetings
+  [isModalOpen]="isAddMeetingModalOpen"
+  (closeModal)="closeAddMeetingModal()">
+</app-add-meetings>

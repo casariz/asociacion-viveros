@@ -1,4 +1,4 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, OnInit, Input, Output, EventEmitter } from '@angular/core';
 import { AbstractControl, FormsModule } from '@angular/forms';
 import {
   FormBuilder,
@@ -13,15 +13,19 @@ import { MeetingsService } from '../../services/meetings.service';
 import { TopicsService } from '../../services/topics.service';
 import { UsersService } from '../../../users/services/users.service';
 import { AssistantMeetingsService } from '../../services/assistant-meetings.service';
+import { ModalComponent } from '../../../../components/modal/modal.component';
 
 @Component({
   selector: 'app-add-meetings',
   standalone: true,
-  imports: [FormsModule, ReactiveFormsModule, CommonModule],
+  imports: [FormsModule, ReactiveFormsModule, CommonModule, ModalComponent],
   templateUrl: './add-meetings.component.html',
   styleUrl: './add-meetings.component.css',
 })
 export class AddMeetingsComponent implements OnInit {
+  @Input() isModalOpen: boolean = false;
+  @Output() closeModal = new EventEmitter<void>();
+  
   meetingForm: FormGroup;
   isEditMode: boolean = false;
   isCreateMode: boolean = false;
@@ -35,11 +39,8 @@ export class AddMeetingsComponent implements OnInit {
   showDropdownCalledBy = false;
   showDropdownAssistant = false;
   showDropdownDirector = false;
-  showDropdownSecretary = false;
-  submitted = false;
+  showDropdownSecretary = false;  submitted = false;
   isDevelopment: boolean = false;
-
-  [key: string]: any;
 
   constructor(
     private fb: FormBuilder,
@@ -67,9 +68,7 @@ export class AddMeetingsComponent implements OnInit {
       secretary_name: ['', Validators.required],
       title: ['']
     });
-  }
-
-  ngOnInit(): void {
+  }  ngOnInit(): void {
     this.route.paramMap.subscribe((params) => {
       const id = params.get('id');
       const mode = this.route.snapshot.data['mode'];
@@ -152,7 +151,6 @@ export class AddMeetingsComponent implements OnInit {
       this.filteredUsers = [];
     }
   }
-
   selectUser(
     user: any,
     fieldName: string,
@@ -166,7 +164,9 @@ export class AddMeetingsComponent implements OnInit {
       patchValue[idFieldName] = user.id;
     }
     this.meetingForm.patchValue(patchValue);
-    this[dropdownFlag] = false;
+    
+    // Set dropdown flag to false using type assertion
+    (this as any)[dropdownFlag] = false;
 
     if (fieldName === 'assistant_name') {
       this.selectedAssistants.push(user);
@@ -298,7 +298,6 @@ export class AddMeetingsComponent implements OnInit {
         error: (err) => {},
       });
   }
-
   removeTopic(id: number): void {
     this.topicsService.deleteTopic(id).subscribe({
       next: (value) => {
@@ -306,7 +305,6 @@ export class AddMeetingsComponent implements OnInit {
       },
     });
   }
-
   addTopicsToMeeting(): void {
     if (this.meetingId) {
       for (let topic of this.topicList) {
@@ -314,28 +312,31 @@ export class AddMeetingsComponent implements OnInit {
       }
     }
   }
+  onCloseModal(): void {
+    this.closeModal.emit();
+  }
 
   onSubmit(): void {
+    this.submitted = true;
+    
     if (this.meetingForm.invalid) {
-      this.submitted = true;
       return;
     }
 
     const meetingData = this.meetingForm.value;
     
-
     if (this.isEditMode && this.meetingId) {
       this.meetingsService
         .updateMeeting(this.meetingId, meetingData)
         .subscribe((l) => {
-          this.router.navigate(['/meetings']);
+          this.onCloseModal();
         });
     } else {
       this.meetingsService.createMeeting(meetingData).subscribe((value) => {
         this.meetingId = value.meeting.meeting_id;
         this.addTopicsToMeeting();
         this.addAssistantsToMeeting();
-        this.router.navigate(['/meetings']);
+        this.onCloseModal();
       });
     }
   }

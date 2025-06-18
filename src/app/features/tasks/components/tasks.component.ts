@@ -40,7 +40,7 @@ export class TasksComponent implements OnInit {
     private router: Router,
     private taskService: TaskService,
     private meetingsService: MeetingsService
-  ) {}
+  ) { }
 
   ngOnInit(): void {
     this.getUserRole();
@@ -68,7 +68,7 @@ export class TasksComponent implements OnInit {
     this.taskService.getTasks(page).subscribe({
       next: (value) => {
         console.log(value.data);
-        
+
         this.tasks = value.data;
         this.currentPage = value.current_page;
         this.totalPages = value.last_page;
@@ -89,9 +89,10 @@ export class TasksComponent implements OnInit {
 
   changePage(page: number): void {
     if (page >= 1 && page <= this.totalPages) {
-      this.currentPage = page;
+      this.getTasks(page); // Cambiar aquí para obtener los datos del servidor
     }
   }
+
 
   rejectTask(id: number) {
     this.taskService.rejectTask(id).subscribe({
