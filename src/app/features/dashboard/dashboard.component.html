@@ -1,75 +1,67 @@
-<div class="space-y-6">
-    <!-- Header -->
+<div class="space-y-4">    <!-- Header -->
     <div class="flex items-center justify-between">
         <div>
             <h1 class="text-3xl font-bold text-gray-900">Panel de Control</h1>
-            <p class="text-gray-600 mt-1">Resumen general de la Asociación de Viveros</p>
+            <p class="text-gray-600">Resumen general de la Asociación de Viveros</p>
         </div>
         <div class="text-right">
             <p class="text-sm text-gray-500">Última actualización</p>
-            <p class="text-sm font-medium text-gray-900">{{ formatDate(currentDate) }}</p>
+            <p class="text-base font-medium text-gray-900">{{ formatDate(currentDate) }}</p>
         </div>
     </div>
 
     <!-- Cards de estadísticas principales -->
-    <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6 mb-8">
+    <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-4 mb-6">
         <!-- Total Reuniones -->
-        <div class="bg-blue-500 rounded-lg p-6 text-white cursor-pointer hover:bg-blue-600 transition-colors"
+        <div class="bg-blue-500 rounded-lg p-4 text-white cursor-pointer hover:bg-blue-600 transition-colors"
             (click)="navigateToMeetings()">
-            <div class="flex items-center justify-between">
-                <div>
+            <div class="flex items-center justify-between">                <div>
                     <p class="text-blue-100 text-sm font-medium mb-1">Total Reuniones</p>
                     <p class="text-3xl font-bold">{{ totalMeetings }}</p>
                     <p class="text-blue-100 text-sm">+{{ meetingsThisMonth }} este mes</p>
                 </div>
-                <lucide-angular [img]="users" class="w-8 h-8 text-blue-200"></lucide-angular>
+                <lucide-angular [img]="users" class="w-7 h-7 text-blue-200"></lucide-angular>
             </div>
         </div>
 
         <!-- Total Tareas -->
-        <div class="bg-green-500 rounded-lg p-6 text-white cursor-pointer hover:bg-green-600 transition-colors"
+        <div class="bg-green-500 rounded-lg p-4 text-white cursor-pointer hover:bg-green-600 transition-colors"
             (click)="navigateToTasks()">
-            <div class="flex items-center justify-between">
-                <div>
+            <div class="flex items-center justify-between">                <div>
                     <p class="text-green-100 text-sm font-medium mb-1">Total Tareas</p>
                     <p class="text-3xl font-bold">{{ totalTasks }}</p>
                     <p class="text-green-100 text-sm">{{ completedTasks }} completadas</p>
                 </div>
-                <lucide-angular [img]="checkSquare" class="w-8 h-8 text-green-200"></lucide-angular>
+                <lucide-angular [img]="checkSquare" class="w-7 h-7 text-green-200"></lucide-angular>
             </div>
         </div>
 
         <!-- Cartera Total -->
-        <div class="bg-purple-500 rounded-lg p-6 text-white cursor-pointer hover:bg-purple-600 transition-colors"
+        <div class="bg-purple-500 rounded-lg p-4 text-white cursor-pointer hover:bg-purple-600 transition-colors"
             (click)="navigateToWallet()">
-            <div class="flex items-center justify-between">
-                <div>
+            <div class="flex items-center justify-between">                <div>
                     <p class="text-purple-100 text-sm font-medium mb-1">Cartera Total</p>
                     <p class="text-3xl font-bold">{{ formatCurrency(walletTotal) }}</p>
                     <p class="text-purple-100 text-sm">{{ walletElements }} elementos</p>
                 </div>
-                <lucide-angular [img]="dollarSign" class="w-8 h-8 text-purple-200"></lucide-angular>
+                <lucide-angular [img]="dollarSign" class="w-7 h-7 text-purple-200"></lucide-angular>
             </div>
         </div>
 
         <!-- Eficiencia -->
-        <div class="bg-orange-500 rounded-lg p-6 text-white">
-            <div class="flex items-center justify-between">
-                <div>
+        <div class="bg-orange-500 rounded-lg p-4 text-white">
+            <div class="flex items-center justify-between">                <div>
                     <p class="text-orange-100 text-sm font-medium mb-1">Eficiencia</p>
                     <p class="text-3xl font-bold">{{ efficiency }}%</p>
                     <p class="text-orange-100 text-sm">Tareas completadas</p>
                 </div>
-                <lucide-angular [img]="trendingUp" class="w-8 h-8 text-orange-200"></lucide-angular>
+                <lucide-angular [img]="trendingUp" class="w-7 h-7 text-orange-200"></lucide-angular>
             </div>
         </div>
-    </div>
-
-    <!-- Sección de contenido principal -->
-    <div class="grid grid-cols-1 lg:grid-cols-2 gap-8 mb-8">
-        <!-- Próximas Reuniones -->
-        <div class="bg-white rounded-lg shadow p-6">
-            <div class="flex justify-between items-center mb-6">
+    </div>    <!-- Sección de contenido principal -->
+    <div class="grid grid-cols-1 lg:grid-cols-2 gap-6 mb-6">
+        <!-- Próximas Reuniones -->        <div class="bg-white rounded-lg shadow p-4">
+            <div class="flex justify-between items-center mb-4">
                 <h2 class="text-xl font-semibold text-gray-900">Próximas Reuniones</h2>
                 <button class="text-blue-600 hover:text-blue-800 text-sm font-medium" (click)="navigateToMeetings()">
                     Ver todas
@@ -77,11 +69,11 @@
             </div>
 
             @if (upcomingMeetings.length === 0) {
-            <p class="text-gray-500 text-center py-8">No hay reuniones programadas</p>
+            <p class="text-gray-500 text-center py-6">No hay reuniones programadas</p>
             } @else {
-            <div class="space-y-4">
+            <div class="space-y-3">
                 @for (meeting of upcomingMeetings; track meeting.meeting_id) {
-                <div class="flex items-start space-x-3 p-3 hover:bg-gray-50 rounded-md">
+                <div class="flex items-start space-x-3 p-2 hover:bg-gray-50 rounded-md">
                     <div class="w-2 h-2 bg-blue-500 rounded-full mt-2"></div>
                     <div class="flex-1">
                         <h3 class="font-medium text-gray-900">{{ meeting.meeting_description }}</h3>
@@ -95,9 +87,8 @@
             }
         </div>
 
-        <!-- Tareas Pendientes -->
-        <div class="bg-white rounded-lg shadow p-6">
-            <div class="flex justify-between items-center mb-6">
+        <!-- Tareas Pendientes -->        <div class="bg-white rounded-lg shadow p-4">
+            <div class="flex justify-between items-center mb-4">
                 <h2 class="text-xl font-semibold text-gray-900">Tareas Pendientes</h2>
                 <button class="text-green-600 hover:text-green-800 text-sm font-medium" (click)="navigateToTasks()">
                     Ver todas
@@ -105,11 +96,11 @@
             </div>
 
             @if (pendingTasks.length === 0) {
-            <p class="text-gray-500 text-center py-8">No hay tareas pendientes</p>
+            <p class="text-gray-500 text-center py-6">No hay tareas pendientes</p>
             } @else {
-            <div class="space-y-4">
+            <div class="space-y-3">
                 @for (task of pendingTasks; track task.task_id) {
-                <div class="flex items-start space-x-3 p-3 hover:bg-gray-50 rounded-md">
+                <div class="flex items-start space-x-3 p-2 hover:bg-gray-50 rounded-md">
                     <div class="w-2 h-2 bg-green-500 rounded-full mt-2"></div>
                     <div class="flex-1">
                         <h3 class="font-medium text-gray-900">{{ task.task_description }}</h3>
@@ -127,18 +118,15 @@
             </div>
             }
         </div>
-    </div>
-
-    <!-- Alertas y Notificaciones -->
-    <div class="bg-white rounded-lg shadow p-6 mb-8">
-        <div class="flex items-center mb-6">
+    </div>    <!-- Alertas y Notificaciones -->    <div class="bg-white rounded-lg shadow p-4 mb-4">
+        <div class="flex items-center mb-4">
             <lucide-angular [img]="alertTriangle" class="w-5 h-5 text-orange-500 mr-2"></lucide-angular>
             <h2 class="text-xl font-semibold text-gray-900">Alertas y Notificaciones</h2>
         </div>
 
         <div class="grid grid-cols-1 md:grid-cols-3 gap-4">
             <!-- Cartera por Vencer -->
-            <div class="bg-yellow-50 border border-yellow-200 rounded-lg p-4">
+            <div class="bg-yellow-50 border border-yellow-200 rounded-lg p-3">
                 <div class="flex items-center">
                     <div class="w-2 h-2 bg-yellow-500 rounded-full mr-3"></div>
                     <div>
@@ -149,7 +137,7 @@
             </div>
 
             <!-- Reuniones Próximas -->
-            <div class="bg-blue-50 border border-blue-200 rounded-lg p-4">
+            <div class="bg-blue-50 border border-blue-200 rounded-lg p-3">
                 <div class="flex items-center">
                     <div class="w-2 h-2 bg-blue-500 rounded-full mr-3"></div>
                     <div>
@@ -160,7 +148,7 @@
             </div>
 
             <!-- Tareas Completadas -->
-            <div class="bg-green-50 border border-green-200 rounded-lg p-4">
+            <div class="bg-green-50 border border-green-200 rounded-lg p-3">
                 <div class="flex items-center">
                     <div class="w-2 h-2 bg-green-500 rounded-full mr-3"></div>
                     <div>
@@ -173,14 +161,13 @@
         </div>
     </div>
 
-    <!-- Acciones Rápidas -->
-    <div class="bg-white rounded-lg shadow p-6">
-        <h2 class="text-xl font-semibold text-gray-900 mb-6">Acciones Rápidas</h2>
+    <!-- Acciones Rápidas -->    <div class="bg-white rounded-lg shadow p-4">
+        <h2 class="text-xl font-semibold text-gray-900 mb-4">Acciones Rápidas</h2>
 
         <div class="grid grid-cols-1 md:grid-cols-3 gap-4">
             <!-- Convocar Reunión -->
             <button
-                class="bg-blue-500 hover:bg-blue-600 text-white font-medium py-4 px-6 rounded-lg transition-colors flex items-center justify-center space-x-2"
+                class="bg-blue-500 hover:bg-blue-600 text-white font-medium py-3 px-4 rounded-lg transition-colors flex items-center justify-center space-x-2"
                 (click)="createMeeting()">
                 <lucide-angular [img]="users" class="w-5 h-5"></lucide-angular>
                 <span>Convocar Reunión</span>
@@ -188,7 +175,7 @@
 
             <!-- Crear Tarea -->
             <button
-                class="bg-green-500 hover:bg-green-600 text-white font-medium py-4 px-6 rounded-lg transition-colors flex items-center justify-center space-x-2"
+                class="bg-green-500 hover:bg-green-600 text-white font-medium py-3 px-4 rounded-lg transition-colors flex items-center justify-center space-x-2"
                 (click)="createTask()">
                 <lucide-angular [img]="checkSquare" class="w-5 h-5"></lucide-angular>
                 <span>Crear Tarea</span>
@@ -196,7 +183,7 @@
 
             <!-- Agregar a Cartera -->
             <button
-                class="bg-purple-500 hover:bg-purple-600 text-white font-medium py-4 px-6 rounded-lg transition-colors flex items-center justify-center space-x-2"
+                class="bg-purple-500 hover:bg-purple-600 text-white font-medium py-3 px-4 rounded-lg transition-colors flex items-center justify-center space-x-2"
                 (click)="addToWallet()">
                 <lucide-angular [img]="dollarSign" class="w-5 h-5"></lucide-angular>
                 <span>Agregar a Cartera</span>
