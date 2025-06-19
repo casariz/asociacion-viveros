@@ -1,4 +1,4 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, OnInit, Input, Output, EventEmitter } from '@angular/core';
 import { AbstractControl, FormsModule } from '@angular/forms';
 import {
   FormBuilder,
@@ -10,15 +10,19 @@ import { CommonModule } from '@angular/common';
 import { ActivatedRoute, Router } from '@angular/router';
 import { WalletService } from '../../services/wallet.service';
 import { TablePaymentsComponent } from '../table-payments/table-payments.component';
+import { ModalComponent } from '../../../../components/modal/modal.component';
 
 @Component({
   selector: 'app-add-wallet',
   standalone: true,
-  imports: [FormsModule, ReactiveFormsModule, CommonModule, TablePaymentsComponent],
+  imports: [FormsModule, ReactiveFormsModule, CommonModule, TablePaymentsComponent, ModalComponent],
   templateUrl: './add-wallet.component.html',
   styleUrl: './add-wallet.component.css',
 })
 export class AddWalletComponent implements OnInit {
+  @Input() isModalOpen: boolean = false;
+  @Output() closeModal = new EventEmitter<void>();
+  
   walletForm: FormGroup;
   walletId: number | null = null;
   isEditMode: boolean = false;
@@ -87,11 +91,17 @@ export class AddWalletComponent implements OnInit {
     return this.walletForm.controls;
   }
 
+  onCloseModal(): void {
+    this.closeModal.emit();
+  }
+
   onSubmit(): void {
+    this.submitted = true;
+    
     if (this.walletForm.invalid || this.isReadOnly) {
-      this.submitted = true;
       return;
     }
+    
     if (this.walletId !== null) {
       this.walletForm.get('obligation_id')?.enable();
       this.walletForm.patchValue({
@@ -105,11 +115,11 @@ export class AddWalletComponent implements OnInit {
       this.walletService
         .updateWallet(this.walletId, walletData)
         .subscribe(() => {
-          this.router.navigate(['/wallet']); // Redirige a la lista de cartera
+          this.onCloseModal();
         });
     } else {
       this.walletService.createWallet(walletData).subscribe(() => {
-        this.router.navigate(['/wallet']); // Redirige a la lista de cartera
+        this.onCloseModal();
       });
     }
   }

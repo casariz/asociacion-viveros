@@ -1,91 +1,132 @@
-<div class="d-flex flex-wrap column bg-light py-5 px-3 justify-content-center">
-  <div class="d-flex">
-    @if (isEditMode) {
-      <h2 class="text-center fw-bold">Editar cartera</h2>
-      } @else if (isReadOnly) {
-      <h2 class="text-center fw-bold">Ver cartera</h2>
-      } @else {
-      <h2 class="text-center fw-bold">Agregar cartera</h2>
-      }
-  </div>
-  <div class="d-flex justify-content-center">
-    <div class="card w-75 p-0">
-      <div class="card-body d-flex column justify-content-center">
-        <div class="col-sm-6 p-1 px-2 d-flex row gap-3">
-          <form class="d-inline-flex" [formGroup]="walletForm" (ngSubmit)="onSubmit()">
-            <div class="p-1 px-2 d-flex row gap-3">
-              <h6 class="fw-bold m-0">Datos</h6>
-              <div class="input-group">
-                <span class="input-group-text"><i class="fas fa-signature"></i></span>
-                <input type="text" class="form-control p-0 ps-2" id="obligation_description" required
-                  formControlName="obligation_description" placeholder="Descripción..."  [ngClass]="{ 'is-invalid': submitted && f['obligation_description'].errors }"/>
-                  @if (submitted && f['obligation_description'].errors) {
-                    <div class="invalid-feedback">
-                      @if (f['obligation_description'].errors['required']) {
-                      <div>Descripcion de la cartera requerido</div>
-                      }
-                    </div>
-                    }
-              </div>
-    
-              <div class="input-group">
-                <span class="input-group-text"><i class="fas fa-stopwatch"></i></span>
-                <input type="number" class="form-control p-0 ps-2" id="quantity" required formControlName="quantity" min="1"
-                  max="365" value="1"  [ngClass]="{ 'is-invalid': submitted && f['quantity'].errors }"/>
-                  @if (submitted && f['quantity'].errors) {
-                    <div class="invalid-feedback">
-                      @if (f['quantity'].errors['required']) {
-                      <div>Plazo de cartera requerido</div>
-                      }
-                    </div>
-                    }
-                <select class="form-select p-0 ps-2" id="period" required formControlName="period">
-                  <option selected>Sin definir</option>
-                  <option>Día(s)</option>
-                  <option>Semana(s)</option>
-                  <option>Mes(es)</option>
-                  <option>Año(s)</option>
-                </select>
-              </div>
-              <div class="input-group">
-                <span class="input-group-text"><i class="fas fa-bell"></i></span>
-                <input type="number" class="form-control p-0 ps-2" id="alert_time" required formControlName="alert_time"
-                  min="0" max="60" value="15"  [ngClass]="{ 'is-invalid': submitted && f['alert_time'].errors }"/>
-                <span class="input-group-text p-0 ps-2">días previos</span>
-                @if (submitted && f['alert_time'].errors) {
-                  <div class="invalid-feedback">
-                    @if (f['alert_time'].errors['required']) {
-                    <div>Tiempo de alerta requerido</div>
-                    }
-                  </div>
-                  }
-              </div>
-              <div class="input-group">
-                <span class="input-group-text"><i class="fas fa-comment"></i></span>
-                <textarea formControlName="observations" id="observations" class="form-control" cols="50" rows="5"
-                  placeholder="Observaciones..."></textarea>
-              </div>
-            </div>
-          </form>
-        </div>
-        @if (isReadOnly) {
-        <div class="vr"></div>
+<app-modal 
+  [isOpen]="isModalOpen"
+  [title]="isEditMode ? 'Editar cartera' : isReadOnly ? 'Ver cartera' : 'Agregar Cartera'"
+  size="xl"
+  (close)="onCloseModal()"
+  (confirm)="onSubmit()"
+  (cancel)="onCloseModal()"
+  [showCloseButton]="true">
+  
+  <div class="flex gap-6">
+    <!-- Columna izquierda - Formulario -->
+    <div class="flex-1 space-y-6">
+      <form [formGroup]="walletForm" (ngSubmit)="onSubmit()">
         
-          <div class="col-sm-6 p-1 px-2 d-flex justify-content-center row gap-3">
-            <app-table-payments  [ngStyle]="{'max-height':'100%'}"></app-table-payments>
-          </div>
-        }
-      </div>
+        <!-- Descripción -->
+        <div>
+          <label class="block text-sm font-medium text-gray-700 mb-1">Descripción</label>
+          <input 
+            type="text" 
+            class="w-full px-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-green-500 focus:border-green-500" 
+            formControlName="obligation_description"
+            placeholder="Descripción de la obligación..." 
+            [class.border-red-500]="submitted && f['obligation_description'].errors"
+            [readonly]="isReadOnly"/>
+          @if (submitted && f['obligation_description'].errors) {
+            <p class="text-red-500 text-xs mt-1">
+              @if (f['obligation_description'].errors['required']) {
+                Descripción de la cartera requerida
+              }
+            </p>
+          }
+        </div>
 
-      @if (!isReadOnly) {
-      <div class="card-footer d-flex justify-content-end">
-        <button class="btn btn-success" type="submit" (click)="onSubmit()">
-          <i class="fas {{ isEditMode ? 'fa-rotate-right' : 'fa-plus' }}"></i> {{ isEditMode ? 'ACTUALIZAR' :
-          'AGREGAR' }}
-        </button>
-      </div>
-      }
-      
+        <!-- Plazo -->
+        <div class="flex gap-3">
+          <div class="flex-1">
+            <label class="block text-sm font-medium text-gray-700 mb-1">Cantidad</label>
+            <input 
+              type="number" 
+              class="w-full px-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-green-500 focus:border-green-500" 
+              formControlName="quantity"
+              min="1" 
+              max="365"
+              [class.border-red-500]="submitted && f['quantity'].errors"
+              [readonly]="isReadOnly"/>
+            @if (submitted && f['quantity'].errors) {
+              <p class="text-red-500 text-xs mt-1">
+                @if (f['quantity'].errors['required']) {
+                  Plazo de cartera requerido
+                }
+              </p>
+            }
+          </div>
+          <div class="flex-1">
+            <label class="block text-sm font-medium text-gray-700 mb-1">Periodo</label>
+            <select 
+              class="w-full px-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-green-500 focus:border-green-500" 
+              formControlName="period"
+              [disabled]="isReadOnly">
+              <option>Sin definir</option>
+              <option>Día(s)</option>
+              <option>Semana(s)</option>
+              <option>Mes(es)</option>
+              <option>Año(s)</option>
+            </select>
+          </div>
+        </div>
+
+        <!-- Alerta -->
+        <div>
+          <label class="block text-sm font-medium text-gray-700 mb-1">Tiempo de Alerta</label>
+          <div class="flex items-center gap-2">
+            <input 
+              type="number" 
+              class="flex-1 px-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-green-500 focus:border-green-500" 
+              formControlName="alert_time"
+              min="0" 
+              max="60"
+              [class.border-red-500]="submitted && f['alert_time'].errors"
+              [readonly]="isReadOnly"/>
+            <span class="text-sm text-gray-600">días previos</span>
+          </div>
+          @if (submitted && f['alert_time'].errors) {
+            <p class="text-red-500 text-xs mt-1">
+              @if (f['alert_time'].errors['required']) {
+                Tiempo de alerta requerido
+              }
+            </p>
+          }
+        </div>
+
+        <!-- Observaciones -->
+        <div>
+          <label class="block text-sm font-medium text-gray-700 mb-1">Observaciones</label>
+          <textarea 
+            class="w-full px-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-green-500 focus:border-green-500 resize-none" 
+            rows="4"
+            formControlName="observations"
+            placeholder="Observaciones adicionales..."
+            [readonly]="isReadOnly">
+          </textarea>
+        </div>
+
+      </form>
     </div>
+
+    <!-- Línea divisoria (solo en modo lectura) -->
+    @if (isReadOnly) {
+      <div class="w-px bg-gray-200"></div>
+      
+      <!-- Columna derecha - Tabla de pagos (solo en modo lectura) -->
+      <div class="flex-1">
+        <h3 class="text-lg font-semibold text-gray-900 mb-4">Historial de Pagos</h3>
+        <div class="border border-gray-200 rounded-md">
+          <app-table-payments [payments]="[]"></app-table-payments>
+        </div>
+      </div>
+    }
   </div>
-</div>
+
+  <!-- Footer personalizado para modo solo lectura -->
+  @if (isReadOnly) {
+    <div slot="footer">
+      <button 
+        class="px-4 py-2 rounded-md text-sm font-medium transition-colors duration-200 border bg-white text-gray-700 border-gray-300 hover:bg-gray-50 focus:ring-2 focus:ring-gray-500 focus:ring-offset-2" 
+        (click)="onCloseModal()"
+        type="button">
+        Cerrar
+      </button>
+    </div>
+  }
+</app-modal>

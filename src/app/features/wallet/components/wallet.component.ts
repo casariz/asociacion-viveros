@@ -1,8 +1,8 @@
 import { Component, OnInit } from '@angular/core';
 import { FormArray, FormBuilder, FormGroup, ReactiveFormsModule } from '@angular/forms';
-import { RouterLink, Router } from '@angular/router';
+import { Router } from '@angular/router';
 import { CommonModule } from '@angular/common';
-import { LucideAngularModule, CheckCircle, TriangleAlert, XCircle } from 'lucide-angular';
+import { LucideAngularModule, CheckCircle, TriangleAlert, XCircle, Plus } from 'lucide-angular';
 import { Wallet } from '../interfaces/wallet';
 import { WalletService } from '../services/wallet.service';
 import { StatusService } from '../../../services/status.service';
@@ -10,11 +10,12 @@ import { SectionHeaderComponent } from '../../../components/section-header/compo
 import { DataTableComponent } from '../../../components/data-table/components/data-table.component';
 import { Column } from '../../../components/data-table/interfaces/data-table';
 import { TablePaymentsComponent } from './table-payments/table-payments.component';
+import { AddWalletComponent } from './add-wallet/add-wallet.component';
 
 @Component({
   selector: 'app-wallet',
   standalone: true,
-  imports: [RouterLink, ReactiveFormsModule, CommonModule, LucideAngularModule, SectionHeaderComponent, DataTableComponent, TablePaymentsComponent],
+  imports: [ReactiveFormsModule, CommonModule, LucideAngularModule, SectionHeaderComponent, DataTableComponent, TablePaymentsComponent, AddWalletComponent],
   templateUrl: './wallet.component.html',
   styleUrl: './wallet.component.css',
 })
@@ -28,11 +29,13 @@ export class WalletComponent implements OnInit {
   status: any[] = [];
   userRole: string | null = '';
   payments: any[] = [];
+  isAddWalletModalOpen: boolean = false;
 
   // Lucide icons
   readonly checkCircle = CheckCircle;
   readonly triangleAlert = TriangleAlert;
   readonly xCircle = XCircle;
+  readonly plus = Plus; // Icon for adding wallets
 
   columns: Column[] = [
     { key: 'status_icon', label: '' },
@@ -283,5 +286,14 @@ export class WalletComponent implements OnInit {
         : wallet.total_paid || 0;
       return acc + totalPaid;
     }, 0);
+  }
+
+  openAddWalletModal(): void {
+    this.isAddWalletModalOpen = true;
+  }
+
+  closeAddWalletModal(): void {
+    this.isAddWalletModalOpen = false;
+    this.getWallets(this.currentPage); // Refresh the list after closing modal
   }
 }
