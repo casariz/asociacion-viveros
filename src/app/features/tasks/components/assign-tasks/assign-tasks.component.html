@@ -1,106 +1,148 @@
-<div class="d-flex row bg-light py-5 px-3 justify-content-center">
-  @if (isEditMode) {
-    <h2 class="text-center fw-bold">Editar tarea</h2>
-  } @else if (isReadOnly) {
-    <h2 class="text-center fw-bold">Ver tarea</h2>
-  } @else {
-    <h2 class="text-center fw-bold">Agregar tarea</h2>
-  }
-  <div class="card w-50 p-0">
-    <div class="card-body">
-      <form [formGroup]="taskForm" (ngSubmit)="onSubmit()">
-        <div class="p-1 px-2 d-flex row gap-3">
-          <h6 class="fw-bold m-0">Datos</h6>
-          @if (isEditMode || isReadOnly) {
-
-            @if (meetingId !== null) {
-              <div class="d-inline-flex flex-row gap-2">
-                <div class="input-group">
-                  <span class="input-group-text"><i class="fas fa-circle-info"></i></span>
-                  <input class="form-control p-0 ps-2" type="text" size="50" formControlName="meeting_description" />
-                </div>
-              </div>
-            }
-
-          }
-          <div class="input-group">
-            <span class="input-group-text"><i class="fas fa-calendar-day"></i></span>
-            <input type="date" formControlName="start_date" class="form-control p-0 ps-2" id="date" required [ngClass]="{ 'is-invalid': submitted && f['start_date'].errors }"/>
-            @if (submitted && f['start_date'].errors) {
-              <div class="invalid-feedback">
-                @if (f['start_date'].errors['required']) {
-                  <div>Fecha iniciales requerido</div>
-                }
-              </div>
-            }
-          </div>
-          <div class="input-group">
-            <span class="input-group-text"><i class="fas fa-stopwatch"></i></span>
-            <input type="number" formControlName="estimated_time" class="form-control p-0 ps-2" id="number"
-              required min="0" max="9999" placeholder="Tiempo..." [ngClass]="{ 'is-invalid': submitted && f['estimated_time'].errors }"/>
-
-              <select formControlName="units" class="form-select p-0 ps-2" id="units" required>
-                <option selected>Sin definir</option>
-                <option>Minuto(s)</option>
-                <option>Hora(s)</option>
-                <option>Día(s)</option>
-                <option>Semana(s)</option>
-                <option>Mes(es)</option>
-              </select>
-              @if (submitted && f['estimated_time'].errors) {
-                <div class="invalid-feedback">
-                  @if (f['estimated_time'].errors['required']) {
-                    <div>Fecha iniciales requerido</div>
-                  }
-                </div>
-              }
-            </div>
-            <div class="input-group">
-              <span class="input-group-text"><i class="fas fa-signature"></i></span>
-              <input type="text" formControlName="task_description" class="form-control p-0 ps-2"
-                id="task_description" required placeholder="Descripción..." [ngClass]="{ 'is-invalid': submitted && f['task_description'].errors }"/>
-                @if (submitted && f['task_description'].errors) {
-                  <div class="invalid-feedback">
-                    @if (f['task_description'].errors['required']) {
-                      <div>Descripción de la tarea requerido</div>
-                    }
-                  </div>
-                }
-              </div>
-
-              <div class="input-group position-relative">
-                <span class="input-group-text"><i class="fas fa-helmet-safety"></i></span>
-                <input type="hidden" id="assigned_to" formControlName="assigned_to" />
-                <input class="form-control p-0 ps-2" id="assigned_to_visible" formControlName="assigned_to_name" type="text" size="50" placeholder="Seleccione vinculado..." autocomplete="off" (input)="onSearch()" (focus)="showDropdown = true" />
-                @if (filteredUsers.length) {
-                  <ul class="dropdown-menu w-75" [class.show]="showDropdown" style="margin-top: 32px; margin-left: 35px">
-                    @for (user of filteredUsers; track user) {
-                      <li class="dropdown-item" (click)="selectUser(user)">
-                        {{user.first_name}} {{user.last_name}}
-                      </li>
-                    }
-                  </ul>
-                }
-              </div>
-
-              <div class="input-group">
-                <span class="input-group-text"><i class="fas fa-comment"></i></span>
-                <textarea formControlName="observations" id="observations" class="form-control" cols="50"
-                rows="5" placeholder="Observaciones..."></textarea>
-              </div>
-            </div>
-
-          </form>
-
+<app-modal 
+  [isOpen]="isModalOpen"
+  [title]="isEditMode ? 'Editar tarea' : isReadOnly ? 'Ver tarea' : 'Agregar Tarea'"
+  size="xl"
+  (close)="onCloseModal()"
+  (confirm)="onSubmit()"
+  (cancel)="onCloseModal()"
+  [showCloseButton]="true">
+  
+  <form class="space-y-6" [formGroup]="taskForm" (ngSubmit)="onSubmit()">
+    
+    <!-- ID Reunión (si existe) -->
+    @if (isEditMode || isReadOnly) {
+      @if (meetingId !== null) {
+        <div>
+          <label class="block text-sm font-medium text-gray-700 mb-1">ID Reunión</label>
+          <input 
+            type="text" 
+            class="w-full px-3 py-2 border border-gray-300 rounded-md bg-gray-50" 
+            formControlName="meeting_description"
+            readonly />
         </div>
-        @if (!isReadOnly) {
-          <div class="card-footer d-flex justify-content-end">
-            <button class="btn btn-success" type="submit" (click)="onSubmit()">
+      }
+    }
 
-              <i class="fas {{ isEditMode ? 'fa-rotate-right' : 'fa-plus' }}"></i> {{ isEditMode ? 'ACTUALIZAR' :
-              'AGREGAR' }}
-            </button>
-          </div>
+    <!-- Fecha -->
+    <div>
+      <label class="block text-sm font-medium text-gray-700 mb-1">Fecha</label>
+      <input 
+        type="date" 
+        class="w-full px-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-green-500 focus:border-green-500" 
+        formControlName="start_date" 
+        [class.border-red-500]="submitted && f['start_date'].errors"
+        [readonly]="isReadOnly"/>
+      @if (submitted && f['start_date'].errors) {
+        <p class="text-red-500 text-xs mt-1">
+          @if (f['start_date'].errors['required']) {
+            Fecha inicial requerida
+          }
+        </p>
+      }
+    </div>
+
+    <!-- Tiempo Estimado -->
+    <div class="flex gap-3">
+      <div class="flex-1">
+        <label class="block text-sm font-medium text-gray-700 mb-1">Tiempo Estimado</label>
+        <input 
+          type="number" 
+          class="w-full px-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-green-500 focus:border-green-500" 
+          formControlName="estimated_time"
+          placeholder="Tiempo..." 
+          min="0" 
+          max="9999"
+          [class.border-red-500]="submitted && f['estimated_time'].errors"
+          [readonly]="isReadOnly"/>
+        @if (submitted && f['estimated_time'].errors) {
+          <p class="text-red-500 text-xs mt-1">
+            @if (f['estimated_time'].errors['required']) {
+              Tiempo estimado requerido
+            }
+          </p>
         }
       </div>
+      <div class="flex-1">
+        <label class="block text-sm font-medium text-gray-700 mb-1">Unidades</label>
+        <select 
+          class="w-full px-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-green-500 focus:border-green-500" 
+          formControlName="units"
+          [disabled]="isReadOnly">
+          <option>Sin definir</option>
+          <option>Minuto(s)</option>
+          <option>Hora(s)</option>
+          <option>Día(s)</option>
+          <option>Semana(s)</option>
+          <option>Mes(es)</option>
+        </select>
+      </div>
     </div>
+
+    <!-- Descripción de la Tarea -->
+    <div>
+      <label class="block text-sm font-medium text-gray-700 mb-1">Descripción</label>
+      <input 
+        type="text" 
+        class="w-full px-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-green-500 focus:border-green-500" 
+        formControlName="task_description"
+        placeholder="Descripción de la tarea..." 
+        [class.border-red-500]="submitted && f['task_description'].errors"
+        [readonly]="isReadOnly"/>
+      @if (submitted && f['task_description'].errors) {
+        <p class="text-red-500 text-xs mt-1">
+          @if (f['task_description'].errors['required']) {
+            Descripción de la tarea requerida
+          }
+        </p>
+      }
+    </div>
+
+    <!-- Responsable -->
+    <div class="relative">
+      <label class="block text-sm font-medium text-gray-700 mb-1">Responsable</label>
+      <input type="hidden" formControlName="assigned_to" />
+      <input 
+        class="w-full px-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-green-500 focus:border-green-500" 
+        formControlName="assigned_to_name" 
+        type="text"
+        placeholder="Seleccione responsable..." 
+        autocomplete="off" 
+        (input)="onSearch()"
+        (focus)="showDropdown = true"
+        [readonly]="isReadOnly"/>
+      @if (filteredUsers.length && showDropdown && !isReadOnly) {
+        <div class="absolute top-full left-0 right-0 bg-white border border-gray-300 rounded-md shadow-lg z-10 max-h-40 overflow-y-auto">
+          @for (user of filteredUsers; track user) {
+            <div class="px-3 py-2 hover:bg-gray-100 cursor-pointer" (click)="selectUser(user)">
+              {{user.first_name}} {{user.last_name}}
+            </div>
+          }
+        </div>
+      }
+    </div>
+
+    <!-- Observaciones -->
+    <div>
+      <label class="block text-sm font-medium text-gray-700 mb-1">Observaciones</label>
+      <textarea 
+        class="w-full px-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-green-500 focus:border-green-500 resize-none" 
+        rows="4"
+        formControlName="observations"
+        placeholder="Observaciones adicionales..."
+        [readonly]="isReadOnly">
+      </textarea>
+    </div>
+
+    <!-- Footer personalizado para modo solo lectura -->
+    @if (isReadOnly) {
+      <div slot="footer">
+        <button 
+          class="px-4 py-2 rounded-md text-sm font-medium transition-colors duration-200 border bg-white text-gray-700 border-gray-300 hover:bg-gray-50 focus:ring-2 focus:ring-gray-500 focus:ring-offset-2" 
+          (click)="onCloseModal()"
+          type="button">
+          Cerrar
+        </button>
+      </div>
+    }
+  </form>
+</app-modal>

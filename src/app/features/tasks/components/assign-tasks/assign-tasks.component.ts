@@ -1,4 +1,4 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, OnInit, Input, Output, EventEmitter } from '@angular/core';
 import {
   FormBuilder,
   FormGroup,
@@ -10,6 +10,7 @@ import {
 import { ActivatedRoute, Router } from '@angular/router';
 
 // Componentes
+import { ModalComponent } from '../../../../components/modal/modal.component';
 
 // Servicios
 import { TaskService } from '../../services/task.service';
@@ -20,11 +21,14 @@ import { UsersService } from '../../../users/services/users.service';
 @Component({
   selector: 'app-assign-tasks',
   standalone: true,
-  imports: [ReactiveFormsModule, CommonModule],
+  imports: [ReactiveFormsModule, CommonModule, ModalComponent],
   templateUrl: './assign-tasks.component.html',
   styleUrls: ['./assign-tasks.component.css'],
 })
 export class AssignTasksComponent implements OnInit {
+  @Input() isModalOpen: boolean = false;
+  @Output() closeModal = new EventEmitter<void>();
+  
   taskForm: FormGroup;
   isEditMode: boolean = false;
   isReadOnly: boolean = false;
@@ -195,11 +199,17 @@ export class AssignTasksComponent implements OnInit {
     return this.taskForm.controls;
   }
 
+  onCloseModal(): void {
+    this.closeModal.emit();
+  }
+
   onSubmit(): void {
+    this.submitted = true;
+    
     if (this.taskForm.invalid || this.isReadOnly) {
-      this.submitted = true;
       return;
     }
+    
     if (this.meetingId !== null) {
       this.taskForm.get('meeting_id')?.enable();
       this.taskForm.patchValue({
@@ -215,11 +225,11 @@ export class AssignTasksComponent implements OnInit {
 
     if (this.isEditMode && this.taskId) {
       this.taskService.updateTask(this.taskId, taskData).subscribe(() => {
-        this.router.navigate(['/tasks']);
+        this.onCloseModal();
       });
     } else {
       this.taskService.createTask(taskData).subscribe(() => {
-        this.router.navigate(['/tasks']);
+        this.onCloseModal();
       });
     }
   }

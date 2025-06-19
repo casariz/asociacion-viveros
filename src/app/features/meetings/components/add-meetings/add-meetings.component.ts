@@ -14,15 +14,17 @@ import { TopicsService } from '../../services/topics.service';
 import { UsersService } from '../../../users/services/users.service';
 import { AssistantMeetingsService } from '../../services/assistant-meetings.service';
 import { ModalComponent } from '../../../../components/modal/modal.component';
+import { LucideAngularModule, Plus } from 'lucide-angular';
 
 @Component({
   selector: 'app-add-meetings',
   standalone: true,
-  imports: [FormsModule, ReactiveFormsModule, CommonModule, ModalComponent],
+  imports: [FormsModule, ReactiveFormsModule, CommonModule, ModalComponent, LucideAngularModule],
   templateUrl: './add-meetings.component.html',
   styleUrl: './add-meetings.component.css',
 })
 export class AddMeetingsComponent implements OnInit {
+  readonly Plus = Plus;
   @Input() isModalOpen: boolean = false;
   @Output() closeModal = new EventEmitter<void>();
   

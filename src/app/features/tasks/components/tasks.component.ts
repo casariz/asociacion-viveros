@@ -8,15 +8,19 @@ import { MeetingsService } from '../../meetings/services/meetings.service';
 import { SectionHeaderComponent } from '../../../components/section-header/components/section-header.component';
 import { DataTableComponent } from '../../../components/data-table/components/data-table.component';
 import { Column } from '../../../components/data-table/interfaces/data-table';
+import { AssignTasksComponent } from './assign-tasks/assign-tasks.component';
+import { LucideAngularModule, Plus } from 'lucide-angular';
 
 @Component({
   selector: 'app-tasks',
   standalone: true,
-  imports: [SectionHeaderComponent, DataTableComponent, CommonModule],
+  imports: [SectionHeaderComponent, DataTableComponent, CommonModule, AssignTasksComponent, LucideAngularModule],
   templateUrl: './tasks.component.html',
   styleUrl: './tasks.component.css',
 })
 export class TasksComponent implements OnInit {
+  readonly Plus = Plus; // Icon for adding tasks
+
   tasks: Tasks[] = [];
   filteredTasks: Tasks[] = [];
   currentPage: number = 1;
@@ -25,6 +29,7 @@ export class TasksComponent implements OnInit {
   userRole: string = '';
   isLoading: boolean = false;
   errorMessage: string = '';
+  isAddTaskModalOpen: boolean = false;
 
   columns: Column[] = [
     { key: 'taskInfo', label: 'ID [Reunión]' },
@@ -49,7 +54,17 @@ export class TasksComponent implements OnInit {
 
   createTaskWithoutMeeting(): void {
     this.meetingsService.clearMeetingId();
-    this.router.navigate(['/tasks/new']);
+    this.isAddTaskModalOpen = true;
+  }
+
+  openAddTaskModal(): void {
+    this.meetingsService.clearMeetingId();
+    this.isAddTaskModalOpen = true;
+  }
+
+  closeAddTaskModal(): void {
+    this.isAddTaskModalOpen = false;
+    this.getTasks(this.currentPage); // Refresh the list after closing modal
   }
 
   editTaskWithoutMeeting(id: any): void {

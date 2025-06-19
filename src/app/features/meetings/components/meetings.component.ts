@@ -8,15 +8,17 @@ import { SectionHeaderComponent } from '../../../components/section-header/compo
 import { DataTableComponent } from '../../../components/data-table/components/data-table.component';
 import { Column } from '../../../components/data-table/interfaces/data-table';
 import { AddMeetingsComponent } from './add-meetings/add-meetings.component';
+import { LucideAngularModule, Plus } from 'lucide-angular';
 
 @Component({
   selector: 'app-meetings',
   standalone: true,
-  imports: [SectionHeaderComponent, DataTableComponent, AddMeetingsComponent],
+  imports: [SectionHeaderComponent, DataTableComponent, AddMeetingsComponent, LucideAngularModule],
   templateUrl: './meetings.component.html',
   styleUrl: './meetings.component.css'
 })
 export class MeetingsComponent implements OnInit {
+  readonly Plus = Plus;
   meetings: Meetings[] = [];
   filteredMeetings: Meetings[] = [];
   currentPage: number = 1;
